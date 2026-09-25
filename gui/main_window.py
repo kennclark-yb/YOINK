@@ -1,5 +1,4 @@
 import re
-import markdown
 from PySide6.QtCore import (
     QEvent,
     QObject,
@@ -9,10 +8,17 @@ from PySide6.QtCore import (
     QVariantAnimation,
     QRect,
     QTimer,
+    QUrl,
+    QPoint,
+    QPropertyAnimation,
 )
 from PySide6.QtGui import (
     QCursor,
     QIntValidator,
+    QDesktopServices,
+    QKeySequence,
+    QShortcut,
+    QTextDocument,
 )
 from PySide6.QtGui import QPainterPath, QRegion
 from PySide6.QtWidgets import (
@@ -27,6 +33,7 @@ from PySide6.QtWidgets import (
     QRadioButton,
     QScrollArea,
     QTextBrowser,
+    QPlainTextEdit,
     QVBoxLayout,
     QWidget,
 )
@@ -43,6 +50,9 @@ from .split_selector import SplitSelector
 from .styles import APP_STYLE
 from .title_bar import TitleBar
 from .application import configure_application
+from .updates import UpdateChecker, VERSION
+from .update_dialog import UpdateDialog
+from .preview import PreviewRoleSelector, render_preview_variants
 
 
 class ResizeController(QObject):
@@ -162,6 +172,7 @@ class MainWindow(QMainWindow):
         self.setStyleSheet(APP_STYLE)
 
         self._build_ui()
+        self.split_selector._select("Number of Parts")
 
         self.resize_controller = ResizeController(self)
 
@@ -195,6 +206,38 @@ class MainWindow(QMainWindow):
         self._waiting_for_preload = False
 
         self._operation_settings = None
+
+        self.update_checker = UpdateChecker(self)
+        self.update_checker.completed.connect(self._update_checked)
+        self.update_shortcut = QShortcut(QKeySequence("Ctrl+U"), self)
+        self.update_shortcut.setContext(Qt.ShortcutContext.ApplicationShortcut)
+        self.update_shortcut.activated.connect(lambda: self.update_checker.check(manual=True))
+        self._update_dialog = None
+        QTimer.singleShot(0, self.update_checker.check)
+
+    def _update_checked(self, manual, release, failed):
+        if self._closing or self._close_after_results:
+            return
+        if release is None and not manual:
+            return
+        if self._update_dialog is not None:
+            self._update_dialog.close()
+        if release:
+            version, url = release
+            message = f"YOINK {version} is available."
+            actions = [("View Release", lambda: QDesktopServices.openUrl(QUrl(url))),
+                       ("Later", None)]
+        else:
+            message = (
+                "Couldn't check for updates. Check your connection and try Ctrl+U again later."
+                if failed else f"YOINK is up to date (v{VERSION})."
+            )
+            actions = [("OK", None)]
+        dialog = UpdateDialog(self, message, actions)
+        dialog.finished.connect(lambda: setattr(self, "_update_dialog", None))
+        self._update_dialog = dialog
+        dialog.setModal(False)
+        dialog.show()
 
     def _build_ui(self):
         self.background = Background()
@@ -350,6 +393,7 @@ class MainWindow(QMainWindow):
             [
                 "Character Limit",
                 "Number of Parts",
+                "Messages per Part",
             ]
         )
 
@@ -409,7 +453,7 @@ class MainWindow(QMainWindow):
 
         self.split_selector.changed.connect(
             self._reset_split_value
-        )        
+        )
 
         # ============================================================
         # EXTRACTION ERROR — inline recovery message
@@ -423,7 +467,7 @@ class MainWindow(QMainWindow):
         # EXTRACT BUTTON — final action
         # ============================================================
         self.extract_button = ProgressButton("EXTRACT")
-        self.extract_button.setEnabled(False)
+        self.extract_button.setEnabled(True)
 
         self.extract_button.clicked.connect(
             self._extract_conversation
@@ -598,11 +642,17 @@ class MainWindow(QMainWindow):
             summary_text_layout
         )
         summary_row.addStretch()
-        summary_row.addWidget(
-            self.preview_button,
-            0,
-            Qt.AlignmentFlag.AlignTop,
-        )
+        preview_actions = QVBoxLayout()
+        preview_actions.addWidget(self.preview_button)
+        self.scratchpad_button = QPushButton("[ SCRATCHPAD ]")
+        self.scratchpad_button.setFixedHeight(32)
+        self.scratchpad_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.scratchpad_button.setStyleSheet(self.preview_button.styleSheet())
+        self.scratchpad_button.setToolTip("Open this session's scratchpad")
+        self.scratchpad_button.clicked.connect(self._show_scratchpad)
+        preview_actions.addWidget(self.scratchpad_button)
+        preview_actions.addStretch()
+        summary_row.addLayout(preview_actions)
 
         self.copy_all_button = ProgressButton("COPY ALL")
         self._copy_all_timer = QTimer(self.copy_all_button)
@@ -617,6 +667,41 @@ class MainWindow(QMainWindow):
         results_layout.addSpacing(4)
         results_layout.addLayout(summary_row)
         results_layout.addSpacing(4)
+
+        # Keep this dialog in memory: closing it only hides it for this session.
+        self.scratchpad_dialog = QDialog(self)
+        self.scratchpad_dialog.setWindowTitle("Scratchpad")
+        self.scratchpad_dialog.resize(640, 460)
+        self.scratchpad_dialog.setStyleSheet("QDialog { background: #0F1012; }")
+        scratchpad_layout = QVBoxLayout(self.scratchpad_dialog)
+        scratchpad_layout.setContentsMargins(16, 16, 16, 16)
+        scratchpad_layout.setSpacing(10)
+        scratchpad_label = QLabel("SCRATCHPAD · THIS EXTRACTION SESSION ONLY")
+        scratchpad_label.setStyleSheet("color: #F2F2F4; font-size: 10px; font-weight: 700;")
+        scratchpad_layout.addWidget(scratchpad_label)
+        self.scratchpad_copy = QPushButton("COPY SCRATCHPAD")
+        self.scratchpad_copy.setStyleSheet(self.preview_button.styleSheet())
+        self.scratchpad_copy.setFixedHeight(36)
+        self.scratchpad_copy.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.scratchpad_copy.setToolTip("Copy the entire scratchpad")
+        self.scratchpad = QPlainTextEdit()
+        self.scratchpad.setPlaceholderText(
+            "Type or paste the useful bits here.\n\n"
+            "Closing this window keeps your notes. Extract Another Thread or closing YOINK clears them."
+        )
+        self.scratchpad.setStyleSheet("""
+            QPlainTextEdit {
+                background: #15161A; color: #E7E7EA;
+                border: 1px solid #303137; border-radius: 10px;
+                padding: 18px; font-size: 12px;
+            }
+            QPlainTextEdit:focus { border-color: #4D7CFE; }
+        """)
+        self.scratchpad_copy.clicked.connect(
+            lambda: QApplication.clipboard().setText(self.scratchpad.toPlainText())
+        )
+        scratchpad_layout.addWidget(self.scratchpad, 1)
+        scratchpad_layout.addWidget(self.scratchpad_copy)
 
         # Scrollable result parts area.
         results_scroll = QScrollArea()
@@ -710,6 +795,15 @@ class MainWindow(QMainWindow):
 
         root_layout.addLayout(self.content_layout)
 
+    def _show_scratchpad(self):
+        if (not getattr(self, "_conversation", None) or self._results_resetting
+                or self._closing or self._close_after_results):
+            return
+        self.scratchpad_dialog.show()
+        self.scratchpad_dialog.raise_()
+        self.scratchpad_dialog.activateWindow()
+        self.scratchpad.setFocus()
+
     def _preview_entire_thread(self):
         if not self._conversation:
             return
@@ -752,18 +846,6 @@ class MainWindow(QMainWindow):
 
         browser = QTextBrowser()
         browser.setOpenExternalLinks(True)
-
-        markdown_text = format_markdown(
-            self._conversation
-        )
-
-        html = markdown.markdown(
-            markdown_text,
-            extensions=[
-                "fenced_code",
-                "tables",
-            ],
-        )
 
         # --------------------------------------------------------
         # Preview-only styling
@@ -896,14 +978,35 @@ class MainWindow(QMainWindow):
         </style>
         """
 
-        html = preview_css + html
-
-        browser.setHtml(html)
-
-        layout.addWidget(title)
+        roles = PreviewRoleSelector()
+        header = QHBoxLayout()
+        header.addWidget(title)
+        header.addStretch()
+        header.addWidget(roles)
+        layout.addLayout(header)
         layout.addWidget(browser, 1)
 
+        # Convert each full-conversation message once per opening. Retain parsed
+        # documents too, so clicks do not repeat Qt's HTML parsing/layout work.
+        layout.activate()
+        documents = {}
+        for role, html in render_preview_variants(self._conversation).items():
+            document = QTextDocument(preview_dialog)
+            document.setDefaultFont(browser.font())
+            document.setHtml(preview_css + html)
+            browser.setDocument(document)
+            document.documentLayout().documentSize()
+            documents[role] = document
+
+        def render(role):
+            browser.setDocument(documents[role])
+            browser.verticalScrollBar().setValue(0)
+
+        roles.changed.connect(render)
+        render("all")
+
         preview_dialog.exec()
+        preview_dialog.deleteLater()
 
     def _copy_all_parts(self):
         if not self._parts:
@@ -1007,6 +1110,8 @@ class MainWindow(QMainWindow):
         if self._results_resetting:
             return
         self._results_resetting = True
+        self._stop_input_shake()
+        self.scratchpad_dialog.close()
         self.results_panel.setEnabled(False)
         # Invalidate incoming preload data immediately, but keep the displayed
         # results intact until the panel has completely retreated.
@@ -1024,6 +1129,7 @@ class MainWindow(QMainWindow):
 
         def finish_reset():
             self.results_panel.hide()
+            self.scratchpad.clear()
             self._copy_all_timer.stop()
             self._reset_copy_all_button()
             self._conversation = None
@@ -1040,6 +1146,8 @@ class MainWindow(QMainWindow):
             self.results_panel.setMaximumWidth(0)
             self.content_layout.setSpacing(10)
             self.url_input.clear()
+            self.split_selector._select("Number of Parts")
+            self._reset_split_value("Number of Parts")
             self._operation_settings = None
             self._set_operation_controls_enabled(True)
             self.extract_button.set_processing(False)
@@ -1215,10 +1323,9 @@ class MainWindow(QMainWindow):
         self.extraction_error.hide()
         self.extract_button.set_recovery(False)
 
-        self._validate_url()
-
-        if not url or not self.url_input.property("urlValid"):
-            return
+        self._stop_input_shake()
+        self._validate_url(required=True)
+        invalid_field = None if self.url_input.property("urlValid") else self.url_input
 
         if self.ai_radio.isChecked():
             mode = "assistant"
@@ -1230,17 +1337,25 @@ class MainWindow(QMainWindow):
         split_mode = self.split_selector.currentText()
         split_value = self.split_value.text().strip()
         self._clear_split_error()
-        if not split_value and split_mode == "Number of Parts":
-            self._show_split_error("Enter the number of parts.")
-            return
-        if split_value:
+        if not split_value and split_mode != "Character Limit":
+            self._show_split_error(
+                "Enter messages per part." if split_mode == "Messages per Part"
+                else "Enter the number of parts."
+            )
+            invalid_field = invalid_field or self.split_value
+        elif split_value:
             try:
                 valid = 1 <= int(split_value) <= 999999 and self.split_value.hasAcceptableInput()
             except ValueError:
                 valid = False
             if not valid:
                 self._show_split_error("Enter a whole number from 1 to 999999.")
-                return
+                invalid_field = invalid_field or self.split_value
+
+        if invalid_field is not None:
+            invalid_field.setFocus(Qt.FocusReason.OtherFocusReason)
+            self._shake_input(invalid_field)
+            return
 
         # EXTRACT commits one immutable set of settings, including while
         # waiting for an already-running preload.
@@ -1255,6 +1370,26 @@ class MainWindow(QMainWindow):
             self._waiting_for_preload = True
             return
         self._start_extraction()
+
+    def _stop_input_shake(self):
+        if getattr(self, "_input_shake", None) is not None:
+            animation, field, origin = self._input_shake
+            animation.stop()
+            field.move(origin)
+            animation.deleteLater()
+            self._input_shake = None
+
+    def _shake_input(self, field):
+        # One small, local nudge; never move the window or animate several fields.
+        self.layout().activate()
+        origin = field.pos()
+        animation = QPropertyAnimation(field, b"pos", self)
+        animation.setDuration(180)
+        for step, offset in ((0, 0), (.2, -3), (.4, 3), (.6, -2), (.8, 2), (1, 0)):
+            animation.setKeyValueAt(step, origin + QPoint(offset, 0))
+        self._input_shake = animation, field, origin
+        animation.finished.connect(self._stop_input_shake)
+        animation.start()
 
     def _set_operation_controls_enabled(self, enabled):
         for control in (
@@ -1397,7 +1532,6 @@ class MainWindow(QMainWindow):
         self.extraction_error.style().polish(self.extraction_error)
         self.extraction_error.setText(message)
         self.extraction_error.show()
-        self.split_value.setFocus(Qt.FocusReason.OtherFocusReason)
 
     def _clear_split_error(self):
         self.split_value.setProperty("splitValid", None)
@@ -1419,6 +1553,8 @@ class MainWindow(QMainWindow):
             self.split_value.setPlaceholderText(
                 "[ character limit · default 9000 ]"
             )
+        elif mode == "Messages per Part":
+            self.split_value.setPlaceholderText("[ enter messages per part ]")
         else:
             self.split_value.setPlaceholderText(
                 "[ enter number of parts ]"
@@ -1430,13 +1566,15 @@ class MainWindow(QMainWindow):
         self._preloaded_extraction = None
         self._preloaded_version = None
         # Editing is neutral; validate only when editing finishes. Do not
-        # leave an old URL's error or Extract eligibility on the new text.
+        # leave an old URL's error on the new text.
         self.url_input.setProperty("urlValid", None)
         self.url_error.setText(" ")
         self.url_input.style().unpolish(self.url_input)
         self.url_input.style().polish(self.url_input)
         self.url_input.update()
-        self.extract_button.setEnabled(False)
+        self.extract_button.setEnabled(
+            self._operation_settings is None and not self._closing and not self._close_after_results
+        )
         if self._operation_settings is None and not self._results_resetting:
             self.extraction_error.clear()
             self.extraction_error.hide()
@@ -1451,6 +1589,11 @@ class MainWindow(QMainWindow):
         self._validate_url()
 
         if not self.url_input.property("urlValid"):
+            return
+
+        if not self.split_value.hasAcceptableInput() and not (
+            self.split_selector.currentText() == "Character Limit" and not self.split_value.text()
+        ):
             return
 
         self._start_preload(
@@ -1538,12 +1681,12 @@ class MainWindow(QMainWindow):
             self._waiting_for_preload = False
             self._extraction_error(message)
 
-    def _validate_url(self):
+    def _validate_url(self, required=False):
         url = self.url_input.text().strip()
 
         if not url:
-            self.url_input.setProperty("urlValid", None)
-            self.url_error.setText(" ")
+            self.url_input.setProperty("urlValid", False if required else None)
+            self.url_error.setText("Enter a shared conversation URL." if required else " ")
 
         elif not re.match(
             r"^https?://[^\s]+$",
@@ -1589,8 +1732,7 @@ class MainWindow(QMainWindow):
         self.url_input.update()
 
         self.extract_button.setEnabled(
-            self.url_input.property("urlValid") is True
-            and self._operation_settings is None
+            self._operation_settings is None
             and not self._closing and not self._close_after_results
         )
 
@@ -1649,6 +1791,10 @@ class MainWindow(QMainWindow):
             return
 
         self._closing = True
+        self._stop_input_shake()
+        self.scratchpad_dialog.close()
+        self.scratchpad.clear()
+        self.update_checker.cancel_request()
         self._waiting_for_preload = False
         self.background.setEnabled(False)
 

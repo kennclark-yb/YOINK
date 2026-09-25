@@ -88,6 +88,7 @@ class LiveReleaseTests(unittest.TestCase):
         w.show()
         url = os.environ["YOINK_LIVE_TEST_URL"]
         try:
+            w.split_selector._select("Character Limit")
             w.url_input.setText(url)
             w.url_input.editingFinished.emit()
             self.assertTrue(w._preload_threads)

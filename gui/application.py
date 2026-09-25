@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 from PySide6.QtGui import QFontDatabase, QIcon
+from .updates import VERSION
 
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets"
@@ -13,6 +14,7 @@ def configure_application(app):
         return
 
     app.setApplicationName("YOINK")
+    app.setApplicationVersion(VERSION)
     app.setApplicationDisplayName("YOINK — The ChatSnatcher")
     # Give Windows a stable taskbar identity instead of inheriting python.exe's.
     if sys.platform == "win32":

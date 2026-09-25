@@ -9,6 +9,7 @@ from formatter import (
     format_markdown,
     split_parts,
     split_parts_by_count,
+    split_parts_by_message_count,
 )
 
 
@@ -93,7 +94,12 @@ class ExtractionWorker(QObject):
                     max_chars=max_chars,
                 )
 
-            else:
+            elif self.split_mode == "Messages per Part":
+                if not self.split_value:
+                    raise ValueError("Enter messages per part.")
+                parts = split_parts_by_message_count(conversation, int(self.split_value))
+
+            elif self.split_mode == "Number of Parts":
                 if not self.split_value:
                     raise ValueError(
                         "Enter the number of parts."
@@ -103,6 +109,8 @@ class ExtractionWorker(QObject):
                     conversation,
                     int(self.split_value),
                 )
+            else:
+                raise ValueError("Choose a supported split mode.")
 
             self.progress.emit(
                 "SPLITTING",

@@ -61,6 +61,20 @@ def split_parts(conversation, max_chars=9000):
 
     return parts
 
+def split_parts_by_message_count(conversation, messages_per_part):
+    """Group intact messages in order, keeping numbering across part boundaries."""
+    if type(messages_per_part) is not int or messages_per_part < 1:
+        raise ValueError("messages_per_part must be a positive integer")
+    messages = conversation["messages"]
+    return [
+        format_markdown(
+            {**conversation, "messages": messages[start:start + messages_per_part]},
+            start_index=start + 1,
+        )
+        for start in range(0, len(messages), messages_per_part)
+    ]
+
+
 def split_parts_by_count(conversation, part_count):
     messages = conversation["messages"]
 

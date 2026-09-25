@@ -1,12 +1,34 @@
-# YOINK --- The ChatSnatcher
+<p align="center">
+  <img src="assets/icon/yoink-master.png" alt="YOINK artwork" width="220">
+</p>
 
-**Your Oversized Interactions, Nicely Kept.**
+<h1 align="center">YOINK — The ChatSnatcher</h1>
+<p align="center"><strong>Your Oversized Interactions, Nicely Kept.</strong></p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Windows-portable-4D7CFE" alt="Windows portable">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-92949D" alt="MIT license"></a>
+  <img src="https://img.shields.io/badge/version-1.0.0-4D7CFE" alt="Version 1.0.0">
+</p>
+
+<p align="center">
+  <a href="https://github.com/kennclark-yb/YOINK/releases">Download for Windows</a> ·
+  <a href="#how-to-use-it">How to use it</a> ·
+  <a href="BUILDING.md">Build from source</a> ·
+  <a href="CONTRIBUTING.md">Contribute</a>
+</p>
 
 YOINK yoinks messages from shared ChatGPT conversations and turns them
 into clean, split, copyable text.
 
 Because apparently manually Ctrl+C'ing your way through a conversation
 the size of a Victorian novel is not a workflow.
+
+<p align="center">
+  <img src="assets/screenshots/results.png" alt="YOINK Results with split parts, Preview, and Scratchpad" width="800">
+</p>
+
+*The real app, shown with a made-up conversation. No private chats were yoinked for these screenshots.*
 
 ------------------------------------------------------------------------
 
@@ -144,7 +166,9 @@ Then split it by:
 -   **Character Limit** --- useful when you're working around
     input/context sizes.
 -   **Number of Parts** --- tell YOINK how many chunks you want and let
-    it balance them.
+    it balance them. This is the default; enter the number you want.
+-   **Messages per Part** --- set the maximum number of intact messages in
+    each chunk. Ten messages at three per part gives you 3, 3, 3, and 1.
 
 You can preview the entire extracted thread, copy individual parts, or
 **Copy All**.
@@ -157,12 +181,15 @@ No 400-message archaeological expedition required.
 
 -   Extract **A.I., User, or Both** sides of a shared ChatGPT
     conversation.
--   Split output by **Character Limit** or **Number of Parts**.
+-   Split output by **Character Limit**, **Number of Parts**, or **Messages per Part**.
 -   Preserve message order and keep individual messages intact while
     splitting.
 -   Preview the entire extracted conversation before copying.
+-   Filter Preview with **All / A.I. / User**, independently of your output mode.
 -   Copy individual parts with one click.
 -   Copy all generated parts at once.
+-   Collect selected context in a separate **Scratchpad** window and copy it
+    together. Notes last for the current extraction session only.
 -   Markdown-formatted output suitable for pasting into chats, notes,
     project records, or other tools.
 -   Clear progress and retry states.
@@ -171,6 +198,8 @@ No 400-message archaeological expedition required.
 -   Bundled browser runtime --- no separate Chromium installation
     required.
 -   No Python installation required when using the packaged release.
+-   Quiet startup update checks, with **Ctrl+U** for a manual check.
+    You choose when to visit the release page; nothing downloads or installs itself.
 
 And yes, the loading messages are stupid on purpose.
 
@@ -178,7 +207,8 @@ And yes, the loading messages are stupid on purpose.
 
 ## Download
 
-Go to **Releases** and download the latest Windows release.
+Go to **[Releases](https://github.com/kennclark-yb/YOINK/releases)** and
+download the latest Windows ZIP.
 
 YOINK v1 is distributed as a portable Windows folder.
 
@@ -214,6 +244,55 @@ if you'd rather inspect or build it yourself.
 5.  Hit **Extract**.
 6.  Preview it, copy individual parts, or **Copy All**.
 7.  YOINK achieved.
+
+### 1. Feed it a link
+
+Open YOINK, paste your shared link, and pick the messages and split size you want.
+**Number of Parts** starts selected with an empty value. Enter a positive whole
+number, or choose another mode. **Messages per Part** also needs a positive whole
+number; **Character Limit** uses 9000 if left empty. Missing or invalid input gets
+an inline explanation and a small nudge on the field that needs attention.
+
+<p align="center">
+  <img src="assets/screenshots/startup.png" alt="YOINK startup window" width="360">
+  <img src="assets/screenshots/configured.png" alt="Example link configured to extract Both roles" width="360">
+</p>
+
+### 2. Inspect the haul
+
+Results shows the message counts and your split parts. **Preview** opens
+**Preview Entire Thread**, so you can read the full conversation before copying.
+It always opens on **All**, including both roles even if your output contains
+only A.I. or User messages. The sliding **All / A.I. / User** selector changes
+only the Preview display, keeping the original message numbers. Accent headers
+sit left for A.I. and right for User; message bodies stay normally aligned.
+Use the copy icon beside a part, or **Copy All** to take the lot.
+
+<p align="center">
+  <img src="assets/screenshots/preview.png" alt="Preview Entire Thread with a sample project handoff" width="760">
+</p>
+
+### 3. Keep the useful bits
+
+Open **Scratchpad** beside Preview. Type or paste selected context into its
+separate window, then hit **Copy Scratchpad**.
+
+Closing and reopening the Scratchpad keeps your notes during the same extraction
+session. **Extract Another Thread** clears them. Closing YOINK clears them too.
+Nothing in the scratchpad is saved to disk. Copy anything you want to keep first.
+
+<p align="center">
+  <img src="assets/screenshots/scratchpad.png" alt="Session Scratchpad with selected project context and Copy Scratchpad button" width="640">
+</p>
+
+### Staying current
+
+YOINK quietly checks the official GitHub repository's latest release at startup.
+A newer version gets a small **View Release / Later** prompt. Otherwise, silence.
+Press **Ctrl+U** to check yourself: YOINK tells you whether you're up to date,
+there's a newer release, or the check couldn't complete.
+
+Updates are yours to download and unpack. No automatic downloads or installations.
 
 ------------------------------------------------------------------------
 
@@ -276,14 +355,11 @@ behavior.
 
 YOINK v1.0.0 is the baseline release.
 
-Things currently on the post-v1 menu:
+The **Results Scratchpad**, **GitHub update checker**, and **Messages per Part**
+are now included.
 
--   **Results Scratchpad** --- a temporary session scratchpad for
-    collecting selected extracted parts before copying them together.
--   **Messages per Part** --- split output by a fixed number of messages
-    per chunk.
--   **Update checking** --- silent GitHub release checks on startup,
-    with `Ctrl+U` for a manual check.
+Things still on the post-v1 menu:
+
 -   **Caveman Mode** --- a future local-LLM-assisted workflow for
     beating oversized project conversations into useful project
     records/handoffs.

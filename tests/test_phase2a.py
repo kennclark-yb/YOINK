@@ -44,6 +44,9 @@ def until(predicate, timeout=3000):
 
 class InteractionTests(unittest.TestCase):
     def setUp(self):
+        update_patch = patch("gui.updates.UpdateChecker.check")
+        self.update_check = update_patch.start()
+        self.addCleanup(update_patch.stop)
         self.window = MainWindow()
         self.window.show()
         APP.processEvents()
@@ -61,6 +64,7 @@ class InteractionTests(unittest.TestCase):
         QTest.qWait(20)
 
     def prepare_url(self):
+        self.window.split_selector._select("Character Limit")
         self.window.url_input.setText(URL)
         self.window._validate_url()
 
@@ -172,6 +176,7 @@ class InteractionTests(unittest.TestCase):
 
     def test_button_disabled_focus_and_keyboard_press_states(self):
         button = self.window.extract_button
+        button.setEnabled(False)
         disabled_image = button.grab().toImage()
         self.assertEqual(button.cursor().shape(), Qt.CursorShape.ArrowCursor)
         button.setEnabled(True)
@@ -222,7 +227,7 @@ class InteractionTests(unittest.TestCase):
         self.assertGreater(w._preload_version, old_version)
         w._preload_finished(old_version, EXTRACTION)
         self.assertIsNone(w._preloaded_extraction)
-        self.assertFalse(w.extract_button.isEnabled())
+        self.assertTrue(w.extract_button.isEnabled())
         self.assertTrue(w.results_panel.isHidden())
 
     def test_repeated_copy_extends_confirmation(self):
@@ -296,7 +301,7 @@ class InteractionTests(unittest.TestCase):
         self.prepare_url()
         self.assertTrue(w.extract_button.isEnabled())
         w.url_input.setText("broken")
-        self.assertFalse(w.extract_button.isEnabled())
+        self.assertTrue(w.extract_button.isEnabled())
         self.assertEqual(w.url_error.text().strip(), "")
         w._validate_url()
         self.assertEqual(w.url_error.text(), "Invalid URL.")
@@ -306,7 +311,7 @@ class InteractionTests(unittest.TestCase):
         w.url_input.clear()
         w._validate_url()
         self.assertIsNone(w.url_input.property("urlValid"))
-        self.assertFalse(w.extract_button.isEnabled())
+        self.assertTrue(w.extract_button.isEnabled())
 
     def test_url_formats_keep_codex_share_unsupported(self):
         w = self.window
@@ -316,6 +321,7 @@ class InteractionTests(unittest.TestCase):
             self.assertFalse(w.url_input.property("urlValid"))
             self.assertIn("Unsupported platform", w.url_error.text())
         with patch.object(w, "_start_preload") as preload:
+            w.split_value.setText("1")
             w.url_input.setText(URL)
             w.url_input.editingFinished.emit()
             self.assertTrue(w.url_input.property("urlValid"))
@@ -397,6 +403,7 @@ class InteractionTests(unittest.TestCase):
 
     def test_reselecting_split_mode_keeps_numeric_value(self):
         w = self.window
+        w.split_selector._select("Character Limit")
         w.split_value.setText("1234")
         w.split_selector._select("Character Limit")
         self.assertEqual(w.split_value.text(), "1234")
