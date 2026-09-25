@@ -1,0 +1,12 @@
+-r requirements.txt
+greenlet==3.5.6
+pyee==13.0.1
+typing_extensions==4.16.0
+PyInstaller==6.22.0
+pyinstaller-hooks-contrib==2026.7
+altgraph==0.17.5
+packaging==26.3
+pefile==2024.8.26
+pywin32-ctypes==0.2.3
+setuptools==84.0.0
+Pillow==12.3.0
