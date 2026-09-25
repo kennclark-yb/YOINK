@@ -14,7 +14,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Build dependency installation failed' }
     # Playwright's own frozen-runtime support finds this package-local browser.
     $env:PLAYWRIGHT_BROWSERS_PATH = '0'
-    & $Python -m playwright install chromium
+    & $Python -m playwright install chromium --only-shell
     if ($LASTEXITCODE -ne 0) { throw 'Chromium installation failed' }
     $spec = if ($QA) { 'YOINK-QA.spec' } else { 'YOINK.spec' }
     & $Python -m PyInstaller --noconfirm --clean $spec

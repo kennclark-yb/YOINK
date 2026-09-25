@@ -12,7 +12,7 @@ for distribution in ("playwright", "PySide6", "PySide6_Essentials", "PySide6_Add
     licenses += copy_metadata(distribution)
 browser_root = Path(playwright.__file__).parent / "driver/package/.local-browsers"
 if not list(browser_root.glob("chromium_headless_shell-*/chrome-headless-shell-win*/chrome-headless-shell.exe")):
-    raise RuntimeError("Run build_windows.ps1 first: bundled Chromium is missing")
+    raise RuntimeError("Run build_windows.ps1 first: bundled Chromium headless shell is missing")
 
 a = Analysis(
     [str(root / ("packaging/check_release.py" if qa else "packaging/entry.py"))],
@@ -24,6 +24,16 @@ a = Analysis(
     hiddenimports=collect_submodules("markdown.extensions"),
     hookspath=[], runtime_hooks=[], excludes=[], noarchive=False,
 )
+# The upstream hook collects every installed browser, including full Chromium
+# left by earlier builds. Filter destinations in both TOCs without deleting the
+# developer's browser installation. Keep the headless shell and all other files.
+def is_full_chromium(destination):
+    parts = destination.replace("\\", "/").split("/")
+    return (parts[:4] == ["playwright", "driver", "package", ".local-browsers"]
+            and len(parts) > 4 and parts[4].startswith("chromium-"))
+
+a.datas = [entry for entry in a.datas if not is_full_chromium(entry[0])]
+a.binaries = [entry for entry in a.binaries if not is_full_chromium(entry[0])]
 pyz = PYZ(a.pure)
 exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name=name,
           debug=False, strip=False, upx=False, console=qa,

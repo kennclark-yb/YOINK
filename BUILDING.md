@@ -24,7 +24,8 @@ py -3.13 -m venv .venv-build
 ```
 
 The script installs the pinned `requirements-build.txt`, installs the matching
-Chromium with `PLAYWRIGHT_BROWSERS_PATH=0`, and runs:
+Chromium headless shell using `playwright install chromium --only-shell` with
+`PLAYWRIGHT_BROWSERS_PATH=0`, and runs:
 
 ```powershell
 python -m PyInstaller --noconfirm --clean YOINK.spec
@@ -51,8 +52,11 @@ separate release decisions. Do not bypass Windows security prompts.
 - PyInstaller folder build contains Python, Qt plugins/DLLs, Markdown and Playwright.
 - Playwright's upstream hook includes its Node driver and package-local browser
   directory. Its existing frozen runtime selects that directory by default.
-- Chromium 1243 / Chrome for Testing 153.0.8010.12, matching Playwright 1.63.0,
-  plus headless shell, FFmpeg and Winldd are included. No external Chrome is used.
+- Chromium headless shell 1243 / 153.0.8010.12, matching Playwright 1.63.0,
+  plus FFmpeg and Winldd are included. No external Chrome is used.
+- The spec excludes the redundant full `chromium-*` browser tree from collected
+  data and binaries, including stale installations in reused build environments.
+  It does not delete developer-installed browsers or trim headless-shell resources.
 - Do not set `PLAYWRIGHT_BROWSERS_PATH` or `PLAYWRIGHT_NODEJS_PATH` to a machine-specific
   location when distributing/running the app; these upstream overrides remain supported.
 - No extraction data is written into the application folder. Playwright uses the

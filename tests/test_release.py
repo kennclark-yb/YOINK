@@ -22,11 +22,25 @@ class ReleaseStartupTests(unittest.TestCase):
     def test_frozen_browser_is_inside_bundle(self):
         if not getattr(sys, "frozen", False):
             self.skipTest("Frozen-build assertion")
+        import playwright
         from playwright.sync_api import sync_playwright
+        browser_root = Path(playwright.__file__).resolve().parent / "driver/package/.local-browsers"
+        self.assertTrue(browser_root.is_relative_to(Path(sys._MEIPASS).resolve()))
+        self.assertFalse(list(browser_root.glob("chromium-*")))
+        shells = list(browser_root.glob(
+            "chromium_headless_shell-*/chrome-headless-shell-win*/chrome-headless-shell.exe"))
+        self.assertTrue(shells, "Bundled Chromium headless shell is missing")
+        self.assertTrue(all(path.is_file() for path in shells))
+        # executable_path describes full Chromium, not the default headless
+        # launch. Exercise the same launch options as extraction, without network.
         with sync_playwright() as playwright:
-            browser_path = Path(playwright.chromium.executable_path).resolve()
-            self.assertTrue(browser_path.is_relative_to(Path(sys._MEIPASS).resolve()))
-            self.assertTrue(browser_path.is_file())
+            browser = playwright.chromium.launch(headless=True)
+            try:
+                page = browser.new_page()
+                page.set_content("<title>YOINK bundled browser check</title>")
+                self.assertEqual(page.title(), "YOINK bundled browser check")
+            finally:
+                browser.close()
 
     def test_older_preload_cannot_replace_newer_session(self):
         from gui.main_window import MainWindow
