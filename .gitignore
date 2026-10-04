@@ -6,3 +6,4 @@ build/
 dist/
 .venv-build/
 test_part_*.md
+desktop.ini
