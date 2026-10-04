@@ -152,6 +152,7 @@ def build_conversation(platform, title, url, messages):
     }
 
 def load_share_page(browser, url):
+    upstream_error_attempts = 0
     for attempt in range(3):
         page = browser.new_page()
 
@@ -161,29 +162,29 @@ def load_share_page(browser, url):
                 wait_until="commit",
                 timeout=10000,
             )
-
-            page.wait_for_function(
-                """() =>
-                    window.__reactRouterContext &&
-                    window.__reactRouterContext.state &&
-                    window.__reactRouterContext.state.loaderData &&
-                    window.__reactRouterContext.state.loaderData[
-                        "routes/share.$shareId.($action)"
-                    ] &&
-                    window.__reactRouterContext.state.loaderData[
-                        "routes/share.$shareId.($action)"
-                    ].serverResponse &&
-                    window.__reactRouterContext.state.loaderData[
-                        "routes/share.$shareId.($action)"
-                    ].serverResponse.data
-                """,
+            state = page.wait_for_function(
+                """() => {
+                    const response = window.__reactRouterContext?.state
+                        ?.loaderData?.["routes/share.$shareId.($action)"]
+                        ?.serverResponse;
+                    if (response?.data) return "data";
+                    if (response?.type === "error" && response.error) return "error";
+                    return false;
+                }""",
                 timeout=10000,
             )
-
-            return page
+            if state.json_value() == "data":
+                return page
+            upstream_error_attempts += 1
 
         except Exception:
-            page.close()
+            pass
+        page.close()
+
+    if upstream_error_attempts == 3:
+        raise ExtractionError(
+            "ChatGPT says nope. This share link's busted."
+        )
 
     raise ExtractionError(
         "ChatGPT page failed to load after 3 attempts."

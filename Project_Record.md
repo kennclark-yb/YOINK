@@ -285,15 +285,11 @@ Broad feature development is not currently active.
 
 ## Current Maintenance Position
 
-One confirmed extreme-thread extraction edge case exists:
+One specific share previously used as an extreme-thread stress case is unavailable in ChatGPT's own share page. User-account diagnostics established explicit upstream share errors instead of conversation data. ChatGPT's own UI could not load it.
 
-A specific ChatGPT share conversation that had itself reached ChatGPT's maximum conversation length does not extract successfully.
+YOINK is already known to handle very large conversations. A separate approximately 700k–800k-character thread failed once and then succeeded on retry. The unavailable share is not evidence of a YOINK scalability defect, and no confirmed active giant-thread scalability issue exists.
 
-Ordinary large conversations continue to work.
-
-This issue is currently **DEFERRED**.
-
-No active implementation task is in progress.
+Broken/unavailable-share handling is **VERIFIED COMPLETE**.
 
 ---
 
@@ -544,29 +540,15 @@ Released UI uses smooth window resize/geometry transitions rather than abrupt sn
 
 Treat this as intentional UX behavior.
 
-## Oversized-Thread Error UX
+## Upstream Broken/Unavailable-Share Error
 
-**PLANNED / DEFERRED**
+**VERIFIED COMPLETE — automated tests and manual development-GUI verification**
 
-For unusually large-thread failure, desired first user-facing message is:
+If all three attempts reach explicit `serverResponse.type="error"` with an error payload instead of data, show:
 
-> Woah. That's a big chonker. Try it again.
+> ChatGPT says nope. This share link's busted.
 
-Intended flow:
-
-first unusually large-thread failure  
-→ show friendly retry message  
-→ user retries  
-→ if retry succeeds, continue normally  
-→ if retry fails again, treat as genuine extreme-thread/scalability failure
-
-A possible second-failure message was discussed:
-
-> Still too chonky. YOINK couldn’t finish this one.
-
-Second-failure wording is **NOT LOCKED**.
-
-No evidence currently establishes that timeout increases are the correct fix.
+Three attempts and both 10,000 ms timeouts are preserved. Data still returns normally. Generic navigation/readiness failures, including mixed error/timeout attempts, retain the existing generic load-failure message.
 
 ---
 
@@ -726,7 +708,7 @@ Reported result:
 - 44 passed
 - 2 skipped
 
-Latest regression verification: **VERIFIED**
+Relocation regression verification: **VERIFIED**
 
 Command:
 
@@ -743,6 +725,10 @@ Result:
 Skipped categories: opt-in live-share test and frozen-build assertion.
 
 This matches the historical `44 passed / 2 skipped` baseline.
+
+Latest upstream-share-error handling regression verification (2026-10-04): **VERIFIED**.
+
+The same official command ran 53 tests: 51 passed, 2 skipped, 0 failures, 0 errors. The 7 added tests in `tests/test_share_loading.py` passed using synthetic React Router share state in local Chromium without public network access. Existing skips remain the opt-in live-share test and frozen-build assertion. Manual development-GUI verification: **VERIFIED COMPLETE**. Using the known broken share, YOINK displayed the exact approved wording "ChatGPT says nope. This share link's busted." The message fits the UI and RETRY remains present.
 
 ## Real Share Extraction
 
@@ -799,57 +785,49 @@ v1.0.0 is released and stable.
 
 Repository relocation and development-environment recovery status: **VERIFIED COMPLETE**.
 
-No active coding task is currently authorized.
-
-Known maximum-length-thread failure remains deferred.
-
-Current default action is therefore:
-
-**Do not change code until new evidence or an explicit maintenance task justifies reopening development.**
+Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the exact approved wording and confirmation that it fits while RETRY remains present. No active implementation task exists. No confirmed active giant-thread scalability issue exists; that investigation is closed unless new evidence appears.
 
 ---
 
 # 10. Immediate Next Steps
 
-1. **No implementation currently required.**
-2. Before new substantive work, read the current `Project_Record.md`.
-3. Verify local Git/repository state and reconcile contradictions before edits.
-4. Define one bounded evidence-gathering or implementation task.
-5. Use Codex only if repository-side execution materially helps.
-6. Audit Codex output before selecting subsequent work.
-
-If user explicitly reopens maximum-length-thread issue, first action is reproduction and instrumentation — not timeout changes or refactoring.
+1. Begin substantive work only for a new confirmed bug, a compatibility issue, or an explicit user-requested maintenance task.
 
 ---
 
 # 11. Known Issues
 
-## Maximum-Length ChatGPT Thread Extraction Failure
+## Broken/Unavailable ChatGPT Share
 
-**CONFIRMED / DEFERRED**
+**VERIFIED COMPLETE — handling and manual development-GUI verification**
 
 Stress-test share URL:
 
 `https://chatgpt.com/share/6ab67761-6bb8-83ec-8cc0-3eba1087dc80`
 
-Observed:
+User-account manual runtime evidence supplied for the 2026-10-04 implementation:
 
-- conversation itself had reached ChatGPT's maximum conversation length,
-- YOINK could not successfully extract this specific thread,
-- retry did not resolve it during observed testing,
-- ordinary large threads continued to work normally.
+- HTTP navigation succeeds with status 200.
+- React Router state appears within approximately 5 seconds; the expected `routes/share.$shareId.($action)` route and `serverResponse` exist.
+- ChatGPT returns `serverResponse.type="error"` and `serverResponse.error="Can't load shared conversation ..."` instead of `.data`.
+- The same error state remained unchanged through 60 seconds.
+- ChatGPT's own browser UI shows "Could not load this ChatGPT conversation" and "Try again".
 
-Current interpretation:
+This specific failure is upstream share unavailability; the 10-second timeout is not its cause. This link is not valid evidence that YOINK cannot scale to maximum-length conversations. Ordinary large-thread behavior is not reclassified.
 
-This is a specific maximum-length-thread edge case.
+Implemented in `extract.py::load_share_page`: wait for data or explicit upstream error; return data normally; retry failed pages up to three attempts. Only three explicit upstream-error attempts receive:
 
-It is **not** evidence that large-thread extraction is generally broken.
+> ChatGPT says nope. This share link's busted.
 
-Current status:
+Other failures, including mixed upstream-error/timeout attempts, retain "ChatGPT page failed to load after 3 attempts." Both 10,000 ms timeouts are unchanged. Full extraction before filtering and React/page-state extraction are unchanged.
 
-**DEFERRED**
+Parent automated verification: 7 focused tests passed; official full suite 53 run / 51 passed / 2 skipped / 0 failures / 0 errors. Manual development-GUI verification: **VERIFIED COMPLETE**. Against the known broken share, YOINK displayed exactly:
 
-Do not investigate unless user explicitly reopens it or new evidence makes it relevant.
+> ChatGPT says nope. This share link's busted.
+
+The message fits the UI and RETRY remains present.
+
+No confirmed active giant-thread scalability issue exists. The unavailable share was an upstream failure and is not evidence that YOINK cannot handle very large conversations.
 
 ---
 
@@ -857,22 +835,9 @@ Do not investigate unless user explicitly reopens it or new evidence makes it re
 
 ## Maximum-Length Thread Diagnosis
 
-**DEFERRED**
+**CLOSED / NOT ACTIVE — reopen only if new evidence appears**
 
-If reopened, investigate narrow pipeline stages:
-
-- browser/page load,
-- share payload loading,
-- hydration/page-state availability,
-- React state extraction,
-- JSON/state parsing,
-- message traversal,
-- normalization,
-- memory pressure,
-- formatting/splitting,
-- GUI handoff/display.
-
-Do not blindly increase timeout values before locating failure.
+YOINK is known to handle very large conversations. A separate approximately 700k–800k-character thread failed once and then succeeded on retry. The specific stress-test share documented in section 11 was an upstream broken/unavailable ChatGPT share, not evidence of a YOINK scalability defect. No confirmed active giant-thread scalability issue exists.
 
 ## Oversized-Thread Friendly UX
 
@@ -1265,11 +1230,6 @@ YOINK repository relocation and development-environment recovery are **VERIFIED 
 Canonical local repository:
 `C:\Users\User\Desktop\Projects\YOINK`
 
-Before new substantive work:
+YOINK is in **MAINTENANCE / IDLE** with no active implementation task. Broken/unavailable-share handling is **VERIFIED COMPLETE**. Manual development-GUI verification displayed exactly "ChatGPT says nope. This share link's busted."; it fits the UI and RETRY remains present.
 
-1. Read the current `Project_Record.md`.
-2. Verify local Git/repository state.
-3. Reconcile contradictions before edits.
-4. Continue from a user-requested YOINK maintenance/feature task.
-
-The maximum-length-thread issue remains **DEFERRED** unless explicitly reopened.
+Begin new substantive work only for a new confirmed bug, a compatibility issue, or an explicit user-requested maintenance task. The giant-thread investigation is **CLOSED / NOT ACTIVE** unless new evidence appears. The optional "big chonker" UX remains deferred under section 12.
