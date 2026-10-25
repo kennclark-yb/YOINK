@@ -351,23 +351,21 @@ behavior.
 
 ------------------------------------------------------------------------
 
-## Coming next
+## Planned for v2.0.0 — Context Workshop and Caveman Mode
 
-YOINK v1.0.0 is the baseline release.
+**v1.0.0 remains the released, stable version. Everything described below is approved for future development, not shipped or verified in the current executable.**
 
-The **Results Scratchpad**, **GitHub update checker**, and **Messages per Part**
-are now included.
+Version 2 is planned as a local-first conversation-to-project-context toolkit, built on the existing ChatGPT share extraction rather than replacing it. Its five pillars:
 
-Things still on the post-v1 menu:
+- **Context Workshop:** copy exact fractional, individual, and disconnected message ranges through a visual timeline; Ctrl+drag adds ranges. A new slanted-arrow control will append a result part directly to the session Scratchpad without opening it or changing the clipboard.
+- **Project Library:** optional local project profiles containing documents, multiple saved conversation sources, and standalone or project-linked outputs.
+- **Caveman Mode:** optional free local AI using a shared Ollama model installation, with a controlled tool-using processing pipeline. **No AI is needed to recommend a model**: optional first-use setup checks the destination computer's actual CPU, RAM, GPU/VRAM and available disk space with ordinary code, recommends a suitable model, and downloads only after consent. No weights ship inside YOINK or its virtual environment.
+- **Knowledge Generator:** TL;DR, high-level and detailed summaries, resume context, Project Records, PRDs, TRDs, decision logs and handoffs, with preserved source references.
+- **Document Maintainer:** propose reviewable, evidence-backed edits to existing documents, retain past decisions and history, require user approval before saving.
 
--   **Caveman Mode** --- a future local-LLM-assisted workflow for
-    beating oversized project conversations into useful project
-    records/handoffs.
--   Additional platform support, including **Claude** and **Gemini**,
-    later.
+**YOINK must keep working without any local AI model.** Public ChatGPT share extraction will still require internet access. Model weights, inference service and source/document storage stay outside the portable application folder.
 
-No dates. No blood oaths. They'll arrive when they stop being ideas and
-start passing tests.
+See the [approved v2 roadmap](ROADMAP_V2.md) for scope, delivery stages, reuse/license policy, safeguards, acceptance criteria and explicit deferrals. No release date is promised; each development stage must pass tests and review before v2.0.0 ships.
 
 ------------------------------------------------------------------------
 
