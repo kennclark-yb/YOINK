@@ -241,7 +241,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 **Current release:** v1.0.0
 
-**Current project state:** **VERIFIED — RELEASED / STABLE / DONE**
+**Current project state:** **v1.0.0 VERIFIED RELEASED / STABLE; v2.0.0 APPROVED / PLANNED / NOT IMPLEMENTED**
 
 **Repository:**
 
@@ -261,7 +261,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 YOINK is a released product, not a prototype or greenfield project.
 
-Default posture is maintenance, not feature development.
+The released v1 baseline remains maintenance-only, but the user explicitly authorized a separate v2 development program on 2026-10-25. The normative v2 scope is [ROADMAP_V2.md](ROADMAP_V2.md). No v2 features have been implemented or verified.
 
 ---
 
@@ -281,7 +281,7 @@ The project is considered complete and stable unless deliberately reopened for:
 - small justified UX improvement,
 - maintenance release.
 
-Broad feature development is not currently active.
+Broad development of the **v1 release** remains closed. **v2 development is explicitly authorized and planned**; implementation has not begun. [ROADMAP_V2.md](ROADMAP_V2.md) governs its scope and acceptance gates.
 
 ## Current Maintenance Position
 
@@ -299,7 +299,7 @@ Broken/unavailable-share handling is **VERIFIED COMPLETE**.
 
 **LOCKED**
 
-Preserve YOINK v1.0.0 as a stable working application while allowing narrow evidence-driven maintenance when justified.
+Preserve the stable YOINK v1.0.0 baseline while executing the explicitly approved, separately scoped v2.0.0 roadmap in [ROADMAP_V2.md](ROADMAP_V2.md). No approved v2 feature is yet implemented.
 
 ## Product Scope
 
@@ -341,7 +341,7 @@ Unless explicitly reopened with evidence:
 - broad architecture rewrite,
 - speculative optimization,
 - monetization,
-- large new feature development.
+- unapproved feature development **outside** the explicitly authorized v2 roadmap.
 
 ---
 
@@ -640,9 +640,7 @@ Do not blindly delete shared user-level Playwright caches.
 
 **LOCKED**
 
-YOINK is a finished released application.
-
-Do not reopen broad development merely because future sessions have available coding capacity.
+YOINK v1.0.0 is a finished released application. Preserve its verified behavior and release history. V2 feature development was subsequently and explicitly authorized on 2026-10-25, exclusively within [ROADMAP_V2.md](ROADMAP_V2.md). No speculative work outside that plan.
 
 ---
 
@@ -779,19 +777,22 @@ Cleanup itself required no source commit because tracked source did not change.
 
 ## Phase
 
-**VERIFIED — MAINTENANCE / IDLE**
+**v1 VERIFIED — RELEASED / MAINTENANCE; v2 APPROVED / PLANNED (NOT IMPLEMENTED)**
 
 v1.0.0 is released and stable.
 
 Repository relocation and development-environment recovery status: **VERIFIED COMPLETE**.
 
-Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the exact approved wording and confirmation that it fits while RETRY remains present. No active implementation task exists. No confirmed active giant-thread scalability issue exists; that investigation is closed unless new evidence appears.
+Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the exact approved wording and confirmation that it fits while RETRY remains present. No v2 implementation has yet begun; Stage 1A (direct-to-Scratchpad arrow) is the next authorized implementation task following documentation synchronization. No confirmed active giant-thread scalability issue exists; that investigation is closed unless new evidence appears.
 
 ---
 
 # 10. Immediate Next Steps
 
-1. Begin substantive work only for a new confirmed bug, a compatibility issue, or an explicit user-requested maintenance task.
+1. Confirm documentation synchronization for approved [ROADMAP_V2.md](ROADMAP_V2.md); do not imply v2 is shipped.
+2. Start **v2 Stage 1A** with a bounded surgical addition: slanted-arrow direct append to Scratchpad immediately before each result-part copy icon, with Undo and no clipboard/focus change.
+3. Run focused GUI/tests, preserve v1 behavior and review before committing; then Stage 1B selection core and Stage 1C timeline.
+4. Follow v2 stages and their exit gates in the roadmap. V1 bug maintenance remains evidence-driven.
 
 ---
 
@@ -883,7 +884,7 @@ Do not add monetization unless user explicitly revisits it.
 
 ## Current Direction
 
-YOINK's intended project direction is maintenance of released v1.0.0 behavior.
+YOINK has two distinct tracks: **maintain verified v1.0.0** and **develop the approved but unimplemented v2.0.0** under [ROADMAP_V2.md](ROADMAP_V2.md).
 
 ### Stage 1 — Stable v1.0.0
 
@@ -929,7 +930,23 @@ If a verified production fix warrants publication, create a new maintenance rele
 
 Do not rewrite `v1.0.0`.
 
-No maintenance release is currently scheduled.
+No maintenance release is currently scheduled. The new v2.0.0 development program is planned separately and must pass all roadmap qualification gates.
+
+---
+
+## V2 decision record — 2026-10-25
+
+**APPROVED / PLANNED — implementation NOT STARTED.** The user authorized v2.0.0 development, with normative scope, exit gates, licensing policy and deferrals in [ROADMAP_V2.md](ROADMAP_V2.md). All v1 implementation and verification claims remain unchanged.
+
+- **Five pillars:** Context Workshop, Project Library, Caveman Mode, Knowledge Generator, and Document Maintainer.
+- **Context Workshop:** independent selection model; message-safe fractional and disconnected ranges; Ctrl-drag adds, subsequent ordinary drag replaces; direct `arrow-up-right` before the existing part-copy icon appends to ephemeral Scratchpad with Undo and no window/clipboard disruption.
+- **Projects/documents:** optional persistent local profiles, SQLite/FTS5 metadata, independently editable Markdown documents, multi-conversation immutable source snapshots, entire conversation as default AI/document scope, user-controlled standalone or linked outputs.
+- **Local AI:** user-level globally shared Ollama runtime and model store, initial Qwen3.5 benchmarking; LangGraph as sole orchestrator, Pydantic as typed contracts, scoped tools and manual approval for all persistent writes. Models never bundled in the executable or venv; no paid/cloud requirement.
+- **Crucial bootstrap rule:** **NO AI required for hardware inspection or model recommendation**. At optional first AI use, deterministic target-machine RAM/VRAM/CPU/disk/runtime checks determine suggested models. The portable build cannot know destination hardware. User must consent before installation or download; no-AI use remains fully functional.
+- **Generation:** source-grounded TL;DR, high-level/detailed summaries, resume context, Project Record, PRD/TRD/SRS/SDD, decisions, history and handoffs; reported work is not independently verified work.
+- **Maintenance:** compare existing authorized document with new evidence; flag conflicts, show reviewable section-level diff, preserve history; verify file hash and require approval before atomic writes.
+- **Reuse/license policy:** prioritize permissive MIT/Apache/BSD/ISC/CC0 and tested small components; restrictive/no-license code is not copied without explicit license review. Listed repositories are evaluation candidates, not production dependencies.
+- **Sequence:** docs first, Stage 1A Scratchpad arrow, Stage 1B selection core, Stage 1C timeline, then library, model-free Caveman setup, evidence, summaries, documents, document maintainer and packaged qualification.
 
 ---
 
@@ -1213,23 +1230,16 @@ The old `ExtractAIResponse` source directory was empty after relocation and was 
 
 **CURRENT**
 
-YOINK remains:
-
-- released,
-- stable,
-- v1.0.0,
-- done by default,
-- available for evidence-driven maintenance only.
+YOINK v1.0.0 remains released and stable, with evidence-driven maintenance only. This is **historical v1 release state**; a subsequent 2026-10-25 decision explicitly approved a new v2.0.0 development program under [ROADMAP_V2.md](ROADMAP_V2.md). No v2 code is implemented yet.
 
 ---
 
 # RESUME HERE
 
-YOINK repository relocation and development-environment recovery are **VERIFIED complete**.
+**v1.0.0:** VERIFIED released and stable; current GitHub pre-v2 planning baseline `fb395b9` handled unavailable ChatGPT shares (53 tests run, 51 passed, 2 skipped; manual development GUI verified). Preserve all v1 locked extraction, copy, packaging and safety-tag behavior.
 
-Canonical local repository:
-`C:\Users\User\Desktop\Projects\YOINK`
+**v2.0.0:** Explicitly approved on 2026-10-25 but **NOT IMPLEMENTED / NOT VERIFIED**. Read [ROADMAP_V2.md](ROADMAP_V2.md) before substantial work. Caveman Mode uses **deterministic model-free hardware preflight at the user's machine** and optional approved downloads into a shared Ollama store; no bundled/downloaded bootstrap AI model.
 
-YOINK is in **MAINTENANCE / IDLE** with no active implementation task. Broken/unavailable-share handling is **VERIFIED COMPLETE**. Manual development-GUI verification displayed exactly "ChatGPT says nope. This share link's busted."; it fits the UI and RETRY remains present.
+**Next bounded implementation task after docs synchronization:** Stage 1A: add an `arrow-up-right` control directly before the existing copy icon on every part card, one-click append original part to Scratchpad without opening/focusing dialog or modifying clipboard; implement confirmation and Undo, cover lifecycle/reset and per-part behavior in tests, and preserve all existing v1 behavior. After review/verification, continue Stage 1B selection model then Stage 1C visual Ctrl-drag timeline. No new features are marked implemented before tests.
 
-Begin new substantive work only for a new confirmed bug, a compatibility issue, or an explicit user-requested maintenance task. The giant-thread investigation is **CLOSED / NOT ACTIVE** unless new evidence appears. The optional "big chonker" UX remains deferred under section 12.
+Canonical local repository: `C:\\Users\\User\\Desktop\\Projects\\YOINK`.
