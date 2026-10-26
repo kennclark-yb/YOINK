@@ -298,12 +298,22 @@ Updates are yours to download and unpack. No automatic downloads or installation
 
 ## Current limitations
 
-YOINK v1 currently supports **ChatGPT shared conversation URLs
-(`chatgpt.com/share/...`)**.
+YOINK v1 currently supports **standard public ChatGPT shared conversation URLs**
+(`https://chatgpt.com/share/...`) only.
 
-It does **not** currently support regular/private ChatGPT conversation
-URLs, Codex shared URLs, Claude, Gemini, or every AI website mankind has
-managed to produce this week.
+It does **not** support **ChatGPT Project-shared conversation links**
+(`chatgpt.com/g/.../shared/c/...`) or **Codex shared snapshots**
+(`chatgpt.com/s/cx_...`). It also does not support ordinary private
+ChatGPT conversation URLs, Claude, Gemini, or other AI platforms.
+
+**Known limitation (deferred):** Project-shared links may require signing in
+and expose conversation data differently from standard public shares. An
+authorized-browser investigation found structured Project conversation data,
+but did not establish complete-history extraction or a reliable production
+import path. The owner deferred support; closing
+[Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) did not fix this
+limitation. Codex snapshots have also not been validated for complete extraction.
+No `v1.1.0` release was produced from these investigations.
 
 Internet access is required for extraction.
 
