@@ -8,6 +8,8 @@
 > Update this record whenever project state materially changes.
 >
 > Last reconstructed from verified project history: 2026-10-03
+>
+> Current-state reconciliation: 2026-10-26. Project/Codex share research (Phases A–A4) is closed/deferred, with no compatibility implementation or release.
 
 ---
 
@@ -291,6 +293,8 @@ YOINK is already known to handle very large conversations. A separate approximat
 
 Broken/unavailable-share handling is **VERIFIED COMPLETE**.
 
+Separate **ChatGPT Project-shared** and **Codex snapshot** formats were investigated on 2026-10-25–26 (Phases A–A4). A Project conversation was structurally accessible in a user-authenticated browser, but full-history completeness and a safe production integration were **NOT VERIFIED**. The owner **DEFERRED** support and closed [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) as a known limitation; the closure is **not** a software fix. No v1.1.0 release is planned from that investigation.
+
 ---
 
 # 3. Goals & Scope
@@ -305,8 +309,8 @@ Preserve the stable YOINK v1.0.0 baseline while executing the explicitly approve
 
 YOINK supports:
 
-- public ChatGPT share links,
-- full conversation extraction,
+- **standard public ChatGPT share URLs** (`https://chatgpt.com/share/...`) only,
+- full conversation extraction for that supported URL format,
 - Assistant/User/Both filtering,
 - Markdown-oriented output,
 - preview,
@@ -783,16 +787,16 @@ v1.0.0 is released and stable.
 
 Repository relocation and development-environment recovery status: **VERIFIED COMPLETE**.
 
-Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the exact approved wording and confirmation that it fits while RETRY remains present. No v2 implementation has yet begun; Stage 1A (direct-to-Scratchpad arrow) is the next authorized implementation task following documentation synchronization. No confirmed active giant-thread scalability issue exists; that investigation is closed unless new evidence appears.
+Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the approved wording and RETRY. Investigations into Project-shared and Codex snapshot URLs are **DEFERRED / NOT IMPLEMENTED**; [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) is closed as a known limitation, not a fix. No v1.1.0 release occurred. No v2 implementation has begun. The next **project task** is the final successor TPM handoff; after that, the next **development task** is v2 Stage 1A (direct-to-Scratchpad arrow). The giant-thread investigation remains closed without evidence of an active scalability defect.
 
 ---
 
 # 10. Immediate Next Steps
 
-1. Confirm documentation synchronization for approved [ROADMAP_V2.md](ROADMAP_V2.md); do not imply v2 is shipped.
-2. Start **v2 Stage 1A** with a bounded surgical addition: slanted-arrow direct append to Scratchpad immediately before each result-part copy icon, with Undo and no clipboard/focus change.
-3. Run focused GUI/tests, preserve v1 behavior and review before committing; then Stage 1B selection core and Stage 1C timeline.
-4. Follow v2 stages and their exit gates in the roadmap. V1 bug maintenance remains evidence-driven.
+1. **Task 4 — successor TPM handoff:** accurately summarize this repository state, completed roadmap/docs, Phases A–A4, owner-approved deferral, next v2 stage, and the full substance of the owner's **TPM Corrective Directive**. Preserve distinctions between observed, tested, verified, implemented, and deferred.
+2. Before new coding, reconcile the local diagnostic branch at the old `fb395b9` checkpoint with current remote `main` **non-destructively**. The A–A4 task branch contained 28 untracked diagnostic files as of the last audit; protect them and the owner's `C:\\Users\\User\\Desktop\\artifacts-yoink\\new` audit packages. Do not blindly reset/clean/rebase.
+3. **v2 Stage 1A — next development task:** add a small `arrow-up-right` direct-to-Scratchpad append control immediately before each part's existing copy icon, with Undo, no clipboard modification, and unchanged v1 reset/copy behavior. One bounded Codex run with tests, complete changed-file audit package, independent TPM review, and owner-approved Git operations.
+4. Continue Stage 1B selection core and Stage 1C interactive timeline only after Stage 1A verification/acceptance. Project-share/Codex-snapshot extraction stays deferred; no v1.1.0 release is authorized by the completed investigations.
 
 ---
 
@@ -829,6 +833,27 @@ Parent automated verification: 7 focused tests passed; official full suite 53 ru
 The message fits the UI and RETRY remains present.
 
 No confirmed active giant-thread scalability issue exists. The unavailable share was an upstream failure and is not evidence that YOINK cannot handle very large conversations.
+
+## ChatGPT Project-shared conversation links — known limitation
+
+**DEFERRED / ISSUE CLOSED — NOT IMPLEMENTED — NOT A VERIFIED COMPLETE EXTRACTION**
+
+[Issue #2 — Known limitation: ChatGPT Project-shared conversation extraction](https://github.com/kennclark-yb/YOINK/issues/2) was closed by the owner on 2026-10-26 after four bounded investigations (A, A2, A3, A4). Its closure does **not** signify that support was implemented or the problem fixed.
+
+- **Unsupported URL shape:** `https://chatgpt.com/g/<project-slug>/shared/c/<conversation-id>?owner_user_id=<user-id>`. Current GUI validation accepts standard `/share/...` URLs only.
+- **A (initial probe):** two anonymous Playwright requests were HTTP 403; a confirmation identified a Cloudflare challenge. No conversation data was inspected. This finding alone did not establish a Project membership or login requirement.
+- **A2 (controlled comparison):** unchanged production code extracted a standard public share with **277 messages (98 user / 179 assistant) and 704,368 characters**. Under the same browser environment, the Project link returned **307 → 403** with a Cloudflare challenge, no usable application data. Synthetic loader tests: 7 passed. The standard-share positive control excludes a universal Playwright extraction failure.
+- **Owner's signed-out test:** opening that Project URL in an Incognito window required ChatGPT sign-in.
+- **A4 (authorized-browser probe):** after the owner signed in manually, a dedicated headed browser opened the target Project conversation. A read-only inspector found **65 nodes** (5 user, 39 assistant, 20 tool and one empty root), **64 unique message IDs** matching mapping keys, and an internally consistent current ancestry across repeated observations. **37 string parts in 33 messages totaled 65,870 UTF-16 code units.** Existing v1 text-only extraction rules would retain **13 messages (5 user, 8 assistant), totaling 30,433 UTF-16 units**. The page used an **in-page query cache**, not the standard-share React Router loader.
+- **Unverified:** full historical/server-side completeness, long-thread pagination/virtualization, supported/stable page-data interface, exact omission policy for code/recaps/tool/thought structures, failure handling after authorization expires, and reliable packaged integration. The A4 node graph's internal consistency is **not** proof that every historical message was loaded.
+
+**Decision:** the owner deferred Project-link compatibility. No GUI/extractor/credential-handling changes were approved or made, no v1.1.0 binary/tag/release was created, and no broader authentication integration is authorized. Revisit only with a privacy-preserving, user-authorized and maintainable import mechanism **plus verified source completeness and an explicit included/omitted-content contract**. Do not ship a regex-only acceptance change or claim the 13 text messages are a complete original transcript.
+
+## Codex shared-snapshot URLs — known limitation
+
+**DEFERRED / NOT IMPLEMENTED.** Separate snapshot URLs have the form `https://chatgpt.com/s/cx_...`, not standard ChatGPT `/share/...`. In A3, three attempts using the existing production loader and two independent Playwright probes all encountered **307 → 403 Cloudflare challenges**, without exposing snapshot data. The owner opened the example anonymously in an ordinary browser but observed only what appeared to be a limited slice of the original session. **Unknown:** underlying snapshot completeness, page-data schema, and whether all original Codex events are included. Do not label this as an authenticated-only URL, a YOINK extractor bug, or a verified complete Codex export.
+
+**Evidence/provenance:** Phases A–A4 used independent diagnostic scripts, synthetic verification, source inspections and run-specific audit packages under `C:\\Users\\User\\Desktop\\artifacts-yoink\\new`. The previous Codex task branch was `fix/project-shared-links-v1.1.0` at local HEAD `fb395b9`; all 28 final diagnostic files were untracked, and no production edits or Git publication occurred. Audit findings describe bounded experiments, not released capabilities.
 
 ---
 
@@ -930,7 +955,7 @@ If a verified production fix warrants publication, create a new maintenance rele
 
 Do not rewrite `v1.0.0`.
 
-No maintenance release is currently scheduled. The new v2.0.0 development program is planned separately and must pass all roadmap qualification gates.
+No maintenance release is currently scheduled. In particular, the hypothetical `v1.1.0` new-share-format release was **not built or published**; the owner deferred the underlying compatibility feature. The new v2.0.0 development program is planned separately and must pass all roadmap qualification gates.
 
 ---
 
@@ -1234,12 +1259,24 @@ YOINK v1.0.0 remains released and stable, with evidence-driven maintenance only.
 
 ---
 
+## Phase — Project/Codex Share Compatibility Research (2026-10-25–26)
+
+**INVESTIGATED / DEFERRED / NO IMPLEMENTATION**
+
+Phases A–A4 established standard-share extraction under unchanged production code; anonymous browser protection responses for Project/Codex links; and visible authenticated access to structured Project conversation data through an in-page query cache. They did not establish full source completeness or a safe production adapter. The owner closed [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) after deferring work. No version changes, source edits, commits, pushes, tags or release resulted from the Codex investigations. See §11 for detailed evidence and unresolved constraints.
+
+---
+
 # RESUME HERE
 
-**v1.0.0:** VERIFIED released and stable; current GitHub pre-v2 planning baseline `fb395b9` handled unavailable ChatGPT shares (53 tests run, 51 passed, 2 skipped; manual development GUI verified). Preserve all v1 locked extraction, copy, packaging and safety-tag behavior.
+**Release baseline:** YOINK **v1.0.0** remains the only verified published release. Standard public `chatgpt.com/share/...` extraction and the previously verified upstream-unavailable-share error handling remain supported. The original pre-v2 feature code checkpoint was `fb395b9`; current remote `main` includes subsequent documentation changes. No version bump, new release, v1.1.0 feature implementation or v2 production implementation has been verified.
 
-**v2.0.0:** Explicitly approved on 2026-10-25 but **NOT IMPLEMENTED / NOT VERIFIED**. Read [ROADMAP_V2.md](ROADMAP_V2.md) before substantial work. Caveman Mode uses **deterministic model-free hardware preflight at the user's machine** and optional approved downloads into a shared Ollama store; no bundled/downloaded bootstrap AI model.
+**Owner decision on Task 2:** A–A4 compatibility investigations **CLOSED / DEFERRED**. [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) was closed as a known limitation. The authorized-browser inspection demonstrated **one reachable Project conversation and an internally consistent in-page mapping**, not the complete underlying history or a production-ready extractor. Codex snapshots remain unsupported. Preserve diagnostics and audit packages; do not restart this investigation without new evidence/authorization.
 
-**Next bounded implementation task after docs synchronization:** Stage 1A: add an `arrow-up-right` control directly before the existing copy icon on every part card, one-click append original part to Scratchpad without opening/focusing dialog or modifying clipboard; implement confirmation and Undo, cover lifecycle/reset and per-part behavior in tests, and preserve all existing v1 behavior. After review/verification, continue Stage 1B selection model then Stage 1C visual Ctrl-drag timeline. No new features are marked implemented before tests.
+**Approved v2.0.0:** [ROADMAP_V2.md](ROADMAP_V2.md) unchanged in architecture and feature scope; **Caveman Mode remains included** with Ollama, LangGraph, Pydantic, and **model-free deterministic target-device preflight**. All v2 features remain PLANNED, not IMPLEMENTED or VERIFIED.
+
+**Next project task:** Prepare **Task 4 — final successor TPM handoff**, including exact repository/current status, decisions, accepted/partial evidence, deferred limits, v2 stages, the **owner's TPM Corrective Directive** (independent technical judgment, source-level Codex audit, calibrated agent-model choice, Git staging/commit/push approval boundaries, audit artifact workflow), and next implementation instructions.
+
+**Then next development task:** v2 Stage **1A**: scoped `arrow-up-right` direct-to-Scratchpad action immediately before the result-part copy icon, one-click append, optional confirmation and Undo, existing clipboard/focus/reset preserved. Use bounded Codex scope and independent TPM review. **Before any coding, safely reconcile** local diagnostic branch `fix/project-shared-links-v1.1.0` (last recorded local HEAD `fb395b9`, 28 untracked diagnostic files) with updated remote main. Never discard diagnostic or unrelated local work.
 
 Canonical local repository: `C:\\Users\\User\\Desktop\\Projects\\YOINK`.
