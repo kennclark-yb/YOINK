@@ -21,6 +21,8 @@ from .styles import ACCENT
 
 
 class ProgressButton(QPushButton):
+    LOADING_PHRASE_DWELL_MS = 2600
+
     def __init__(self, text="EXTRACT"):
         super().__init__(text)
 
@@ -37,7 +39,8 @@ class ProgressButton(QPushButton):
         self._loading_messages = LOADING_MESSAGES
 
         self._loading_text_timer = QTimer(self)
-        self._loading_text_timer.setInterval(1400)
+        self._loading_text_timer.setInterval(self.LOADING_PHRASE_DWELL_MS)
+        self._loading_text_timer.setTimerType(Qt.TimerType.PreciseTimer)
         self._loading_text_timer.timeout.connect(
             self._rotate_loading_text
         )
@@ -183,6 +186,8 @@ class ProgressButton(QPushButton):
         self._progress_animation.start()
 
     def set_processing(self, processing):
+        if processing and self._processing:
+            return
         self._processing = processing
         self._set_pressed(False)
         self.setEnabled(not processing)

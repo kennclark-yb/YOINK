@@ -9,7 +9,7 @@
 >
 > Last reconstructed from verified project history: 2026-10-03
 >
-> Current-state reconciliation: 2026-10-26. Project/Codex share research (Phases A–A4) is closed/deferred, with no compatibility implementation or release.
+> Current-state reconciliation: 2026-10-31. Stage 1A is implemented, tested, and owner UI accepted; Project/Codex share research (Phases A–A4) remains closed/deferred, with no compatibility implementation or release.
 
 ---
 
@@ -243,7 +243,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 **Current release:** v1.0.0
 
-**Current project state:** **v1.0.0 VERIFIED RELEASED / STABLE; v2.0.0 APPROVED / PLANNED / NOT IMPLEMENTED**
+**Current project state:** **v1.0.0 VERIFIED RELEASED / STABLE; v2 Stage 1A IMPLEMENTED, TESTED, OWNER UI ACCEPTED; Stage 1B NOT BEGUN**
 
 **Repository:**
 
@@ -263,7 +263,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 YOINK is a released product, not a prototype or greenfield project.
 
-The released v1 baseline remains maintenance-only, but the user explicitly authorized a separate v2 development program on 2026-10-25. The normative v2 scope is [ROADMAP_V2.md](ROADMAP_V2.md). No v2 features have been implemented or verified.
+The released v1 baseline remains maintenance-only, but the user explicitly authorized a separate v2 development program on 2026-10-25. The normative v2 scope is [ROADMAP_V2.md](ROADMAP_V2.md). Stage 1A development source is implemented, tested, and owner UI accepted. No new packaged executable or public release has been verified; the remaining v2 stages are planned.
 
 ---
 
@@ -283,7 +283,7 @@ The project is considered complete and stable unless deliberately reopened for:
 - small justified UX improvement,
 - maintenance release.
 
-Broad development of the **v1 release** remains closed. **v2 development is explicitly authorized and planned**; implementation has not begun. [ROADMAP_V2.md](ROADMAP_V2.md) governs its scope and acceptance gates.
+Broad development of the **v1 release** remains closed. **v2 development is explicitly authorized**; Stage 1A is implemented, tested, and owner UI accepted on 2026-10-31. Stage 1B has not begun. [ROADMAP_V2.md](ROADMAP_V2.md) governs its scope and acceptance gates.
 
 ## Current Maintenance Position
 
@@ -303,7 +303,7 @@ Separate **ChatGPT Project-shared** and **Codex snapshot** formats were investig
 
 **LOCKED**
 
-Preserve the stable YOINK v1.0.0 baseline while executing the explicitly approved, separately scoped v2.0.0 roadmap in [ROADMAP_V2.md](ROADMAP_V2.md). No approved v2 feature is yet implemented.
+Preserve the stable YOINK v1.0.0 baseline while executing the explicitly approved, separately scoped v2.0.0 roadmap in [ROADMAP_V2.md](ROADMAP_V2.md). Stage 1A is implemented, tested, and owner UI accepted; remaining stages retain their roadmap scope and sequence.
 
 ## Product Scope
 
@@ -777,26 +777,47 @@ Cleanup itself required no source commit because tracked source did not change.
 
 ---
 
+## Stage 1A — Direct-to-Scratchpad
+
+**IMPLEMENTED, TESTED, OWNER UI ACCEPTED** — owner explicitly accepted the Stage 1A UI on 2026-10-31.
+
+Confirmed development-source behavior:
+
+- Per-part arrow appends original conversation content into Scratchpad; independent per-part copy preserves the original content.
+- Multi-level app-managed Undo, rapid duplicate-click suppression with deliberate repeats permitted, preserved manual notes, and transient confirmation feedback.
+- Unicode-preserving Scratchpad copying, subject to the documented manual paragraph-break replacement limitation: manually replaced paragraph breaks, including those restored by editor Undo, may copy as LF. The application documents this limitation.
+- Smooth Results scrolling and hover interactions; compact extraction panel and taller Results panel.
+- Owner-accepted organic outer-window silhouette, 16 px inner-panel gap, and improved expansion/reset animation.
+- Slower extraction-loading phrase transitions; slimmer title bar with Maximize removed.
+
+Accepted audit package: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Stage-1A_Unicode-Finality_2026-10-31_190124`. The twelve implementation/test files were compared byte-for-byte with its `changed_files` snapshots before this checkpoint's documentation edit; all matched.
+
+Latest accepted reported verification: full offline suite **75 tests run, 73 passed, 2 expected skips**; native Windows focused tests **6 passed**; `git diff --check` passed. This checkpoint reruns the offline suite and native focused checks and records the executed results in its external audit package.
+
+No new packaged executable or public release has been verified. Optional live-share and packaged-build verification remain outside this checkpoint. Stage 1B has not begun. The owner authorized one local Stage 1A Git checkpoint on `feature/v2-stage1a-scratchpad`, based on `d562522b05f5e12bc19fd54482760409ab4c7855`; the resulting SHA is recorded externally to avoid a self-referential commit.
+
+---
+
 # 9. Active Phase
 
 ## Phase
 
-**v1 VERIFIED — RELEASED / MAINTENANCE; v2 APPROVED / PLANNED (NOT IMPLEMENTED)**
+**v1 VERIFIED — RELEASED / MAINTENANCE; v2 Stage 1A IMPLEMENTED, TESTED, OWNER UI ACCEPTED**
 
 v1.0.0 is released and stable.
 
 Repository relocation and development-environment recovery status: **VERIFIED COMPLETE**.
 
-Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the approved wording and RETRY. Investigations into Project-shared and Codex snapshot URLs are **DEFERRED / NOT IMPLEMENTED**; [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) is closed as a known limitation, not a fix. No v1.1.0 release occurred. No v2 implementation has begun. The next **project task** is the final successor TPM handoff; after that, the next **development task** is v2 Stage 1A (direct-to-Scratchpad arrow). The giant-thread investigation remains closed without evidence of an active scalability defect.
+Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the approved wording and RETRY. Investigations into Project-shared and Codex snapshot URLs are **DEFERRED / NOT IMPLEMENTED**; [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) is closed as a known limitation, not a fix. No v1.1.0 release occurred. Stage 1A is implemented, tested, and owner UI accepted. The previously skipped successor TPM handoff remains incomplete; it is not retroactively marked done. After independent TPM audit of the authorized local checkpoint, the next development step is a separately scoped Stage 1B pure-Python selection-core task. The giant-thread investigation remains closed without evidence of an active scalability defect.
 
 ---
 
 # 10. Immediate Next Steps
 
-1. **Task 4 — successor TPM handoff:** accurately summarize this repository state, completed roadmap/docs, Phases A–A4, owner-approved deferral, next v2 stage, and the full substance of the owner's **TPM Corrective Directive**. Preserve distinctions between observed, tested, verified, implemented, and deferred.
-2. Before new coding, reconcile the local diagnostic branch at the old `fb395b9` checkpoint with current remote `main` **non-destructively**. The A–A4 task branch contained 28 untracked diagnostic files as of the last audit; protect them and the owner's `C:\\Users\\User\\Desktop\\artifacts-yoink\\new` audit packages. Do not blindly reset/clean/rebase.
-3. **v2 Stage 1A — next development task:** add a small `arrow-up-right` direct-to-Scratchpad append control immediately before each part's existing copy icon, with Undo, no clipboard modification, and unchanged v1 reset/copy behavior. One bounded Codex run with tests, complete changed-file audit package, independent TPM review, and owner-approved Git operations.
-4. Continue Stage 1B selection core and Stage 1C interactive timeline only after Stage 1A verification/acceptance. Project-share/Codex-snapshot extraction stays deferred; no v1.1.0 release is authorized by the completed investigations.
+1. Submit the owner-authorized Stage 1A local checkpoint and complete external audit package for independent TPM review. Stop after the local commit; no push, merge, release, executable rebuild, or further UI changes are authorized by this checkpoint.
+2. **Next development step: Stage 1B — pure-Python selection core**, under a separately approved bounded task after checkpoint review. Stage 1B has not begun; Stage 1C timeline follows it. Keep [ROADMAP_V2.md](ROADMAP_V2.md) scope and sequencing unchanged.
+3. **Task 4 — successor TPM handoff remains skipped/incomplete.** Any later handoff must accurately summarize repository state, Phases A–A4, owner-approved deferral, accepted Stage 1A evidence and the owner's **TPM Corrective Directive**: independent technical judgment, source-level audit, calibrated model choice, Git approval boundaries, and audit artifacts. This checkpoint does not complete that handoff.
+4. Preserve the original diagnostic checkout and its 28 untracked diagnostic files, and all external audit packages. The feature worktree is separate; do not reset/clean/rebase or otherwise reconcile the original checkout during this checkpoint. Project-share/Codex-snapshot extraction stays deferred; no v1.1.0 release is authorized by those investigations.
 
 ---
 
@@ -909,7 +930,7 @@ Do not add monetization unless user explicitly revisits it.
 
 ## Current Direction
 
-YOINK has two distinct tracks: **maintain verified v1.0.0** and **develop the approved but unimplemented v2.0.0** under [ROADMAP_V2.md](ROADMAP_V2.md).
+YOINK has two distinct tracks: **maintain verified v1.0.0** and **develop the approved v2.0.0 roadmap, with Stage 1A implemented, tested, and owner UI accepted** under [ROADMAP_V2.md](ROADMAP_V2.md).
 
 ### Stage 1 — Stable v1.0.0
 
@@ -1253,9 +1274,9 @@ The old `ExtractAIResponse` source directory was empty after relocation and was 
 
 ## Phase — Current Maintenance State
 
-**CURRENT**
+**HISTORICAL v1 MAINTENANCE STATE**
 
-YOINK v1.0.0 remains released and stable, with evidence-driven maintenance only. This is **historical v1 release state**; a subsequent 2026-10-25 decision explicitly approved a new v2.0.0 development program under [ROADMAP_V2.md](ROADMAP_V2.md). No v2 code is implemented yet.
+YOINK v1.0.0 remains released and stable, with evidence-driven maintenance only. This is **historical v1 release state**; a subsequent 2026-10-25 decision explicitly approved a new v2.0.0 development program under [ROADMAP_V2.md](ROADMAP_V2.md). At that historical point no v2 code was implemented; the subsequent Stage 1A outcome is recorded in §8 and the current-state sections.
 
 ---
 
@@ -1269,14 +1290,14 @@ Phases A–A4 established standard-share extraction under unchanged production c
 
 # RESUME HERE
 
-**Release baseline:** YOINK **v1.0.0** remains the only verified published release. Standard public `chatgpt.com/share/...` extraction and the previously verified upstream-unavailable-share error handling remain supported. The original pre-v2 feature code checkpoint was `fb395b9`; current remote `main` includes subsequent documentation changes. No version bump, new release, v1.1.0 feature implementation or v2 production implementation has been verified.
+**Release baseline:** YOINK **v1.0.0** remains the only verified published release. Standard public `chatgpt.com/share/...` extraction and the previously verified upstream-unavailable-share handling remain supported. Stage 1A development source is **IMPLEMENTED, TESTED, OWNER UI ACCEPTED** on 2026-10-31; no new packaged executable or public release has been verified.
 
-**Owner decision on Task 2:** A–A4 compatibility investigations **CLOSED / DEFERRED**. [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) was closed as a known limitation. The authorized-browser inspection demonstrated **one reachable Project conversation and an internally consistent in-page mapping**, not the complete underlying history or a production-ready extractor. Codex snapshots remain unsupported. Preserve diagnostics and audit packages; do not restart this investigation without new evidence/authorization.
+**Stage 1A checkpoint:** Owner authorized one local commit on `feature/v2-stage1a-scratchpad` in `C:\Users\User\Desktop\Projects\YOINK-v2-stage1a`, based on `d562522b05f5e12bc19fd54482760409ab4c7855`. See §8 for accepted behavior, test counts, audit provenance and the manual paragraph-break copying limitation. The checkpoint's external report contains the resulting SHA and final verification. Submit it for independent TPM audit, then stop; do not push, merge, tag, rebuild or modify the accepted UI.
 
-**Approved v2.0.0:** [ROADMAP_V2.md](ROADMAP_V2.md) unchanged in architecture and feature scope; **Caveman Mode remains included** with Ollama, LangGraph, Pydantic, and **model-free deterministic target-device preflight**. All v2 features remain PLANNED, not IMPLEMENTED or VERIFIED.
+**Next development step:** Stage **1B — pure-Python selection core**, as a separately scoped and approved task after checkpoint review; **NOT BEGUN**. Stage 1C timeline follows. [ROADMAP_V2.md](ROADMAP_V2.md) remains the normative scope and sequence; Caveman Mode remains included with Ollama, LangGraph, Pydantic and model-free deterministic target-device preflight. Later v2 stages remain planned.
 
-**Next project task:** Prepare **Task 4 — final successor TPM handoff**, including exact repository/current status, decisions, accepted/partial evidence, deferred limits, v2 stages, the **owner's TPM Corrective Directive** (independent technical judgment, source-level Codex audit, calibrated agent-model choice, Git staging/commit/push approval boundaries, audit artifact workflow), and next implementation instructions.
+**Successor TPM handoff:** The previously skipped Task 4 remains **INCOMPLETE**, not completed by this checkpoint. Preserve the owner's TPM Corrective Directive in any eventual handoff: independent technical judgment, source-level Codex audit, calibrated model choice, Git staging/commit/push approval boundaries, and the external audit-artifact workflow.
 
-**Then next development task:** v2 Stage **1A**: scoped `arrow-up-right` direct-to-Scratchpad action immediately before the result-part copy icon, one-click append, optional confirmation and Undo, existing clipboard/focus/reset preserved. Use bounded Codex scope and independent TPM review. **Before any coding, safely reconcile** local diagnostic branch `fix/project-shared-links-v1.1.0` (last recorded local HEAD `fb395b9`, 28 untracked diagnostic files) with updated remote main. Never discard diagnostic or unrelated local work.
+**Owner decision on Task 2:** A–A4 compatibility investigations remain **CLOSED / DEFERRED**; Issue #2 was closed as a known limitation, not a fix. Authenticated Project inspection did not establish complete underlying history or a production-ready extractor; Codex snapshots remain unsupported. Do not reopen without new evidence/authorization.
 
-Canonical local repository: `C:\\Users\\User\\Desktop\\Projects\\YOINK`.
+**Protected original checkout:** `C:\Users\User\Desktop\Projects\YOINK` and its 28 untracked diagnostic files remain untouched. Use the separate feature worktree for the approved checkpoint. Optional live-share and packaged-build verification remain outside it.

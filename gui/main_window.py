@@ -1,4 +1,5 @@
 import re
+import time
 from PySide6.QtCore import (
     QEvent,
     QObject,
@@ -19,6 +20,7 @@ from PySide6.QtGui import (
     QKeySequence,
     QShortcut,
     QTextDocument,
+    QTextCursor,
 )
 from PySide6.QtGui import QPainterPath, QRegion
 from PySide6.QtWidgets import (
@@ -33,14 +35,16 @@ from PySide6.QtWidgets import (
     QRadioButton,
     QScrollArea,
     QTextBrowser,
-    QPlainTextEdit,
     QVBoxLayout,
     QWidget,
+    QGraphicsOpacityEffect,
 )
 
 from extract import ExtractionError, extract_conversation
 from formatter import format_markdown, split_parts, split_parts_by_count
 from .shutdown_screen import ShutdownScreen
+from .interactions import ActionInteractions
+from .window_shape import outer_path
 
 from .background import Background
 from .extraction_worker import ExtractionWorker
@@ -49,6 +53,7 @@ from .progress_button import ProgressButton
 from .split_selector import SplitSelector
 from .styles import APP_STYLE
 from .title_bar import TitleBar
+from .scratchpad import ScratchpadEdit
 from .application import configure_application
 from .updates import UpdateChecker, VERSION
 from .update_dialog import UpdateDialog
@@ -157,8 +162,37 @@ class ResizeController(QObject):
 
         return Qt.CursorShape.ArrowCursor
 
+class ResultsScrollArea(QScrollArea):
+    def __init__(self):
+        super().__init__()
+        self._scroll_animation = QPropertyAnimation(self.verticalScrollBar(), b"value", self)
+        self._scroll_animation.setDuration(150)
+        self._scroll_animation.setEasingCurve(QEasingCurve.Type.OutCubic)
+        self._scroll_target = 0
+        self.verticalScrollBar().sliderPressed.connect(self._scroll_animation.stop)
+
+    def wheelEvent(self, event):
+        if not event.pixelDelta().isNull() or event.angleDelta().y() == 0:
+            self._scroll_animation.stop()
+            super().wheelEvent(event)
+            return
+        bar = self.verticalScrollBar()
+        if self._scroll_animation.state() != QPropertyAnimation.State.Running:
+            self._scroll_target = bar.value()
+        self._scroll_target = max(bar.minimum(), min(bar.maximum(),
+            self._scroll_target - round(event.angleDelta().y() / 120 * bar.singleStep() * 3)))
+        self._scroll_animation.stop()
+        self._scroll_animation.setStartValue(bar.value())
+        self._scroll_animation.setEndValue(self._scroll_target)
+        self._scroll_animation.start()
+        event.accept()
+
+
 class MainWindow(QMainWindow):
     CORNER_RADIUS = 18
+    SCRATCHPAD_COPY_NOTE = (
+        "Untouched source breaks copy exactly. New or replaced paragraph breaks copy as LF."
+    )
 
     def __init__(self):
         super().__init__()
@@ -171,12 +205,20 @@ class MainWindow(QMainWindow):
 
         self.setStyleSheet(APP_STYLE)
 
+        self._scratchpad_undo = []
+        self._scratchpad_internal_edit = False
+        self._last_scratchpad_append = None
+        self._results_gap = 128
+        self._action_interactions = ActionInteractions(self)
         self._build_ui()
         self.split_selector._select("Number of Parts")
 
         self.resize_controller = ResizeController(self)
 
         self._fit_initial_size()
+        self.background.layout().activate()
+        self.content_layout.activate()
+        self.card.setFixedHeight(self.card.height())
 
         self._results_animation = None
         self._results_resetting = False
@@ -259,6 +301,16 @@ class MainWindow(QMainWindow):
         # Title bar
         self.title_bar = TitleBar(self)
         root_layout.addWidget(self.title_bar)
+        self.brand = QWidget(self.background)
+        brand_layout = QHBoxLayout(self.brand)
+        brand_layout.setContentsMargins(0, 0, 0, 0)
+        brand_layout.setSpacing(3)
+        for label in (self.title_bar.icon, self.title_bar.title):
+            self.title_bar.layout().removeWidget(label)
+            brand_layout.addWidget(label)
+        self.brand.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        self.brand.setFixedSize(self.brand.sizeHint())
+        self.brand.raise_()
 
         # Main card
         self.card = QFrame()
@@ -485,7 +537,8 @@ class MainWindow(QMainWindow):
         # ============================================================
         # MAIN CONTENT — extraction card + results panel
         # ============================================================
-        self.content_layout = QHBoxLayout()
+        self.content_surface = QFrame()
+        self.content_layout = QHBoxLayout(self.content_surface)
         self.content_layout.setContentsMargins(0, 0, 0, 0)
         self.content_layout.setSpacing(10)
 
@@ -509,9 +562,6 @@ class MainWindow(QMainWindow):
                 border-radius: 9px;
             }
 
-            QFrame#ResultPartCard:hover {
-                border: 1px solid #4D7CFE;
-            }
 
             QFrame#ResultPartCard QLabel {
                 border: none;
@@ -527,6 +577,13 @@ class MainWindow(QMainWindow):
                 padding: 0;
             }
 
+            QFrame#ResultPartCard QPushButton:focus {
+                border: 1px solid #4D7CFE;
+            }
+            QFrame#ResultPartCard QPushButton:pressed {
+                background: #4D7CFE;
+                color: #FFFFFF;
+            }
             QFrame#ResultPartCard QPushButton:hover {
                 background: #252830;
                 color: #FFFFFF;
@@ -621,6 +678,7 @@ class MainWindow(QMainWindow):
                 font-weight: 700;
             }
 
+            QPushButton:focus { border: 1px solid #7FA0FF; }
             QPushButton:hover {
                 background: #252F55;
                 color: #FFFFFF;
@@ -651,6 +709,17 @@ class MainWindow(QMainWindow):
         self.scratchpad_button.setToolTip("Open this session's scratchpad")
         self.scratchpad_button.clicked.connect(self._show_scratchpad)
         preview_actions.addWidget(self.scratchpad_button)
+        self.scratchpad_undo_button = QPushButton("[ UNDO APPEND ]")
+        self.scratchpad_undo_button.setFixedHeight(32)
+        self.scratchpad_undo_button.setStyleSheet(self.preview_button.styleSheet())
+        self.scratchpad_undo_button.setToolTip("Undo the latest Scratchpad append")
+        self.scratchpad_undo_button.setEnabled(False)
+        undo_policy = self.scratchpad_undo_button.sizePolicy()
+        undo_policy.setRetainSizeWhenHidden(True)
+        self.scratchpad_undo_button.setSizePolicy(undo_policy)
+        self.scratchpad_undo_button.hide()
+        self.scratchpad_undo_button.clicked.connect(self._undo_scratchpad_append)
+        preview_actions.addWidget(self.scratchpad_undo_button)
         preview_actions.addStretch()
         summary_row.addLayout(preview_actions)
 
@@ -663,7 +732,21 @@ class MainWindow(QMainWindow):
             self._copy_all_parts
         )
 
+        self.scratchpad_feedback = QLabel("")
+        self.scratchpad_feedback.setWordWrap(True)
+        self.scratchpad_feedback.setStyleSheet("color: #B8BAC2; font-size: 10px;")
+        self.scratchpad_feedback.setFixedHeight(18)
+        self._feedback_opacity = QGraphicsOpacityEffect(self.scratchpad_feedback)
+        self.scratchpad_feedback.setGraphicsEffect(self._feedback_opacity)
+        self._feedback_animation = QPropertyAnimation(self._feedback_opacity, b"opacity", self)
+        self._feedback_animation.setDuration(250)
+        self._feedback_timer = QTimer(self)
+        self._feedback_timer.setSingleShot(True)
+        self._feedback_timer.setInterval(2500)
+        self._feedback_timer.timeout.connect(self._fade_scratchpad_feedback)
+        self._feedback_opacity.setOpacity(0)
         results_layout.addWidget(results_title)
+        results_layout.addWidget(self.scratchpad_feedback)
         results_layout.addSpacing(4)
         results_layout.addLayout(summary_row)
         results_layout.addSpacing(4)
@@ -684,7 +767,8 @@ class MainWindow(QMainWindow):
         self.scratchpad_copy.setFixedHeight(36)
         self.scratchpad_copy.setCursor(Qt.CursorShape.PointingHandCursor)
         self.scratchpad_copy.setToolTip("Copy the entire scratchpad")
-        self.scratchpad = QPlainTextEdit()
+        self.scratchpad = ScratchpadEdit()
+        self.scratchpad.textChanged.connect(self._scratchpad_changed)
         self.scratchpad.setPlaceholderText(
             "Type or paste the useful bits here.\n\n"
             "Closing this window keeps your notes. Extract Another Thread or closing YOINK clears them."
@@ -698,13 +782,18 @@ class MainWindow(QMainWindow):
             QPlainTextEdit:focus { border-color: #4D7CFE; }
         """)
         self.scratchpad_copy.clicked.connect(
-            lambda: QApplication.clipboard().setText(self.scratchpad.toPlainText())
+            lambda: QApplication.clipboard().setText(self._scratchpad_copy_text())
         )
+        self.scratchpad_fidelity = QLabel(self.SCRATCHPAD_COPY_NOTE)
+        self.scratchpad_fidelity.setWordWrap(True)
+        self.scratchpad_fidelity.setStyleSheet("color: #B8BAC2; font-size: 10px;")
+        self.scratchpad.fidelityBoundaryReached.connect(self._scratchpad_fidelity_boundary)
         scratchpad_layout.addWidget(self.scratchpad, 1)
+        scratchpad_layout.addWidget(self.scratchpad_fidelity)
         scratchpad_layout.addWidget(self.scratchpad_copy)
 
         # Scrollable result parts area.
-        results_scroll = QScrollArea()
+        results_scroll = ResultsScrollArea()
         results_scroll.setWidgetResizable(True)
         results_scroll.setFrameShape(QFrame.Shape.NoFrame)
         results_scroll.setStyleSheet(
@@ -793,7 +882,113 @@ class MainWindow(QMainWindow):
             1,
         )
 
-        root_layout.addLayout(self.content_layout)
+        root_layout.addWidget(self.content_surface)
+        self.content_layout.setAlignment(self.card, Qt.AlignmentFlag.AlignVCenter)
+        for action in (self.preview_button, self.scratchpad_button, self.scratchpad_undo_button):
+            self._action_interactions.register(action)
+        self.copy_all_button.setFocusPolicy(Qt.FocusPolicy.TabFocus)
+        self.extract_another_button.setFocusPolicy(Qt.FocusPolicy.TabFocus)
+
+    def _show_scratchpad_feedback(self, message):
+        self._feedback_timer.stop()
+        self._feedback_animation.stop()
+        self.scratchpad_feedback.setText(message)
+        self._feedback_opacity.setOpacity(1)
+        self._feedback_timer.start()
+
+    def _fade_scratchpad_feedback(self):
+        self._feedback_animation.stop()
+        self._feedback_animation.setStartValue(self._feedback_opacity.opacity())
+        self._feedback_animation.setEndValue(0.0)
+        self._feedback_animation.start()
+
+    def _clear_scratchpad_append_state(self):
+        self.scratchpad_fidelity.setText(self.SCRATCHPAD_COPY_NOTE)
+        self._scratchpad_undo.clear()
+        self._last_scratchpad_append = None
+        self.scratchpad_undo_button.setEnabled(False)
+        self.scratchpad_undo_button.hide()
+        self._feedback_timer.stop()
+        self._feedback_animation.stop()
+        self._feedback_opacity.setOpacity(0)
+        self.scratchpad_feedback.clear()
+
+    def _scratchpad_changed(self):
+        if not self._scratchpad_internal_edit and self._scratchpad_undo:
+            self._scratchpad_undo.clear()
+            self.scratchpad_undo_button.setEnabled(False)
+            self.scratchpad_undo_button.hide()
+            self._show_scratchpad_feedback("Undo unavailable: Scratchpad was edited.")
+
+    def _scratchpad_fidelity_boundary(self):
+        if not self._scratchpad_internal_edit and not self._results_resetting and not self._closing:
+            self.scratchpad_fidelity.setText(
+                "Edited breaks copy as LF, including after editor Undo. Untouched source breaks "
+                "stay exact. Use a part's Copy button for its original text."
+            )
+
+    def _scratchpad_copy_text(self):
+        return self.scratchpad.exact_text()
+
+    def _append_to_scratchpad(self, index, part):
+        if (self._results_resetting or self._closing or self._close_after_results
+                or not getattr(self, "_conversation", None)):
+            return
+        now = time.monotonic()
+        if (self._last_scratchpad_append is not None
+                and self._last_scratchpad_append[0] == index
+                and now - self._last_scratchpad_append[1] < 0.8):
+            self._show_scratchpad_feedback("Already added. Wait a moment to add again.")
+            return
+        separator = "\n\n" if self.scratchpad.document().characterCount() > 1 else ""
+        source = self.url_input.text().strip()
+        heading = f"--- Part {index} · {source} ---" if source else f"--- Part {index} ---"
+        self._scratchpad_internal_edit = True
+        try:
+            cursor = QTextCursor(self.scratchpad.document())
+            cursor.movePosition(QTextCursor.MoveOperation.End)
+            insertion_start = cursor.position()
+            cursor.insertText(separator + heading + "\n")
+            start = cursor.position()
+            source_verified = self.scratchpad.insert_exact(cursor, part)
+            end = cursor.position()
+            cursor.setPosition(insertion_start)
+            cursor.setPosition(end, QTextCursor.MoveMode.KeepAnchor)
+            expected = cursor.selectedText()
+        finally:
+            self._scratchpad_internal_edit = False
+        if not source_verified:
+            self.scratchpad_fidelity.setText(
+                "Source reconstruction unavailable for this append. Copy uses the editor text; "
+                "use the part's Copy button for its exact original."
+            )
+        self._scratchpad_undo.append((start, end, part, (insertion_start, expected)))
+        if len(self._scratchpad_undo) > 100:
+            self._scratchpad_undo.pop(0)
+        self._last_scratchpad_append = (index, now)
+        self.scratchpad_undo_button.setEnabled(True)
+        self.scratchpad_undo_button.show()
+        self._show_scratchpad_feedback(f"Part {index} added to Scratchpad.")
+
+    def _undo_scratchpad_append(self):
+        if self._results_resetting or self._closing or self._close_after_results or not self._scratchpad_undo:
+            return
+        start, end, part, (insertion_start, expected) = self._scratchpad_undo[-1]
+        cursor = QTextCursor(self.scratchpad.document())
+        cursor.setPosition(insertion_start)
+        cursor.setPosition(end, QTextCursor.MoveMode.KeepAnchor)
+        if cursor.selectedText() != expected:
+            self._scratchpad_changed()
+            return
+        self._scratchpad_internal_edit = True
+        try:
+            cursor.removeSelectedText()
+        finally:
+            self._scratchpad_internal_edit = False
+        self._scratchpad_undo.pop()
+        self.scratchpad_undo_button.setEnabled(bool(self._scratchpad_undo))
+        self.scratchpad_undo_button.setVisible(bool(self._scratchpad_undo))
+        self._show_scratchpad_feedback("Scratchpad append undone.")
 
     def _show_scratchpad(self):
         if (not getattr(self, "_conversation", None) or self._results_resetting
@@ -1037,6 +1232,7 @@ class MainWindow(QMainWindow):
         for index, part in enumerate(self._parts, start=1):
             card = QFrame()
             card.setObjectName("ResultPartCard")
+            self._action_interactions.register(card, card=True)
 
             card_layout = QHBoxLayout(card)
             card_layout.setContentsMargins(
@@ -1048,7 +1244,17 @@ class MainWindow(QMainWindow):
                 f"PART {index} · {len(part):,} characters"
             )
 
+            append_button = QPushButton("↗")
+            append_button.setObjectName("AppendPartButton")
+            append_button.setFixedSize(30, 30)
+            append_button.setCursor(Qt.CursorShape.PointingHandCursor)
+            append_button.setToolTip(f"Add Part {index} to Scratchpad")
+            append_button.clicked.connect(
+                lambda checked=False, number=index, text=part: self._append_to_scratchpad(number, text)
+            )
+
             copy_button = QPushButton("⧉")
+            copy_button.setObjectName("CopyPartButton")
             copy_button.setFixedSize(30, 30)
             copy_button.setCursor(
                 Qt.CursorShape.PointingHandCursor
@@ -1097,9 +1303,13 @@ class MainWindow(QMainWindow):
                 timer.start()
 
             copy_button.clicked.connect(copy_part)
+            append_button.setStyleSheet(copy_button.styleSheet())
+            self._action_interactions.register(append_button)
+            self._action_interactions.register(copy_button)
 
             card_layout.addWidget(part_label)
             card_layout.addStretch()
+            card_layout.addWidget(append_button)
             card_layout.addWidget(copy_button)
 
             self.results_container_layout.addWidget(card)
@@ -1110,6 +1320,8 @@ class MainWindow(QMainWindow):
         if self._results_resetting:
             return
         self._results_resetting = True
+        self._action_interactions.clear()
+        self._clear_scratchpad_append_state()
         self._stop_input_shake()
         self.scratchpad_dialog.close()
         self.results_panel.setEnabled(False)
@@ -1125,10 +1337,12 @@ class MainWindow(QMainWindow):
         # would pull the extraction card sideways before the window follows.
         self.setMinimumSize(self._startup_size)
         target_geometry = QRect(self.geometry().topLeft(), self._startup_size)
-        target_geometry.moveCenter(self.geometry().center())
+        target_geometry.moveLeft(self.x() + (self.width()-target_geometry.width())//2)
+        target_geometry.moveTop(self.y() + (self.height()-target_geometry.height())//2)
 
         def finish_reset():
             self.results_panel.hide()
+            self.content_surface.setStyleSheet("")
             self.scratchpad.clear()
             self._copy_all_timer.stop()
             self._reset_copy_all_button()
@@ -1164,7 +1378,7 @@ class MainWindow(QMainWindow):
                 self.url_input.setFocus(Qt.FocusReason.OtherFocusReason)
 
         self._animate_results_geometry(
-            target_geometry, 0, 300, QEasingCurve.Type.InCubic, finish_reset,
+            target_geometry, 0, 300, QEasingCurve.Type.InOutCubic, finish_reset,
         )
 
     def _animate_results_geometry(
@@ -1178,7 +1392,9 @@ class MainWindow(QMainWindow):
         start_geometry = self.geometry()
         start_panel_width = self.results_panel.maximumWidth()
         start_gap = self.content_layout.spacing()
-        end_gap = 10 if panel_width else 0
+        end_gap = self._results_gap if panel_width else 0
+        start_base_width = start_geometry.width() - start_panel_width - start_gap
+        end_base_width = target_geometry.width() - panel_width - end_gap
 
         def update_frame(progress):
             def interpolate(start, end):
@@ -1193,8 +1409,15 @@ class MainWindow(QMainWindow):
             self.content_layout.setSpacing(gap)
             self.results_panel.setMaximumWidth(max(0, panel_extent - gap))
             geometry = QRect(start_geometry)
-            geometry.setWidth(interpolate(start_geometry.width(), target_geometry.width()))
-            geometry.setHeight(interpolate(start_geometry.height(), target_geometry.height()))
+            # Derive the outer width from the same rounded panel extent. Two
+            # independent round() calls made the extraction card breathe 1 px.
+            geometry.setWidth(interpolate(start_base_width, end_base_width) + panel_extent)
+            height = interpolate(start_geometry.height(), target_geometry.height())
+            if not panel_width and progress < 1.0:
+                # Centered integer layouts alternate by 1 px at odd heights.
+                # Preserve height parity during retreat to prevent that wobble.
+                height += (start_geometry.height() - height) % 2
+            geometry.setHeight(height)
             # Use relative offsets rather than QRect.moveCenter(), whose
             # integer rounding can drift on monitors at negative coordinates.
             geometry.moveLeft(
@@ -1203,7 +1426,22 @@ class MainWindow(QMainWindow):
             geometry.moveTop(
                 start_geometry.y() + (start_geometry.height() - geometry.height()) // 2
             )
-            self.setGeometry(geometry)
+            # Keep the original center-rounding invariant on every frame;
+            # only interpolate an extra offset when work-area clamping moved
+            # the target center. Independent x/width rounding can drift 2 px.
+            center_shift_x = target_geometry.x() - (start_geometry.x() +
+                (start_geometry.width() - target_geometry.width()) // 2)
+            center_shift_y = target_geometry.y() - (start_geometry.y() +
+                (start_geometry.height() - target_geometry.height()) // 2)
+            geometry.translate(round(center_shift_x * progress), round(center_shift_y * progress))
+            self._geometry_frame_active = True
+            try:
+                self.setGeometry(geometry)
+                self.background.layout().activate()
+                self.content_layout.activate()
+            finally:
+                self._geometry_frame_active = False
+            self._update_window_mask()
 
         self._results_animation = QVariantAnimation(self)
         self._results_animation.setDuration(duration)
@@ -1282,16 +1520,22 @@ class MainWindow(QMainWindow):
 
         extraction_width = self._extraction_card_width
 
-        expanded_width = (
-            self._current_extraction_geometry.width()
-            + extraction_width
-            + self.content_layout.spacing()
-        )
-
-        # Expand equally to either side of the current window center.
+        available = self._results_work_area()
+        self._results_gap = max(12, min(16, available.width() -
+                                       self._current_extraction_geometry.width() - 300))
+        extraction_width = min(extraction_width, max(200, available.width() -
+                                self._current_extraction_geometry.width() - self._results_gap))
+        expanded_width = self._current_extraction_geometry.width() + extraction_width + self._results_gap
         final_geometry = QRect(self._current_extraction_geometry)
         final_geometry.setWidth(expanded_width)
-        final_geometry.moveCenter(self._current_extraction_geometry.center())
+        desired_height = self._startup_size.height() + 240
+        final_geometry.setHeight(max(self._startup_size.height(), min(desired_height, available.height())))
+        final_geometry.moveLeft(self._current_extraction_geometry.x() +
+                                (self._current_extraction_geometry.width()-final_geometry.width())//2)
+        final_geometry.moveTop(self._current_extraction_geometry.y() +
+                               (self._current_extraction_geometry.height()-final_geometry.height())//2)
+        final_geometry.moveLeft(max(available.left(), min(final_geometry.x(), available.right()-expanded_width+1)))
+        final_geometry.moveTop(max(available.top(), min(final_geometry.y(), available.bottom()-final_geometry.height()+1)))
 
         self.results_panel.setMinimumWidth(0)
         self.results_panel.setMaximumWidth(0)
@@ -1748,25 +1992,44 @@ class MainWindow(QMainWindow):
 
         self._update_window_mask()
 
+    def _results_work_area(self):
+        screen = self.screen() or QApplication.primaryScreen()
+        return screen.availableGeometry()
+
+    def _outer_window_path(self):
+        compact = getattr(self, "_startup_size", self.size()).height()
+        if not hasattr(self, "results_panel") or self.results_panel.isHidden():
+            compact = self.height()
+        # The shoulder begins above the card, clear of the branding. Its reach
+        # is independent of the much smaller animated gap between the cards.
+        card_right = self.card.mapTo(self.background, self.card.rect().topRight()).x() + 14 if hasattr(self, "card") else self.width()
+        brand_right = self.brand.x() + self.brand.width() + 8 if hasattr(self, "brand") else 36
+        left = max(brand_right, card_right - self.card.width() * .5 + 7) if hasattr(self, "card") else card_right
+        right = card_right + 20 + max(0, self.content_layout.spacing() - 28) if hasattr(self, "content_layout") else card_right
+        return outer_path(self.width(), self.height(), compact, left, right, self.isMaximized())
+
     def _update_window_mask(self):
-        rect = self.rect().adjusted(0, 0, -1, -1)
-
-        path = QPainterPath()
-        path.addRoundedRect(
-            rect,
-            self.CORNER_RADIUS,
-            self.CORNER_RADIUS,
-        )
-
-        self.setMask(
-            QRegion(
-                path.toFillPolygon().toPolygon()
-            )
-        )
+        if hasattr(self, "brand"):
+            compact = getattr(self, "_startup_size", self.size()).height()
+            self.brand.move(24, 4 + (0 if self.isMaximized() else max(0, (self.height()-compact)//2)))
+            self.brand.raise_()
+        path = self._outer_window_path()
+        # Painting keeps subpixel antialiasing; the platform region only clips
+        # input. A one-pixel fringe preserves the painter's antialiased edge.
+        from PySide6.QtGui import QPainterPathStroker
+        stroker = QPainterPathStroker()
+        stroker.setWidth(2)
+        hit_path = path.united(stroker.createStroke(path))
+        region = QRegion(hit_path.toFillPolygon().toPolygon())
+        if region != getattr(self, "_last_window_region", None):
+            self.setMask(region)
+            self._last_window_region = region
+        self.background.update()
 
     def resizeEvent(self, event):
-        self._update_window_mask()
         super().resizeEvent(event)
+        if not getattr(self, "_geometry_frame_active", False):
+            self._update_window_mask()
 
     def closeEvent(self, event):
         if self._close_after_results:
@@ -1791,6 +2054,8 @@ class MainWindow(QMainWindow):
             return
 
         self._closing = True
+        self._action_interactions.clear()
+        self._clear_scratchpad_append_state()
         self._stop_input_shake()
         self.scratchpad_dialog.close()
         self.scratchpad.clear()

@@ -10,7 +10,7 @@ from unittest.mock import patch
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 from PySide6.QtTest import QTest
-from PySide6.QtCore import QEventLoop, QTimer, Qt
+from PySide6.QtCore import QEventLoop, QTimer, Qt, QRect
 from PySide6.QtWidgets import QApplication, QPushButton
 
 from extract import ExtractionError
@@ -195,7 +195,7 @@ class InteractionTests(unittest.TestCase):
         self.assertFalse(button.isEnabled())
         self.assertTrue(button._fake_progress_timer.isActive())
         self.assertTrue(button._loading_text_timer.isActive())
-        self.assertEqual(button._loading_text_timer.interval(), 1400)
+        self.assertEqual(button._loading_text_timer.interval(), 2600)
         self.assertEqual(button._animation.duration(), 250)
         button.set_processing(False)
 
@@ -233,7 +233,7 @@ class InteractionTests(unittest.TestCase):
     def test_repeated_copy_extends_confirmation(self):
         w = self.window
         self.show_sample_results()
-        part = w.results_container.findChild(QPushButton)
+        part = w.results_container.findChild(QPushButton, "CopyPartButton")
         w.copy_all_button.click()
         part.click()
         advance(450)
@@ -252,7 +252,7 @@ class InteractionTests(unittest.TestCase):
         self.show_sample_results()
         errors = []
         with patch.object(sys, "excepthook", side_effect=lambda *args: errors.append(args)):
-            w.results_container.findChild(QPushButton).click()
+            w.results_container.findChild(QPushButton, "CopyPartButton").click()
             w._reset_results_session()
             advance(1150)
         self.assertEqual(errors, [])
@@ -485,6 +485,7 @@ class InteractionTests(unittest.TestCase):
 
     def test_geometry_stays_centered_during_repeated_open_and_reset(self):
         w = self.window
+        w._results_work_area = lambda: QRect(-2000, -1500, 6000, 4000)
         for x, y in ((350, 150), (750, 200), (-650, 80)):
             w.move(x, y)
             APP.processEvents()
@@ -505,7 +506,7 @@ class InteractionTests(unittest.TestCase):
                     geometry = w.geometry()
                     self.assertLessEqual(abs(2 * geometry.x() + geometry.width() - center[0]), 1)
                     self.assertLessEqual(abs(2 * geometry.y() + geometry.height() - center[1]), 1)
-                    self.assertEqual(w.card.x(), 14)
+                    self.assertEqual(w.card.mapTo(w.background, w.card.rect().topLeft()).x(), 14)
                     widths.append(geometry.width())
                     cards.append(w.card.width())
                 self.assertLessEqual(max(cards) - min(cards), 1)

@@ -7,7 +7,7 @@ from .application import ASSETS
 
 
 class TitleBar(QFrame):
-    HEIGHT = 28
+    HEIGHT = 24
 
     def __init__(self, window):
         super().__init__(window)
@@ -40,15 +40,16 @@ class TitleBar(QFrame):
         layout.addStretch()
 
         self.minimize_button = self._create_button("—")
-        self.maximize_button = self._create_button("□")
         self.close_button = self._create_button("×", danger=True)
+        self.minimize_button.setAccessibleName("Minimize")
+        self.minimize_button.setToolTip("Minimize")
+        self.close_button.setAccessibleName("Close")
+        self.close_button.setToolTip("Close")
 
         layout.addWidget(self.minimize_button)
-        layout.addWidget(self.maximize_button)
         layout.addWidget(self.close_button)
 
         self.minimize_button.clicked.connect(self.window.showMinimized)
-        self.maximize_button.clicked.connect(self.toggle_maximize)
         self.close_button.clicked.connect(self.window.close)
 
     def _create_button(self, text, danger=False):
@@ -77,20 +78,6 @@ class TitleBar(QFrame):
         )
 
         return button
-
-    def toggle_maximize(self):
-        if self.window.isMaximized():
-            self.window.showNormal()
-            self.maximize_button.setText("□")
-        else:
-            self.window.showMaximized()
-            self.maximize_button.setText("❐")
-
-    def mouseDoubleClickEvent(self, event):
-        if event.button() == Qt.MouseButton.LeftButton:
-            self.toggle_maximize()
-
-        super().mouseDoubleClickEvent(event)
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
