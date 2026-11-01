@@ -315,6 +315,8 @@ class MainWindow(QMainWindow):
         # Main card
         self.card = QFrame()
         self.card.setObjectName("Card")
+        if self.background.preview_enabled:
+            self.card.setStyleSheet("QFrame#Card { background: rgba(20, 21, 24, %d); border: 1px solid #303137; border-radius: 14px; }" % self.background.panel_alpha)
         self.card.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
 
         # ============================================================
@@ -590,6 +592,9 @@ class MainWindow(QMainWindow):
             }
             """
         )
+        if self.background.preview_enabled:
+            self.results_panel.setStyleSheet(self.results_panel.styleSheet().replace(
+                "background: #15161A;", "background: rgba(21, 22, 26, %d);" % self.background.panel_alpha, 1))
         self.results_panel.hide()
 
         results_layout = QVBoxLayout(self.results_panel)
@@ -2011,7 +2016,7 @@ class MainWindow(QMainWindow):
     def _update_window_mask(self):
         if hasattr(self, "brand"):
             compact = getattr(self, "_startup_size", self.size()).height()
-            self.brand.move(24, 4 + (0 if self.isMaximized() else max(0, (self.height()-compact)//2)))
+            self.brand.move(24, 8 + (0 if self.isMaximized() else max(0, (self.height()-compact)//2)))
             self.brand.raise_()
         path = self._outer_window_path()
         # Painting keeps subpixel antialiasing; the platform region only clips

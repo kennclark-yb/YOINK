@@ -16,13 +16,22 @@ class PackagingTests(unittest.TestCase):
         analysis = SimpleNamespace(datas=list(entries), binaries=list(entries),
                                    pure=[], scripts=[])
         collect = Mock()
+        factory = Mock(return_value=analysis)
         with patch("playwright.__file__", str(Path(directory) / "__init__.py")), \
                 patch("PyInstaller.utils.hooks.copy_metadata", return_value=[]), \
                 patch("PyInstaller.utils.hooks.collect_submodules", return_value=[]):
             runpy.run_path(str(ROOT / ("YOINK-QA.spec" if qa else "YOINK.spec")),
                            init_globals={"SPECPATH": str(ROOT),
-                                         "Analysis": Mock(return_value=analysis),
+                                         "Analysis": factory,
                                          "PYZ": Mock(), "EXE": Mock(), "COLLECT": collect})
+        datas = factory.call_args.kwargs['datas']
+        for source, destination in [
+            ('assets/static_grain_option3.png', 'assets'),
+            ('assets/fonts', 'assets/fonts'),
+            ('assets/icon/yoink.ico', 'assets/icon'),
+            ('assets/shutdown.gif', 'assets'),
+        ]:
+            self.assertIn((str(ROOT / source), destination), datas)
         return analysis, collect
 
     def test_reused_environment_excludes_only_full_chromium(self):

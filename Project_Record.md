@@ -9,7 +9,7 @@
 >
 > Last reconstructed from verified project history: 2026-10-03
 >
-> Current-state reconciliation: 2026-10-31. Stage 1A is implemented, tested, and owner UI accepted; Project/Codex share research (Phases A–A4) remains closed/deferred, with no compatibility implementation or release.
+> Current-state reconciliation: 2026-11-01. Stage 1A is completed, tested, owner accepted, and locally committed; Project/Codex share research (Phases A–A4) remains closed/deferred, with no compatibility implementation or release.
 
 ---
 
@@ -243,7 +243,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 **Current release:** v1.0.0
 
-**Current project state:** **v1.0.0 VERIFIED RELEASED / STABLE; v2 Stage 1A IMPLEMENTED, TESTED, OWNER UI ACCEPTED; Stage 1B NOT BEGUN**
+**Current project state:** **v1.0.0 VERIFIED RELEASED / STABLE; v2 Stage 1A COMPLETED, TESTED, OWNER ACCEPTED, LOCALLY COMMITTED; Stage 1B NOT BEGUN**
 
 **Repository:**
 
@@ -777,9 +777,13 @@ Cleanup itself required no source commit because tracked source did not change.
 
 ---
 
+## Accepted Option 3 background — 2026-11-01
+
+The owner accepted the static cobalt grain artwork, integrated into source with native static rendering and 84% opaque inner panels. The accepted artwork and organic window silhouette are unchanged. `YOINK.spec` includes the background asset in the PyInstaller configuration. Source and focused packaging tests passed; packaged executable verification remains pending. The authorized local Option 3 checkpoint is recorded in its external audit artifacts; Stage 1B is not implemented.
+
 ## Stage 1A — Direct-to-Scratchpad
 
-**IMPLEMENTED, TESTED, OWNER UI ACCEPTED** — owner explicitly accepted the Stage 1A UI on 2026-10-31.
+**COMPLETED, TESTED, OWNER ACCEPTED, LOCALLY COMMITTED** — owner explicitly accepted the Stage 1A UI on 2026-10-31; local checkpoint `e0a153c935ce7460e80eaf736a1f313ffa7013c4`.
 
 Confirmed development-source behavior:
 
@@ -814,7 +818,7 @@ Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including m
 
 # 10. Immediate Next Steps
 
-1. Submit the owner-authorized Stage 1A local checkpoint and complete external audit package for independent TPM review. Stop after the local commit; no push, merge, release, executable rebuild, or further UI changes are authorized by this checkpoint.
+1. Submit the owner-accepted Option 3 background local checkpoint and external audit package for independent TPM review. Stop after the local commit; no push, merge, release, executable rebuild, or Stage 1B work is authorized by this checkpoint.
 2. **Next development step: Stage 1B — pure-Python selection core**, under a separately approved bounded task after checkpoint review. Stage 1B has not begun; Stage 1C timeline follows it. Keep [ROADMAP_V2.md](ROADMAP_V2.md) scope and sequencing unchanged.
 3. **Task 4 — successor TPM handoff remains skipped/incomplete.** Any later handoff must accurately summarize repository state, Phases A–A4, owner-approved deferral, accepted Stage 1A evidence and the owner's **TPM Corrective Directive**: independent technical judgment, source-level audit, calibrated model choice, Git approval boundaries, and audit artifacts. This checkpoint does not complete that handoff.
 4. Preserve the original diagnostic checkout and its 28 untracked diagnostic files, and all external audit packages. The feature worktree is separate; do not reset/clean/rebase or otherwise reconcile the original checkout during this checkpoint. Project-share/Codex-snapshot extraction stays deferred; no v1.1.0 release is authorized by those investigations.
@@ -1292,9 +1296,11 @@ Phases A–A4 established standard-share extraction under unchanged production c
 
 **Release baseline:** YOINK **v1.0.0** remains the only verified published release. Standard public `chatgpt.com/share/...` extraction and the previously verified upstream-unavailable-share handling remain supported. Stage 1A development source is **IMPLEMENTED, TESTED, OWNER UI ACCEPTED** on 2026-10-31; no new packaged executable or public release has been verified.
 
-**Stage 1A checkpoint:** Owner authorized one local commit on `feature/v2-stage1a-scratchpad` in `C:\Users\User\Desktop\Projects\YOINK-v2-stage1a`, based on `d562522b05f5e12bc19fd54482760409ab4c7855`. See §8 for accepted behavior, test counts, audit provenance and the manual paragraph-break copying limitation. The checkpoint's external report contains the resulting SHA and final verification. Submit it for independent TPM audit, then stop; do not push, merge, tag, rebuild or modify the accepted UI.
+**Stage 1A checkpoint:** Completed locally at `e0a153c935ce7460e80eaf736a1f313ffa7013c4`. Owner authorized one local commit on `feature/v2-stage1a-scratchpad` in `C:\Users\User\Desktop\Projects\YOINK-v2-stage1a`, based on `d562522b05f5e12bc19fd54482760409ab4c7855`. See §8 for accepted behavior, test counts, audit provenance and the manual paragraph-break copying limitation. The checkpoint's external report contains the resulting SHA and final verification. Submit it for independent TPM audit, then stop; do not push, merge, tag, rebuild or modify the accepted UI.
 
 **Next development step:** Stage **1B — pure-Python selection core**, as a separately scoped and approved task after checkpoint review; **NOT BEGUN**. Stage 1C timeline follows. [ROADMAP_V2.md](ROADMAP_V2.md) remains the normative scope and sequence; Caveman Mode remains included with Ollama, LangGraph, Pydantic and model-free deterministic target-device preflight. Later v2 stages remain planned.
+
+**Option 3 checkpoint:** The owner accepted the static cobalt grain background, integrated with native static rendering, 84% opaque panels, unchanged accepted artwork and organic silhouette. The asset is included in `YOINK.spec`; packaged executable verification remains pending. Submit this local checkpoint for independent TPM audit and stop. Stage 1B is not implemented.
 
 **Successor TPM handoff:** The previously skipped Task 4 remains **INCOMPLETE**, not completed by this checkpoint. Preserve the owner's TPM Corrective Directive in any eventual handoff: independent technical judgment, source-level Codex audit, calibrated model choice, Git staging/commit/push approval boundaries, and the external audit-artifact workflow.
 

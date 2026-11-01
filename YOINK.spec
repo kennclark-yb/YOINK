@@ -20,7 +20,8 @@ a = Analysis(
     binaries=[],
     datas=[(str(root / "assets/fonts"), "assets/fonts"),
            (str(root / "assets/icon/yoink.ico"), "assets/icon"),
-           (str(root / "assets/shutdown.gif"), "assets")] + licenses,
+           (str(root / "assets/shutdown.gif"), "assets"),
+           (str(root / "assets/static_grain_option3.png"), "assets")] + licenses,
     hiddenimports=collect_submodules("markdown.extensions"),
     hookspath=[], runtime_hooks=[], excludes=[], noarchive=False,
 )
