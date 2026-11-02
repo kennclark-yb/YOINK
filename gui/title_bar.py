@@ -43,6 +43,12 @@ class TitleBar(QFrame):
         self.close_button = self._create_button("×", danger=True)
         self.minimize_button.setAccessibleName("Minimize")
         self.minimize_button.setToolTip("Minimize")
+        self.close_button.setStyleSheet("""
+            QPushButton { color: #E33258; background: transparent; border: 1px solid transparent; border-radius: 6px; font-size: 20px; font-weight: 700; }
+            QPushButton:hover { color: #FF6685; background: rgba(160, 20, 55, 65); }
+            QPushButton:pressed { color: white; background: #BB2345; }
+            QPushButton:focus { border: 1px solid #FF6685; }
+        """)
         self.close_button.setAccessibleName("Close")
         self.close_button.setToolTip("Close")
 

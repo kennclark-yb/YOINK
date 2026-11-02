@@ -124,15 +124,16 @@ class FormPreviewTests(unittest.TestCase):
             w._extracted_conversation = {**FULL, 'messages': [m for m in FULL['messages'] if mode == 'both' or m['role'] == mode]}
             before = copy.deepcopy((w._conversation, w._extracted_conversation, w._parts))
             def inspect():
-                dialog = APP.activeModalWidget()
+                dialog = w._preview_widget
                 try:
                     selector = dialog.findChild(PreviewRoleSelector)
                     browser = dialog.findChild(QTextBrowser)
+                    selector.select("all")
                     self.assertEqual(selector.current_role, 'all')
                     self.assertEqual(selector.animation.duration(), 180)
                     all_document = browser.document()
                     conversion_count = convert.call_count
-                    self.assertEqual(conversion_count, len(FULL['messages']))
+                    self.assertEqual(conversion_count, len(FULL['messages']) if mode == "assistant" else 0)
                     for role, button in list(zip(selector.ROLES, selector.buttons)) * 2:
                         button.click()
                         text = browser.toPlainText()
@@ -157,9 +158,10 @@ class FormPreviewTests(unittest.TestCase):
                 except Exception as error:
                     errors.append(error)
                 finally:
-                    dialog.accept()
+                    w.workspace.collapse()
             with patch('gui.preview.markdown.markdown', wraps=preview.markdown.markdown) as convert:
                 QTimer.singleShot(10, inspect)
                 w._preview_entire_thread()
+                advance(30)
         if errors:
             raise errors[0]

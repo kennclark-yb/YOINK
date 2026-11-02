@@ -9,7 +9,7 @@
 >
 > Last reconstructed from verified project history: 2026-10-03
 >
-> Current-state reconciliation: 2026-11-01. Stage 1A is completed, tested, owner accepted, and locally committed; Project/Codex share research (Phases A–A4) remains closed/deferred, with no compatibility implementation or release.
+> Current-state reconciliation: 2026-11-02. Stage 1A, approved Option 3 styling and Stage 1B are locally checkpointed. Stage 1C connected workspace and interactions, including append notification, are implemented and owner-approved for this baseline checkpoint. Original artwork is final; cell division is deferred. Task B shutdown-screen redesign is next, then Stage 2 Project Library. v2 is development software; v1.0.0 remains the only verified published release. Project/Codex share research remains closed/deferred.
 
 ---
 
@@ -243,7 +243,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 **Current release:** v1.0.0
 
-**Current project state:** **v1.0.0 VERIFIED RELEASED / STABLE; v2 Stage 1A COMPLETED, TESTED, OWNER ACCEPTED, LOCALLY COMMITTED; Stage 1B NOT BEGUN**
+**Current project state:** **v1.0.0 VERIFIED RELEASED / STABLE; v2 Stage 1A, Option 3 and Stage 1B LOCALLY CHECKPOINTED; Stage 1C IMPLEMENTED / OWNER APPROVED; DEVELOPMENT SOFTWARE**
 
 **Repository:**
 
@@ -263,7 +263,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 YOINK is a released product, not a prototype or greenfield project.
 
-The released v1 baseline remains maintenance-only, but the user explicitly authorized a separate v2 development program on 2026-10-25. The normative v2 scope is [ROADMAP_V2.md](ROADMAP_V2.md). Stage 1A development source is implemented, tested, and owner UI accepted. No new packaged executable or public release has been verified; the remaining v2 stages are planned.
+The released v1 baseline remains maintenance-only, but the user explicitly authorized a separate v2 development program on 2026-10-25. The normative v2 scope is [ROADMAP_V2.md](ROADMAP_V2.md). Stage 1A, Option 3 styling and Stage 1B have local checkpoints. Stage 1C connected workspace and accepted interactions are implemented and owner-approved. No v2 packaged executable or public release has been verified; Task B precedes Stage 2 Project Library, and later pillars remain planned.
 
 ---
 
@@ -283,7 +283,7 @@ The project is considered complete and stable unless deliberately reopened for:
 - small justified UX improvement,
 - maintenance release.
 
-Broad development of the **v1 release** remains closed. **v2 development is explicitly authorized**; Stage 1A is implemented, tested, and owner UI accepted on 2026-10-31. Stage 1B has not begun. [ROADMAP_V2.md](ROADMAP_V2.md) governs its scope and acceptance gates.
+Broad development of the **v1 release** remains closed. **v2 development is explicitly authorized**; Stage 1A was owner accepted on 2026-10-31; Stage 1A, Option 3 and Stage 1B are locally checkpointed. Stage 1C is implemented and owner-approved on 2026-11-02. [ROADMAP_V2.md](ROADMAP_V2.md) governs its scope and acceptance gates.
 
 ## Current Maintenance Position
 
@@ -303,7 +303,7 @@ Separate **ChatGPT Project-shared** and **Codex snapshot** formats were investig
 
 **LOCKED**
 
-Preserve the stable YOINK v1.0.0 baseline while executing the explicitly approved, separately scoped v2.0.0 roadmap in [ROADMAP_V2.md](ROADMAP_V2.md). Stage 1A is implemented, tested, and owner UI accepted; remaining stages retain their roadmap scope and sequence.
+Preserve the stable YOINK v1.0.0 baseline while executing the explicitly approved, separately scoped v2.0.0 roadmap in [ROADMAP_V2.md](ROADMAP_V2.md). Stage 1C is implemented and owner-approved; Task B shutdown-screen redesign is the immediate next UI task, followed by Stage 2 Project Library. Future pillars retain their approved scope.
 
 ## Product Scope
 
@@ -779,7 +779,7 @@ Cleanup itself required no source commit because tracked source did not change.
 
 ## Accepted Option 3 background — 2026-11-01
 
-The owner accepted the static cobalt grain artwork, integrated into source with native static rendering and 84% opaque inner panels. The accepted artwork and organic window silhouette are unchanged. `YOINK.spec` includes the background asset in the PyInstaller configuration. Source and focused packaging tests passed; packaged executable verification remains pending. The authorized local Option 3 checkpoint is recorded in its external audit artifacts; Stage 1B is not implemented.
+The owner accepted the static cobalt grain artwork, integrated into source with native static rendering and 84% opaque inner panels. The accepted artwork and organic window silhouette are unchanged. `YOINK.spec` includes the background asset in the PyInstaller configuration. Source and focused packaging tests passed; packaged executable verification remains pending. The local Option 3 checkpoint is `f64bf97` (2026-11-01). Stage 1B subsequently checkpointed at `bca121d5eb5c1d9da22a91c985a2f6195275a70e`.
 
 ## Stage 1A — Direct-to-Scratchpad
 
@@ -796,9 +796,26 @@ Confirmed development-source behavior:
 
 Accepted audit package: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Stage-1A_Unicode-Finality_2026-10-31_190124`. The twelve implementation/test files were compared byte-for-byte with its `changed_files` snapshots before this checkpoint's documentation edit; all matched.
 
-Latest accepted reported verification: full offline suite **75 tests run, 73 passed, 2 expected skips**; native Windows focused tests **6 passed**; `git diff --check` passed. This checkpoint reruns the offline suite and native focused checks and records the executed results in its external audit package.
+Historical Stage 1A verification: full offline suite **75 tests run, 73 passed, 2 expected skips**; native Windows focused tests **6 passed**; `git diff --check` passed. That Stage 1A checkpoint reran its checks; see its external audit package. Current Stage 1C validation is recorded separately below.
 
-No new packaged executable or public release has been verified. Optional live-share and packaged-build verification remain outside this checkpoint. Stage 1B has not begun. The owner authorized one local Stage 1A Git checkpoint on `feature/v2-stage1a-scratchpad`, based on `d562522b05f5e12bc19fd54482760409ab4c7855`; the resulting SHA is recorded externally to avoid a self-referential commit.
+No new packaged executable or public release has been verified. Optional live-share and packaged-build verification remained outside that Stage 1A checkpoint. At that historical point Stage 1B had not begun; its later checkpoint is recorded below. The owner authorized one local Stage 1A Git checkpoint on `feature/v2-stage1a-scratchpad`, based on `d562522b05f5e12bc19fd54482760409ab4c7855`; the resulting SHA is recorded externally to avoid a self-referential commit.
+
+
+## Stage 1B and Stage 1C accepted baseline — 2026-11-02
+
+**Stage 1B — LOCALLY CHECKPOINTED:** deterministic pure-Python selection core at `bca121d5eb5c1d9da22a91c985a2f6195275a70e`; source-preserving fractional/disconnected ranges and role-filtered resolution.
+
+**Stage 1C — IMPLEMENTED / AUDITED / OWNER APPROVED:** connected Extract/Results/tool workspace with organic silhouettes, Parts Picker, Preview and Scratchpad navigation, state retention, source selection, copy/append/Undo, bounded geometry, hover and native dragging repair. Preserve accepted cobalt/icy-blue colors, grain, layout, spacing, 84% panel opacity and animations. Extraction remains full-source before filtering.
+
+**Append notification — IMPLEMENTED / AUDITED / ACCEPTED:** fixed 18 px feedback slot, 220 ms entrance from +10 px through restrained -2 px overshoot to 0 px, settled updates on repeated append, existing dismissal lifecycle and 250 ms fade. Reset/shutdown cancel entrance; reduced motion stays settled. Wording, append data, duplicate feedback and Undo are preserved.
+
+**Background — LOCKED:** original `assets/static_grain_option3.png`, byte-identical, remains the final approved production artwork. Retain the accepted native-drag changes in `gui/background.py`. Three unsuccessful isolated cell-division visual approaches were diagnostic-only and never integrated into production. **Cell-division enhancement is DEFERRED by owner decision on 2026-11-02; it is not implemented, accepted or completed.** The earlier incomplete-experiment status is superseded by this deferral, not by a successful implementation.
+
+Prior audited delivery: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Stage-1C_Finite-Cell-Division-Background_2026-11-02_175537`; its 76-file delivery inventory matches this checkpoint's incoming files byte-for-byte. Prior tests reported 167 run, 165 passed and two expected skips, plus five notification contracts on native Qt at 100% and 150% scale. Current checkpoint reruns and exact results are in its external validation report; no self-referential commit hash is inserted here.
+
+**Validation limits:** v2 remains development software. No v2 packaged-EXE build/test, new live-share extraction, broad hardware/DPI qualification or new physical owner drag test is claimed by this checkpoint. The opt-in live-share and frozen-build assertions are expected skips. Existing Scratchpad manual paragraph-break copying limitation remains. v1.0.0 is the only verified published release.
+
+**Next sequence:** separately instructed **Task B — shutdown-screen redesign**, preserving existing working shutdown until then; **Stage 2 — Project Library** follows Task B. No shutdown redesign, executable build, tag, merge or release is part of this baseline checkpoint.
 
 ---
 
@@ -806,22 +823,22 @@ No new packaged executable or public release has been verified. Optional live-sh
 
 ## Phase
 
-**v1 VERIFIED — RELEASED / MAINTENANCE; v2 Stage 1A IMPLEMENTED, TESTED, OWNER UI ACCEPTED**
+**v1 VERIFIED — RELEASED / MAINTENANCE; v2 Stage 1C IMPLEMENTED / OWNER APPROVED; BASELINE CHECKPOINT**
 
 v1.0.0 is released and stable.
 
 Repository relocation and development-environment recovery status: **VERIFIED COMPLETE**.
 
-Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the approved wording and RETRY. Investigations into Project-shared and Codex snapshot URLs are **DEFERRED / NOT IMPLEMENTED**; [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) is closed as a known limitation, not a fix. No v1.1.0 release occurred. Stage 1A is implemented, tested, and owner UI accepted. The previously skipped successor TPM handoff remains incomplete; it is not retroactively marked done. After independent TPM audit of the authorized local checkpoint, the next development step is a separately scoped Stage 1B pure-Python selection-core task. The giant-thread investigation remains closed without evidence of an active scalability defect.
+Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the approved wording and RETRY. Investigations into Project-shared and Codex snapshot URLs are **DEFERRED / NOT IMPLEMENTED**; [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) is closed as a known limitation, not a fix. No v1.1.0 release occurred. Stage 1A, Option 3 and Stage 1B are locally checkpointed; Stage 1C is implemented and owner-approved. The previously skipped successor TPM handoff remains incomplete; it is not retroactively marked done. Task B shutdown-screen redesign is next under a separate instruction/audit cycle, then Stage 2 Project Library. The giant-thread investigation remains closed without evidence of an active scalability defect.
 
 ---
 
 # 10. Immediate Next Steps
 
-1. Submit the owner-accepted Option 3 background local checkpoint and external audit package for independent TPM review. Stop after the local commit; no push, merge, release, executable rebuild, or Stage 1B work is authorized by this checkpoint.
-2. **Next development step: Stage 1B — pure-Python selection core**, under a separately approved bounded task after checkpoint review. Stage 1B has not begun; Stage 1C timeline follows it. Keep [ROADMAP_V2.md](ROADMAP_V2.md) scope and sequencing unchanged.
-3. **Task 4 — successor TPM handoff remains skipped/incomplete.** Any later handoff must accurately summarize repository state, Phases A–A4, owner-approved deferral, accepted Stage 1A evidence and the owner's **TPM Corrective Directive**: independent technical judgment, source-level audit, calibrated model choice, Git approval boundaries, and audit artifacts. This checkpoint does not complete that handoff.
-4. Preserve the original diagnostic checkout and its 28 untracked diagnostic files, and all external audit packages. The feature worktree is separate; do not reset/clean/rebase or otherwise reconcile the original checkout during this checkpoint. Project-share/Codex-snapshot extraction stays deferred; no v1.1.0 release is authorized by those investigations.
+1. Finalize and independently review the accepted Stage 1C baseline checkpoint and ordinary feature-branch GitHub synchronization. The resulting local/remote SHAs and exact validation evidence belong in the external audit report.
+2. **Immediate next UI task: Task B — shutdown-screen redesign**, under separate instruction and audit. Existing shutdown behavior remains accepted pending that work. **Stage 2 Project Library follows Task B**; preserve all approved future pillars.
+3. **Task 4 — successor TPM handoff remains skipped/incomplete.** Preserve the TPM Corrective Directive: independent technical judgment, source-level audit, calibrated model choice, Git approval boundaries and external audit artifacts.
+4. Preserve the protected original checkout and its 28 untracked diagnostics. Cell division and Project/Codex share compatibility remain deferred. No merge into main, rebase, force-push, tag, executable build or release is authorized here.
 
 ---
 
@@ -934,7 +951,7 @@ Do not add monetization unless user explicitly revisits it.
 
 ## Current Direction
 
-YOINK has two distinct tracks: **maintain verified v1.0.0** and **develop the approved v2.0.0 roadmap, with Stage 1A implemented, tested, and owner UI accepted** under [ROADMAP_V2.md](ROADMAP_V2.md).
+YOINK has two distinct tracks: **maintain verified v1.0.0** and **develop the approved v2.0.0 roadmap, with Stage 1C implemented and owner-approved, Task B next and Stage 2 Project Library after it** under [ROADMAP_V2.md](ROADMAP_V2.md).
 
 ### Stage 1 — Stable v1.0.0
 
@@ -986,7 +1003,7 @@ No maintenance release is currently scheduled. In particular, the hypothetical `
 
 ## V2 decision record — 2026-10-25
 
-**APPROVED / PLANNED — implementation NOT STARTED.** The user authorized v2.0.0 development, with normative scope, exit gates, licensing policy and deferrals in [ROADMAP_V2.md](ROADMAP_V2.md). All v1 implementation and verification claims remain unchanged.
+**HISTORICAL 2026-10-25 DECISION — APPROVED / PLANNED; implementation had not started at that time.** Current progress is recorded in §8 and RESUME HERE. The user authorized v2.0.0 development, with normative scope, exit gates, licensing policy and deferrals in [ROADMAP_V2.md](ROADMAP_V2.md). All v1 implementation and verification claims remain unchanged.
 
 - **Five pillars:** Context Workshop, Project Library, Caveman Mode, Knowledge Generator, and Document Maintainer.
 - **Context Workshop:** independent selection model; message-safe fractional and disconnected ranges; Ctrl-drag adds, subsequent ordinary drag replaces; direct `arrow-up-right` before the existing part-copy icon appends to ephemeral Scratchpad with Undo and no window/clipboard disruption.
@@ -1294,16 +1311,18 @@ Phases A–A4 established standard-share extraction under unchanged production c
 
 # RESUME HERE
 
-**Release baseline:** YOINK **v1.0.0** remains the only verified published release. Standard public `chatgpt.com/share/...` extraction and the previously verified upstream-unavailable-share handling remain supported. Stage 1A development source is **IMPLEMENTED, TESTED, OWNER UI ACCEPTED** on 2026-10-31; no new packaged executable or public release has been verified.
+## Accepted Stage 1C baseline — 2026-11-02
 
-**Stage 1A checkpoint:** Completed locally at `e0a153c935ce7460e80eaf736a1f313ffa7013c4`. Owner authorized one local commit on `feature/v2-stage1a-scratchpad` in `C:\Users\User\Desktop\Projects\YOINK-v2-stage1a`, based on `d562522b05f5e12bc19fd54482760409ab4c7855`. See §8 for accepted behavior, test counts, audit provenance and the manual paragraph-break copying limitation. The checkpoint's external report contains the resulting SHA and final verification. Submit it for independent TPM audit, then stop; do not push, merge, tag, rebuild or modify the accepted UI.
+**Stage 1A, Option 3 and Stage 1B are locally checkpointed. Stage 1C connected workspace, interactions and Scratchpad append-notification animation are implemented, audited and owner-approved.** This checkpoint is authorized to create one local commit and publish the existing `feature/v2-stage1a-scratchpad` branch to `origin`; publication evidence and resulting SHAs are recorded externally, not assumed here.
 
-**Next development step:** Stage **1B — pure-Python selection core**, as a separately scoped and approved task after checkpoint review; **NOT BEGUN**. Stage 1C timeline follows. [ROADMAP_V2.md](ROADMAP_V2.md) remains the normative scope and sequence; Caveman Mode remains included with Ollama, LangGraph, Pydantic and model-free deterministic target-device preflight. Later v2 stages remain planned.
+**LOCKED:** original Option 3 production artwork and accepted organic silhouettes, cobalt/icy-blue colors, grain, spacing, panel opacity, navigation, animations, Parts Picker, Preview, Scratchpad, full-source extraction and accepted selector-hover/native-drag repair. Do not revert accepted `gui/background.py` changes.
 
-**Option 3 checkpoint:** The owner accepted the static cobalt grain background, integrated with native static rendering, 84% opaque panels, unchanged accepted artwork and organic silhouette. The asset is included in `YOINK.spec`; packaged executable verification remains pending. Submit this local checkpoint for independent TPM audit and stop. Stage 1B is not implemented.
+**DEFERRED:** cell division, by owner decision on 2026-11-02 after three unsuccessful isolated visual approaches. No prototype renderer was integrated; do not describe the experiments as successful or completed production work.
 
-**Successor TPM handoff:** The previously skipped Task 4 remains **INCOMPLETE**, not completed by this checkpoint. Preserve the owner's TPM Corrective Directive in any eventual handoff: independent technical judgment, source-level Codex audit, calibrated model choice, Git staging/commit/push approval boundaries, and the external audit-artifact workflow.
+**NEXT:** Task B shutdown-screen redesign, only under separate instruction and audit. Preserve working shutdown pending that task. Stage 2 Project Library follows Task B; later v2 scope remains governed by ROADMAP_V2.md.
 
-**Owner decision on Task 2:** A–A4 compatibility investigations remain **CLOSED / DEFERRED**; Issue #2 was closed as a known limitation, not a fix. Authenticated Project inspection did not establish complete underlying history or a production-ready extractor; Codex snapshots remain unsupported. Do not reopen without new evidence/authorization.
+**Release/validation:** v2 is development software; v1.0.0 remains the only verified published release. Packaged-EXE validation, opt-in live-share testing and wider Windows/hardware qualification remain pending; automated source/widget checks do not replace physical owner QA. Scratchpad manual paragraph-break copying limitation remains documented in §8.
 
-**Protected original checkout:** `C:\Users\User\Desktop\Projects\YOINK` and its 28 untracked diagnostic files remain untouched. Use the separate feature worktree for the approved checkpoint. Optional live-share and packaged-build verification remain outside it.
+**Historical obligations:** successor TPM Task 4 remains incomplete. Preserve the TPM Corrective Directive and external audit workflow. Project/Codex share investigations remain closed/deferred; Issue #2 closure was a known limitation, not a fix.
+
+**Protected original checkout:** `C:\Users\User\Desktop\Projects\YOINK` and its 28 untracked diagnostic files remain untouched. Use the separate feature worktree. Stop after checkpoint and GitHub synchronization; no merge, tag, executable build, release or new feature work.

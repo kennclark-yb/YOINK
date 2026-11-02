@@ -1,4 +1,5 @@
 import re
+import os
 import time
 from PySide6.QtCore import (
     QEvent,
@@ -28,6 +29,7 @@ from PySide6.QtWidgets import (
     QDialog,
     QFrame,
     QHBoxLayout,
+    QGridLayout,
     QLabel,
     QLineEdit,
     QMainWindow,
@@ -58,6 +60,9 @@ from .application import configure_application
 from .updates import UpdateChecker, VERSION
 from .update_dialog import UpdateDialog
 from .preview import PreviewRoleSelector, render_preview_variants
+from .context_picker import ContextPicker
+from .workspace import AttachedWorkspace
+from .workspace_geometry import workspace_path
 
 
 class ResizeController(QObject):
@@ -188,6 +193,30 @@ class ResultsScrollArea(QScrollArea):
         event.accept()
 
 
+class FeedbackSlot(QWidget):
+    """Reserve the accepted layout slot; move only its feedback ink."""
+    def __init__(self, label):
+        super().__init__()
+        self.label = label
+        label.setParent(self)
+        self.setFixedHeight(18)
+        self.entrance = QVariantAnimation(self)
+        self.entrance.setDuration(220)
+        self.entrance.setStartValue(10.0)
+        self.entrance.setKeyValueAt(.72, -2.0)
+        self.entrance.setEndValue(0.0)
+        self.entrance.setEasingCurve(QEasingCurve.Type.OutCubic)
+        self.entrance.valueChanged.connect(lambda y: label.move(0, round(y)))
+
+    def resizeEvent(self, event):
+        self.label.resize(self.width(), 18)
+        super().resizeEvent(event)
+
+    def settle(self):
+        self.entrance.stop()
+        self.label.move(0, 0)
+
+
 class MainWindow(QMainWindow):
     CORNER_RADIUS = 18
     SCRATCHPAD_COPY_NOTE = (
@@ -205,6 +234,8 @@ class MainWindow(QMainWindow):
 
         self.setStyleSheet(APP_STYLE)
 
+        self._preview_widget = None
+        self._context_picker = None
         self._scratchpad_undo = []
         self._scratchpad_internal_edit = False
         self._last_scratchpad_append = None
@@ -247,6 +278,7 @@ class MainWindow(QMainWindow):
         self._preloaded_version = None
         self._waiting_for_preload = False
 
+        self._result_split_mode = None
         self._operation_settings = None
 
         self.update_checker = UpdateChecker(self)
@@ -638,29 +670,40 @@ class MainWindow(QMainWindow):
         summary_row.setSpacing(8)
 
         summary_text_layout = QVBoxLayout()
-        summary_text_layout.setContentsMargins(0, 0, 0, 0)
-        summary_text_layout.setSpacing(3)
-
-        summary_text_layout.addWidget(
-            self.results_messages
-        )
-        summary_text_layout.addWidget(
-            self.results_total_characters
-        )
-        summary_text_layout.addWidget(
-            self.results_role_breakdown
-        )
-        summary_text_layout.addSpacing(4)
-        summary_text_layout.addWidget(
-            self.results_extraction_mode
-        )
-        summary_text_layout.addWidget(
-            self.results_extracted_characters
-        )
-
-        summary_text_layout.addWidget(
-            self.results_parts
-        )
+        summary_text_layout.setContentsMargins(0,0,0,0)
+        summary_text_layout.setSpacing(6)
+        self.results_statistics=QWidget()
+        self.results_statistics.setAccessibleName("Conversation statistics")
+        stats=QVBoxLayout(self.results_statistics);stats.setContentsMargins(0,0,0,0);stats.setSpacing(7)
+        totals=QGridLayout();totals.setContentsMargins(0,0,0,0);totals.setHorizontalSpacing(8);totals.setVerticalSpacing(0)
+        self.results_stat_headings=[]
+        def heading(text):
+            label=QLabel(text);label.setWordWrap(True);label.setMinimumWidth(0)
+            label.setStyleSheet('font-size: 9px; font-weight: 600; color: #A4AFC5;')
+            self.results_stat_headings.append(label)
+            return label
+        for col,title,value,unit in ((0,'TOTAL MESSAGES FOUND',self.results_messages,'messages'),
+                                     (1,'CHARACTER\nTOTAL',self.results_total_characters,'characters')):
+            totals.addWidget(heading(title),0,col)
+            value.setStyleSheet('font-size: 20px; font-weight: 600; color: #E8EDF8;')
+            totals.addWidget(value,1,col)
+            label=QLabel(unit);label.setStyleSheet('font-size: 10px; color: #B8BAC2;')
+            totals.addWidget(label,2,col);totals.setColumnStretch(col,1)
+        stats.addLayout(totals)
+        stats.addWidget(heading('THREAD'));stats.addWidget(self.results_role_breakdown)
+        stats.addWidget(heading('EXTRACTED MESSAGES'))
+        extracted=QVBoxLayout();extracted.setSpacing(2)
+        for label in (self.results_extraction_mode,self.results_extracted_characters,self.results_parts):
+            label.setStyleSheet('font-size: 10px; color: #CCD3E2;')
+            extracted.addWidget(label)
+        stats.addLayout(extracted)
+        summary_text_layout.addWidget(self.results_statistics)
+        for label in (self.results_messages,self.results_total_characters,
+                      self.results_role_breakdown,self.results_extraction_mode,
+                      self.results_extracted_characters,self.results_parts):
+            label.setWordWrap(True);label.setMinimumWidth(0)
+        self.results_messages.setAccessibleDescription('Full source message count')
+        self.results_total_characters.setAccessibleDescription('Full source character count')
 
         self.preview_button = QPushButton("[ PREVIEW ]")
         self.preview_button.setFixedHeight(32)
@@ -698,21 +741,28 @@ class MainWindow(QMainWindow):
             """
         )
         self.preview_button.clicked.connect(
-            self._preview_entire_thread
+            lambda: self._toggle_workspace_tool("preview")
         )
 
         summary_row.addLayout(
-            summary_text_layout
+            summary_text_layout,1
         )
-        summary_row.addStretch()
         preview_actions = QVBoxLayout()
         preview_actions.addWidget(self.preview_button)
+        self.context_picker_button = QPushButton("[ PARTS PICKER ]")
+        self.context_picker_button.setFixedHeight(32)
+        self.context_picker_button.setStyleSheet(self.preview_button.styleSheet())
+        self.context_picker_button.setAccessibleName("Open Parts Picker")
+        self.context_picker_button.setToolTip("Select message ranges from the complete conversation")
+        self.context_picker_button.setEnabled(False)
+        self.context_picker_button.clicked.connect(lambda: self._toggle_workspace_tool("picker"))
+        preview_actions.addWidget(self.context_picker_button)
         self.scratchpad_button = QPushButton("[ SCRATCHPAD ]")
         self.scratchpad_button.setFixedHeight(32)
         self.scratchpad_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.scratchpad_button.setStyleSheet(self.preview_button.styleSheet())
         self.scratchpad_button.setToolTip("Open this session's scratchpad")
-        self.scratchpad_button.clicked.connect(self._show_scratchpad)
+        self.scratchpad_button.clicked.connect(lambda: self._toggle_workspace_tool("scratchpad"))
         preview_actions.addWidget(self.scratchpad_button)
         self.scratchpad_undo_button = QPushButton("[ UNDO APPEND ]")
         self.scratchpad_undo_button.setFixedHeight(32)
@@ -751,7 +801,8 @@ class MainWindow(QMainWindow):
         self._feedback_timer.timeout.connect(self._fade_scratchpad_feedback)
         self._feedback_opacity.setOpacity(0)
         results_layout.addWidget(results_title)
-        results_layout.addWidget(self.scratchpad_feedback)
+        self._feedback_slot = FeedbackSlot(self.scratchpad_feedback)
+        results_layout.addWidget(self._feedback_slot)
         results_layout.addSpacing(4)
         results_layout.addLayout(summary_row)
         results_layout.addSpacing(4)
@@ -760,7 +811,7 @@ class MainWindow(QMainWindow):
         self.scratchpad_dialog = QDialog(self)
         self.scratchpad_dialog.setWindowTitle("Scratchpad")
         self.scratchpad_dialog.resize(640, 460)
-        self.scratchpad_dialog.setStyleSheet("QDialog { background: #0F1012; }")
+        self.scratchpad_dialog.setStyleSheet("QDialog { background: transparent; }")
         scratchpad_layout = QVBoxLayout(self.scratchpad_dialog)
         scratchpad_layout.setContentsMargins(16, 16, 16, 16)
         scratchpad_layout.setSpacing(10)
@@ -780,7 +831,7 @@ class MainWindow(QMainWindow):
         )
         self.scratchpad.setStyleSheet("""
             QPlainTextEdit {
-                background: #15161A; color: #E7E7EA;
+                background: rgba(15,16,18,160); color: #E7E7EA;
                 border: 1px solid #303137; border-radius: 10px;
                 padding: 18px; font-size: 12px;
             }
@@ -887,18 +938,26 @@ class MainWindow(QMainWindow):
             1,
         )
 
+        self.workspace = AttachedWorkspace(self)
+        self._action_interactions.register(self.workspace.back)
+        self._action_interactions.register(self.scratchpad_copy)
         root_layout.addWidget(self.content_surface)
         self.content_layout.setAlignment(self.card, Qt.AlignmentFlag.AlignVCenter)
-        for action in (self.preview_button, self.scratchpad_button, self.scratchpad_undo_button):
+        for action in (self.preview_button, self.context_picker_button, self.scratchpad_button, self.scratchpad_undo_button):
             self._action_interactions.register(action)
         self.copy_all_button.setFocusPolicy(Qt.FocusPolicy.TabFocus)
         self.extract_another_button.setFocusPolicy(Qt.FocusPolicy.TabFocus)
 
-    def _show_scratchpad_feedback(self, message):
+    def _show_scratchpad_feedback(self, message, entrance=False):
+        visible = bool(self.scratchpad_feedback.text()) and self._feedback_opacity.opacity() > 0
+        self._feedback_slot.settle()
         self._feedback_timer.stop()
         self._feedback_animation.stop()
         self.scratchpad_feedback.setText(message)
         self._feedback_opacity.setOpacity(1)
+        if entrance and not visible and os.environ.get("YOINK_REDUCED_MOTION") != "1":
+            self.scratchpad_feedback.move(0, 10)
+            self._feedback_slot.entrance.start()
         self._feedback_timer.start()
 
     def _fade_scratchpad_feedback(self):
@@ -915,6 +974,7 @@ class MainWindow(QMainWindow):
         self.scratchpad_undo_button.hide()
         self._feedback_timer.stop()
         self._feedback_animation.stop()
+        self._feedback_slot.settle()
         self._feedback_opacity.setOpacity(0)
         self.scratchpad_feedback.clear()
 
@@ -935,19 +995,49 @@ class MainWindow(QMainWindow):
     def _scratchpad_copy_text(self):
         return self.scratchpad.exact_text()
 
-    def _append_to_scratchpad(self, index, part):
+    def _discard_context_picker(self):
+        if self._context_picker is not None:
+            self._context_picker.invalidate_session()
+            self._context_picker.deleteLater()
+            self._context_picker = None
+        self.context_picker_button.setEnabled(False)
+
+    def _toggle_workspace_tool(self, kind):
+        if (not self._conversation or self._results_resetting or self._closing
+                or self._close_after_results):
+            return
+        if (self.workspace.kind==kind and self.workspace.phase in ("open","opening")
+                and self.workspace.stack.currentWidget().isVisible()):
+            self.workspace.collapse()
+        else:
+            {"picker":self._show_context_picker,"preview":self._preview_entire_thread,
+             "scratchpad":self._show_scratchpad}[kind]()
+
+    def _show_context_picker(self):
+        if (not getattr(self, "_conversation", None) or self._results_resetting
+                or self._closing or self._close_after_results):
+            return
+        if self._context_picker is None:
+            self._context_picker = ContextPicker(self._conversation, self._append_to_scratchpad, self, role=self._extraction_mode or "both")
+            for button in self._context_picker.findChildren(QPushButton):
+                self._action_interactions.register(button, smooth_hover=True)
+        self.workspace.open(self._context_picker, "picker")
+        self._context_picker.timeline.setFocus(Qt.FocusReason.TabFocusReason)
+
+    def _append_to_scratchpad(self, index, part, label=None):
         if (self._results_resetting or self._closing or self._close_after_results
                 or not getattr(self, "_conversation", None)):
-            return
+            return False
         now = time.monotonic()
         if (self._last_scratchpad_append is not None
                 and self._last_scratchpad_append[0] == index
                 and now - self._last_scratchpad_append[1] < 0.8):
             self._show_scratchpad_feedback("Already added. Wait a moment to add again.")
-            return
+            return False
         separator = "\n\n" if self.scratchpad.document().characterCount() > 1 else ""
         source = self.url_input.text().strip()
-        heading = f"--- Part {index} · {source} ---" if source else f"--- Part {index} ---"
+        label = label or f"Part {index}"
+        heading = f"--- {label} · {source} ---" if source else f"--- {label} ---"
         self._scratchpad_internal_edit = True
         try:
             cursor = QTextCursor(self.scratchpad.document())
@@ -973,7 +1063,8 @@ class MainWindow(QMainWindow):
         self._last_scratchpad_append = (index, now)
         self.scratchpad_undo_button.setEnabled(True)
         self.scratchpad_undo_button.show()
-        self._show_scratchpad_feedback(f"Part {index} added to Scratchpad.")
+        self._show_scratchpad_feedback(f"{label} added to Scratchpad.", entrance=True)
+        return True
 
     def _undo_scratchpad_append(self):
         if self._results_resetting or self._closing or self._close_after_results or not self._scratchpad_undo:
@@ -999,16 +1090,19 @@ class MainWindow(QMainWindow):
         if (not getattr(self, "_conversation", None) or self._results_resetting
                 or self._closing or self._close_after_results):
             return
-        self.scratchpad_dialog.show()
-        self.scratchpad_dialog.raise_()
-        self.scratchpad_dialog.activateWindow()
+        self.workspace.open(self.scratchpad_dialog, "scratchpad")
         self.scratchpad.setFocus()
 
     def _preview_entire_thread(self):
-        if not self._conversation:
+        if (not self._conversation or self._results_resetting or self._closing
+                or self._close_after_results):
             return
 
-        preview_dialog = QDialog(self)
+        if self._preview_widget is not None:
+            self.workspace.open(self._preview_widget, "preview")
+            return
+        preview_dialog = QWidget(self)
+        self._preview_widget = preview_dialog
         preview_dialog.setWindowTitle(
             "Preview Entire Thread"
         )
@@ -1205,8 +1299,7 @@ class MainWindow(QMainWindow):
         roles.changed.connect(render)
         render("all")
 
-        preview_dialog.exec()
-        preview_dialog.deleteLater()
+        self.workspace.open(preview_dialog, "preview")
 
     def _copy_all_parts(self):
         if not self._parts:
@@ -1325,25 +1418,35 @@ class MainWindow(QMainWindow):
         if self._results_resetting:
             return
         self._results_resetting = True
-        self._action_interactions.clear()
-        self._clear_scratchpad_append_state()
-        self._stop_input_shake()
-        self.scratchpad_dialog.close()
         self.results_panel.setEnabled(False)
-        # Invalidate incoming preload data immediately, but keep the displayed
-        # results intact until the panel has completely retreated.
+        self._set_operation_controls_enabled(False)
+        # Reject late preload/extraction results at the start, but retain live
+        # widgets/source until the workspace has finished its retreat.
         self._preload_version += 1
         self._preloaded_extraction = None
         self._preloaded_version = None
         self._waiting_for_preload = False
         self._operation_settings = None
+        self.workspace.collapse(finished=self._retreat_results_for_reset)
 
+    def _retreat_results_for_reset(self):
+        if self._preview_widget is not None:
+            self._preview_widget.deleteLater()
+            self._preview_widget = None
+        self._discard_context_picker()
+        self._action_interactions.clear()
+        self._clear_scratchpad_append_state()
+        self._stop_input_shake()
+        self.scratchpad_dialog.close()
+        self.results_panel.setEnabled(False)
         # Collapse both together, without leaving empty layout space that
         # would pull the extraction card sideways before the window follows.
         self.setMinimumSize(self._startup_size)
         target_geometry = QRect(self.geometry().topLeft(), self._startup_size)
         target_geometry.moveLeft(self.x() + (self.width()-target_geometry.width())//2)
         target_geometry.moveTop(self.y() + (self.height()-target_geometry.height())//2)
+        from .workspace_geometry import clamp_window
+        target_geometry = clamp_window(target_geometry,self._results_work_area())
 
         def finish_reset():
             self.results_panel.hide()
@@ -1354,6 +1457,7 @@ class MainWindow(QMainWindow):
             self._conversation = None
             self._extracted_conversation = None
             self._extraction_mode = None
+            self._result_split_mode = None
             self._markdown = None
             self._parts = []
             while self.results_container_layout.count():
@@ -1449,7 +1553,7 @@ class MainWindow(QMainWindow):
             self._update_window_mask()
 
         self._results_animation = QVariantAnimation(self)
-        self._results_animation.setDuration(duration)
+        self._results_animation.setDuration(0 if os.environ.get("YOINK_REDUCED_MOTION")=="1" else duration)
         self._results_animation.setStartValue(0.0)
         self._results_animation.setEndValue(1.0)
         self._results_animation.setEasingCurve(easing)
@@ -1458,6 +1562,7 @@ class MainWindow(QMainWindow):
         self._results_animation.start()
 
     def _show_results(self):
+        self.context_picker_button.setEnabled(bool(self._conversation))
         self.results_panel.setEnabled(True)
         full_messages = self._conversation["messages"]
 
@@ -1493,27 +1598,27 @@ class MainWindow(QMainWindow):
             extraction_label = "Entire conversation"
 
         self.results_messages.setText(
-            f"Total of {total_messages:,} messages found"
+            f"{total_messages:,}"
         )
 
         self.results_total_characters.setText(
-            f"{total_characters:,} characters in entire conversation"
+            f"{total_characters:,}"
         )
 
         self.results_role_breakdown.setText(
-            f"{ai_count:,} AI · {user_count:,} User"
+            f"{ai_count:,} AI  \u25cf  {user_count:,} User"
         )
 
         self.results_extraction_mode.setText(
-            f"Extracted: {extraction_label}"
+            f"\u25cf {extraction_label}"
         )
 
         self.results_extracted_characters.setText(
-            f"{extracted_characters:,} characters"
+            f"\u25cf {extracted_characters:,} characters"
         )
 
         self.results_parts.setText(
-            f"Split into {len(self._parts):,} parts"
+            f"\u25cf Split into {len(self._parts):,} parts \u2014 {self._result_split_mode or self.split_selector.currentText()}"
         )
 
         self._build_result_cards()
@@ -1726,8 +1831,13 @@ class MainWindow(QMainWindow):
         )
 
     def _extraction_finished(self, result):
-        if self._closing or self._close_after_results:
+        if self._closing or self._close_after_results or self._results_resetting:
             return
+        self.workspace.collapse(immediate=True)
+        if self._preview_widget is not None:
+            self._preview_widget.deleteLater()
+            self._preview_widget = None
+        self._discard_context_picker()
         self._conversation = result["conversation"]
         self._extracted_conversation = result[
             "extracted_conversation"
@@ -1735,6 +1845,8 @@ class MainWindow(QMainWindow):
         self._markdown = result["markdown"]
         self._parts = result["parts"]
         self._extraction_mode = result["mode"]
+        self._result_split_mode = (self._operation_settings[2] if self._operation_settings
+                                   else self.split_selector.currentText())
 
         self.extract_button.set_progress(
             "DONE",
@@ -1757,7 +1869,7 @@ class MainWindow(QMainWindow):
         print(f"Parts: {len(self._parts)}")
 
     def _extraction_error(self, message):
-        if self._closing or self._close_after_results:
+        if self._closing or self._close_after_results or self._results_resetting:
             return
         print(f"Error: {message}")
 
@@ -2002,6 +2114,13 @@ class MainWindow(QMainWindow):
         return screen.availableGeometry()
 
     def _outer_window_path(self):
+        if hasattr(self, "workspace") and self.workspace.plan is not None:
+            path = workspace_path(self.workspace.plan)
+            if self.workspace.animating:
+                from PySide6.QtGui import QPainterPath
+                bounds = QPainterPath(); bounds.addRect(self.rect())
+                path = path.intersected(bounds)
+            return path
         compact = getattr(self, "_startup_size", self.size()).height()
         if not hasattr(self, "results_panel") or self.results_panel.isHidden():
             compact = self.height()
@@ -2016,7 +2135,7 @@ class MainWindow(QMainWindow):
     def _update_window_mask(self):
         if hasattr(self, "brand"):
             compact = getattr(self, "_startup_size", self.size()).height()
-            self.brand.move(24, 8 + (0 if self.isMaximized() else max(0, (self.height()-compact)//2)))
+            self.brand.move(24, 3 + (0 if self.isMaximized() else max(0, (self.height()-compact)//2)))
             self.brand.raise_()
         path = self._outer_window_path()
         # Painting keeps subpixel antialiasing; the platform region only clips
@@ -2030,6 +2149,11 @@ class MainWindow(QMainWindow):
             self.setMask(region)
             self._last_window_region = region
         self.background.update()
+
+    def moveEvent(self, event):
+        super().moveEvent(event)
+        if (hasattr(self,"workspace") and not getattr(self,"_geometry_frame_active",False)):
+            self.workspace.rebase_move(event.pos()-event.oldPos())
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
@@ -2049,12 +2173,11 @@ class MainWindow(QMainWindow):
                 event.ignore()
             return
 
-        if not self.results_panel.isHidden():
+        if not self.results_panel.isHidden() or self.workspace.saved is not None or self._results_resetting:
             event.ignore()
             self._close_after_results = True
             self.background.setEnabled(False)
-            # Reuse reset's retreat, including an already-running reset.
-            # Its completion requests close again after the panel is hidden.
+            # Reset owns the completion chain: workspace -> Results -> close.
             self._reset_results_session()
             return
 
@@ -2062,6 +2185,7 @@ class MainWindow(QMainWindow):
         self._action_interactions.clear()
         self._clear_scratchpad_append_state()
         self._stop_input_shake()
+        self._discard_context_picker()
         self.scratchpad_dialog.close()
         self.scratchpad.clear()
         self.update_checker.cancel_request()

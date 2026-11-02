@@ -107,6 +107,8 @@ class SplitSelector(QFrame):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
+            # This click belongs to the selector, not the draggable background.
+            event.accept()
 
             if self.popup is not None:
                 if self.popup.isVisible():
@@ -118,6 +120,7 @@ class SplitSelector(QFrame):
                     return
 
             self._show_popup()
+            return
 
         super().mousePressEvent(event)
 

@@ -4,7 +4,7 @@ import logging
 
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QImage, QPainter
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QApplication, QWidget
 from .styles import WINDOW_BG
 from .application import ASSETS
 
@@ -21,6 +21,7 @@ class Background(QWidget):
         self._cache_key = None
         self._image = QImage()
         self.asset_error = None
+        self._drag_origin = None
         if self.preview_enabled:
             path = ASSETS / "static_grain_option3.png"
             if not self._image.load(str(path)):
@@ -55,7 +56,28 @@ class Background(QWidget):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            handle = self.window().windowHandle()
-            if handle:
-                handle.startSystemMove()
+            self._drag_origin = event.position().toPoint()
+            event.accept()
+            return
         super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+        if self._drag_origin is not None:
+            if not event.buttons() & Qt.MouseButton.LeftButton:
+                self._drag_origin = None
+            elif ((event.position().toPoint() - self._drag_origin).manhattanLength()
+                  >= QApplication.startDragDistance()):
+                self._drag_origin = None
+                handle = self.window().windowHandle()
+                if handle:
+                    # A plain click must retain its Qt release. Starting a native
+                    # move on press can swallow it and strand Qt's hover routing.
+                    handle.startSystemMove()
+                event.accept()
+                return
+        super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._drag_origin = None
+        super().mouseReleaseEvent(event)

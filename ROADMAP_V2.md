@@ -1,11 +1,19 @@
 # Y.O.I.N.K. — Version 2 Roadmap
 
-> **Status: APPROVED SCOPE / PLANNED IMPLEMENTATION — NOT YET BUILT**
+> **Status: APPROVED SCOPE / v2 DEVELOPMENT — Stage 1C OWNER-APPROVED BASELINE; NOT A RELEASE**
 >
 > Decision date: 2026-10-25  
 > Repository: https://github.com/kennclark-yb/YOINK  
 > Target: v2.0.0; no promised release date  
 > Baseline: v1.0.0 released and stable; planning started from main at fb395b9ad279f5beb43be93b8af072dfa920c1ae.
+
+## Current status — 2026-11-02
+
+- Stage 1A direct-to-Scratchpad (`e0a153c`), approved Option 3 styling (`f64bf97`) and Stage 1B selection core (`bca121d`) are locally checkpointed.
+- Stage 1C connected workspace, Parts Picker, Preview, Scratchpad, source selection and accepted interactions are implemented and owner-approved. Append-notification entrance, overshoot, settling and dismissal are implemented, audited and accepted; preserve selector-hover/native-drag repair.
+- Original `assets/static_grain_option3.png` remains byte-identical and is the final approved production background, with accepted organic silhouettes, cobalt/icy-blue colors and grain. Cell division is **DEFERRED by owner decision on 2026-11-02** after three unsuccessful isolated visual approaches; none was integrated or accepted as production work.
+- **Task B — shutdown-screen redesign** is the immediate next UI task under separate instruction/audit. Existing shutdown behavior remains until then. **Stage 2 Project Library follows Task B.** The five future pillars and approved scope below remain intact.
+- v2 remains development software; **v1.0.0 is the only verified published release**. Source/widget checks and prior owner acceptance do not establish v2 packaged-EXE, new live-share or broad hardware/DPI qualification. Live-share and frozen-build tests remain opt-in/expected skips. See Project_Record.md and the checkpoint's external audit report for evidence and exact local/remote SHAs.
 
 ## 1. Product direction
 
@@ -189,7 +197,7 @@ Each phase is a bounded reviewable change with its own tests, checks and stable 
 | **7 — Document maintenance** | Evidence-aware update plan, diff review and safe approved apply | No unapproved writes, external-change conflicts, rollback, history preservation |
 | **8 — v2.0.0 qualification** | Source/packaged QA, privacy, licensing, release notes, recovery | All accepted scenarios pass on supported Windows hardware |
 
-Stage 1A — the slanted-arrow direct-to-Scratchpad action — is completed, tested, owner accepted, and locally committed. Stage 1B is the not-yet-implemented pure-Python selection core; Stage 1C is the timeline interaction.
+Stage 1A — the slanted-arrow direct-to-Scratchpad action — is completed, tested, owner accepted, and locally committed. Stage 1B pure-Python selection core is locally checkpointed; Stage 1C timeline and connected workspace are implemented and owner-approved. Task B shutdown-screen redesign precedes Stage 2 Project Library in the current working sequence.
 
 ## 10. Definition of done for v2.0.0
 
@@ -212,9 +220,9 @@ Outside v2.0.0: non-ChatGPT extraction platforms; private ChatGPT URL scraping; 
 ## 12. Maintainer documentation and process
 
 - README must describe shipped v1 behavior truthfully and link here under **Planned for v2.0.0**; it must not market unbuilt features as released.
-- **Project_Record.md remains authoritative current project history**. Its current-state sections reflect **v1 stable + v2 Stage 1A completed and locally committed; Stage 1B not implemented**. Historical decisions and v1 verification must not be rewritten.
+- **Project_Record.md remains authoritative current project history**. Its current-state sections reflect **v1 stable + v2 Stage 1A/Option 3/Stage 1B locally checkpointed; Stage 1C implemented and owner-approved; Task B next, then Stage 2**. Historical decisions and v1 verification must not be rewritten.
 - Record new decisions and milestones as PLANNED/IMPLEMENTED/VERIFIED precisely, with a current RESUME HERE.
 - Collaborate using the established Y.O.I.N.K. workflow: ChatGPT technical planning/review; Codex for scoped repository execution where helpful; operator GUI/packaged verification; focused tests, diff audit, and Git commit after verification.
 - Preserve working copies through Git rather than permanent backup source files, and keep source changes narrowly scoped.
 
-**Current checkpoint:** The owner accepted the Option 3 static cobalt grain background integrated into source with native static rendering, 84% opaque panels, accepted artwork and unchanged organic window silhouette. The background is included in the PyInstaller configuration; packaged executable verification remains pending. Await independent TPM audit of the local checkpoint before separately scoped Stage 1B work.
+**Current checkpoint:** The owner accepted the Option 3 static cobalt grain background integrated into source with native static rendering, 84% opaque panels, accepted artwork and unchanged organic window silhouette. The background is included in the PyInstaller configuration; packaged executable verification remains pending. Stage 1B subsequently checkpointed; Stage 1C is implemented and owner-approved. Review the current baseline checkpoint and synchronization audit; Task B is next under separate instruction, then Stage 2. Cell division remains deferred.

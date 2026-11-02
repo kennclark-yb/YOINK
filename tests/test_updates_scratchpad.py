@@ -145,8 +145,8 @@ class SessionTests(unittest.TestCase):
         w.scratchpad.setPlainText('discard on close')
         w.results_panel.hide()
         w.close()
-        self.assertEqual(w.scratchpad.toPlainText(), '')
         until(lambda: not w.isVisible())
+        self.assertEqual(w.scratchpad.toPlainText(), '')
 
     def prepare_parts(self):
         w = self.window

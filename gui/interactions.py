@@ -11,9 +11,12 @@ class ActionInteractions(QObject):
         self.timer.setInterval(16)
         self.timer.timeout.connect(self.tick)
 
-    def register(self, widget, card=False):
+    def register(self, widget, card=False, smooth_hover=False):
         if not card:
             widget.setFocusPolicy(Qt.FocusPolicy.TabFocus)
+        widget.setProperty("yoinkSmoothHover", smooth_hover)
+        if smooth_hover:
+            widget.setStyleSheet(widget.styleSheet() + "\nQPushButton:hover:enabled { background: #1B2340; }\nQPushButton:pressed:enabled { background: #4D7CFE; color: white; }")
         self.entries[widget] = [widget.styleSheet(), 0.0, False, 0.0, card]
         widget.installEventFilter(self)
         widget.destroyed.connect(lambda: self.entries.pop(widget, None))
@@ -21,6 +24,12 @@ class ActionInteractions(QObject):
     def eventFilter(self, obj, event):
         entry = self.entries.get(obj)
         if entry is not None:
+            if event.type() == QEvent.Type.EnabledChange and not obj.isEnabled():
+                entry[1:4] = [0.0, False, 0.0]
+                obj.setStyleSheet(entry[0])
+                return False
+            if not obj.isEnabled():
+                return False
             if event.type() == QEvent.Type.Enter:
                 entry[2] = True
                 self.timer.start()
@@ -34,6 +43,8 @@ class ActionInteractions(QObject):
         active = False
         now = time.monotonic()
         for widget, entry in list(self.entries.items()):
+            if not widget.isEnabled():
+                continue
             base, value, inside, deadline, card = entry
             target = 1.0 if inside or now < deadline else 0.0
             updated = min(1.0, value + .16) if target else max(0.0, value - .09)
@@ -48,7 +59,9 @@ class ActionInteractions(QObject):
                     widget.setStyleSheet(base + f"\nQFrame#ResultPartCard {{ border: 1px solid rgb({color[0]},{color[1]},{color[2]}); }}")
                     active = True
                     continue
-                widget.setStyleSheet(base + f"\nQPushButton {{ background: rgb({red},{green},{blue}); border: 1px solid #303137; border-radius: 7px; }}\nQPushButton:focus {{ border-color: #7FA0FF; }}\nQPushButton:pressed {{ background: #4D7CFE; color: white; border-color: #4D7CFE; }}")
+                selector = "QPushButton, QPushButton:hover:enabled" if widget.property("yoinkSmoothHover") else "QPushButton"
+                pressed = "QPushButton:pressed:enabled" if widget.property("yoinkSmoothHover") else "QPushButton:pressed"
+                widget.setStyleSheet(base + f"\n{selector} {{ background: rgb({red},{green},{blue}); border: 1px solid #303137; border-radius: 7px; }}\nQPushButton:focus {{ border-color: #7FA0FF; }}\n{pressed} {{ background: #4D7CFE; color: white; border-color: #4D7CFE; }}")
             active |= inside and updated < 1 or not inside and (updated > 0 or now < deadline)
         if not active:
             self.timer.stop()
