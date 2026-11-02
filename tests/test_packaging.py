@@ -30,6 +30,7 @@ class PackagingTests(unittest.TestCase):
             ('assets/fonts', 'assets/fonts'),
             ('assets/icon/yoink.ico', 'assets/icon'),
             ('assets/shutdown.gif', 'assets'),
+            ('assets/shutdown_system_optional.gif', 'assets'),
         ]:
             self.assertIn((str(ROOT / source), destination), datas)
         return analysis, collect

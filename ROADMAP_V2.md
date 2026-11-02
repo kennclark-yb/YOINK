@@ -7,12 +7,19 @@
 > Target: v2.0.0; no promised release date  
 > Baseline: v1.0.0 released and stable; planning started from main at fb395b9ad279f5beb43be93b8af072dfa920c1ae.
 
-## Current status — 2026-11-02
+## Current status — 2026-11-03
+
+## Task B owner acceptance and checkpoint finalization — 2026-11-03 Philippine local time
+
+**IMPLEMENTATION COMPLETE / INDEPENDENT AUDIT PASSED / OWNER APPROVED.** The owner confirmed final visual approval and a successful manual Windows close-and-shutdown test on 2026-11-03. Blue CRT is the production shutdown design; the legacy shutdown.gif remains preserved and inactive. Independent audit reported 178 passed / 2 expected skips, 13 focused native checks at each Qt scale and 122/122 manifest hashes verified. The accepted source is unchanged in this run.
+
+Task B local Git checkpoint and normal GitHub feature-branch synchronization are being finalized in this authorized run; exact resulting SHA and synchronization evidence are recorded in the external checkpoint audit, not embedded in this commit. Stage 1C remains complete and checkpointed; cell division stays deferred. **Stage 2 Project Library is next, but is not started in this run.** V2 packaged-EXE testing remains pending; v1.0.0 remains the only published release. No merge, tag, EXE build or release is authorized.
+
 
 - Stage 1A direct-to-Scratchpad (`e0a153c`), approved Option 3 styling (`f64bf97`) and Stage 1B selection core (`bca121d`) are locally checkpointed.
 - Stage 1C connected workspace, Parts Picker, Preview, Scratchpad, source selection and accepted interactions are implemented and owner-approved. Append-notification entrance, overshoot, settling and dismissal are implemented, audited and accepted; preserve selector-hover/native-drag repair.
 - Original `assets/static_grain_option3.png` remains byte-identical and is the final approved production background, with accepted organic silhouettes, cobalt/icy-blue colors and grain. Cell division is **DEFERRED by owner decision on 2026-11-02** after three unsuccessful isolated visual approaches; none was integrated or accepted as production work.
-- **Task B — shutdown-screen redesign** is the immediate next UI task under separate instruction/audit. Existing shutdown behavior remains until then. **Stage 2 Project Library follows Task B.** The five future pillars and approved scope below remain intact.
+- **Task B — production blue CRT is INTEGRATED IN DEVELOPMENT SOURCE / LOCALLY VERIFIED; owner visual approval and independent implementation audit have passed; Git checkpoint/sync are being finalized.** The owner chose the blue CRT over the previously accepted separate-GIF/quip layout. A reusable GUI renderer supplies centered two-line thick beveled block lettering and exactly one original random quip inside the 220 × 140 CRT. Decorative status lines are removed; the accepted scan/raster is retained with a broader soft scan band. The historically named shutdown_system_optional.gif is now the production surface; shutdown.gif stays byte-identical and inactive. Caller/overlay/timing/workers and Stage 1C remain unchanged. Full offline suite: 180 run, 178 passed, 2 expected skips; 13 focused tests pass offscreen and natively at 100%/150%. Native real-MainWindow evidence and audit are recorded in Project_Record.md. Packaging collection includes the asset, but no EXE build, commit or release occurred. **Stage 2 Project Library follows approved Task B.** The five future pillars remain intact.
 - v2 remains development software; **v1.0.0 is the only verified published release**. Source/widget checks and prior owner acceptance do not establish v2 packaged-EXE, new live-share or broad hardware/DPI qualification. Live-share and frozen-build tests remain opt-in/expected skips. See Project_Record.md and the checkpoint's external audit report for evidence and exact local/remote SHAs.
 
 ## 1. Product direction
@@ -220,9 +227,9 @@ Outside v2.0.0: non-ChatGPT extraction platforms; private ChatGPT URL scraping; 
 ## 12. Maintainer documentation and process
 
 - README must describe shipped v1 behavior truthfully and link here under **Planned for v2.0.0**; it must not market unbuilt features as released.
-- **Project_Record.md remains authoritative current project history**. Its current-state sections reflect **v1 stable + v2 Stage 1A/Option 3/Stage 1B locally checkpointed; Stage 1C implemented and owner-approved; Task B next, then Stage 2**. Historical decisions and v1 verification must not be rewritten.
+- **Project_Record.md remains authoritative current project history**. Its current-state sections reflect **v1 stable + v2 Stage 1A/Option 3/Stage 1B locally checkpointed; Stage 1C owner-approved; Task B production CRT integrated in source and locally verified, owner-approved and independently audited; checkpoint/sync being finalized, then Stage 2**. Historical decisions and v1 verification must not be rewritten.
 - Record new decisions and milestones as PLANNED/IMPLEMENTED/VERIFIED precisely, with a current RESUME HERE.
 - Collaborate using the established Y.O.I.N.K. workflow: ChatGPT technical planning/review; Codex for scoped repository execution where helpful; operator GUI/packaged verification; focused tests, diff audit, and Git commit after verification.
 - Preserve working copies through Git rather than permanent backup source files, and keep source changes narrowly scoped.
 
-**Current checkpoint:** The owner accepted the Option 3 static cobalt grain background integrated into source with native static rendering, 84% opaque panels, accepted artwork and unchanged organic window silhouette. The background is included in the PyInstaller configuration; packaged executable verification remains pending. Stage 1B subsequently checkpointed; Stage 1C is implemented and owner-approved. Review the current baseline checkpoint and synchronization audit; Task B is next under separate instruction, then Stage 2. Cell division remains deferred.
+**Current checkpoint:** The owner accepted the Option 3 static cobalt grain background integrated into source with native static rendering, 84% opaque panels, accepted artwork and unchanged organic window silhouette. The background is included in the PyInstaller configuration; packaged executable verification remains pending. Stage 1B subsequently checkpointed; Stage 1C is implemented and owner-approved. The owner-authorized Task B production CRT is now integrated in development source and locally verified; owner visual confirmation, manual Windows testing and independent audit passed on 2026-11-03; finalize checkpoint/sync before Stage 2. Cell division remains deferred.

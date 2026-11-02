@@ -9,7 +9,7 @@
 >
 > Last reconstructed from verified project history: 2026-10-03
 >
-> Current-state reconciliation: 2026-11-02. Stage 1A, approved Option 3 styling and Stage 1B are locally checkpointed. Stage 1C connected workspace and interactions, including append notification, are implemented and owner-approved for this baseline checkpoint. Original artwork is final; cell division is deferred. Task B shutdown-screen redesign is next, then Stage 2 Project Library. v2 is development software; v1.0.0 remains the only verified published release. Project/Codex share research remains closed/deferred.
+> Current-state reconciliation: 2026-11-02. Stage 1A, approved Option 3 styling and Stage 1B are locally checkpointed. Stage 1C connected workspace and interactions, including append notification, are implemented and owner-approved for this baseline checkpoint. Original artwork is final; cell division is deferred. Task B blue CRT shutdown is integrated into development source and locally verified following the owner's production-design decision; owner visual approval and independent audit have passed; checkpoint/sync are being finalized. Stage 2 Project Library follows approval. v2 is development software; v1.0.0 remains the only verified published release. Project/Codex share research remains closed/deferred.
 
 ---
 
@@ -303,7 +303,7 @@ Separate **ChatGPT Project-shared** and **Codex snapshot** formats were investig
 
 **LOCKED**
 
-Preserve the stable YOINK v1.0.0 baseline while executing the explicitly approved, separately scoped v2.0.0 roadmap in [ROADMAP_V2.md](ROADMAP_V2.md). Stage 1C is implemented and owner-approved; Task B shutdown-screen redesign is the immediate next UI task, followed by Stage 2 Project Library. Future pillars retain their approved scope.
+Preserve the stable YOINK v1.0.0 baseline while executing the explicitly approved, separately scoped v2.0.0 roadmap in [ROADMAP_V2.md](ROADMAP_V2.md). Stage 1C is implemented and owner-approved; Task B blue CRT shutdown is integrated into development source and locally verified, pending independent TPM review and final visual confirmation. Stage 2 Project Library follows approved Task B. Future pillars retain their approved scope.
 
 ## Product Scope
 
@@ -815,7 +815,41 @@ Prior audited delivery: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Stage-1
 
 **Validation limits:** v2 remains development software. No v2 packaged-EXE build/test, new live-share extraction, broad hardware/DPI qualification or new physical owner drag test is claimed by this checkpoint. The opt-in live-share and frozen-build assertions are expected skips. Existing Scratchpad manual paragraph-break copying limitation remains. v1.0.0 is the only verified published release.
 
-**Next sequence:** separately instructed **Task B — shutdown-screen redesign**, preserving existing working shutdown until then; **Stage 2 — Project Library** follows Task B. No shutdown redesign, executable build, tag, merge or release is part of this baseline checkpoint.
+**Sequence at the accepted Stage 1C checkpoint (historical):** separately instructed **Task B — shutdown-screen redesign**, preserving existing working shutdown until that later task; **Stage 2 — Project Library** follows Task B. No shutdown redesign, executable build, tag, merge or release is part of this baseline checkpoint.
+
+---
+
+## Task B first shutdown presentation — 2026-11-02 (superseded)
+
+**HISTORICAL FIRST ITERATION.** The owner initially accepted the separate original-GIF/quip presentation, then expressly superseded it with the production blue CRT decision recorded below. The following describes that earlier iteration and its validation.
+
+**IMPLEMENTED / LOCALLY VERIFIED — TPM INSPECTION AND OWNER VISUAL APPROVAL PENDING; NOT INTEGRATED OR RELEASED.**
+
+The shutdown presentation now uses two independent floating elements: the unchanged original `assets/shutdown.gif`, painted at approximately 220 × 140 logical pixels with an aspect-preserving, antialiased rounded Qt clip; and the existing randomly selected quip in its own small dark rounded container, separated by a transparent 12 px gap. The enclosing dark frame is removed. QMovie is parent-owned, stopped on close and deleted with the presentation. `gui/main_window.py`, shutdown overlay, centering, idle timer and worker completion chains are unchanged.
+
+`assets/shutdown_system_optional.gif` is a separate 480 × 306, black/blue terminal-text alternative for visual approval only. Production continues to load `shutdown.gif`. Its 50 encoded frames loop over 3000 ms; nominal 50 ms source frames merge where identical. The light-blue shimmer moves top to bottom. Authoring uses Pillow and the local Consolas Bold font; no new runtime dependency or font asset was added.
+
+Validation: full offline suite **173 run, 171 passed, 2 expected skips**, 0 failures/errors. Six focused tests passed offscreen and on native Windows Qt at both `QT_SCALE_FACTOR=1` and `1.5`. Tests cover frame alpha/clipping, separate message container, all quips fitting, GIF identity, QMovie decode/advance/loop, idle shutdown and simultaneous active preload/extraction cleanup. Native real-main-window captures at both scales show the original GIF over the existing dimming overlay; native held-worker runs finish with no screen/overlay/worker references left. Optional GIF was separately previewed through native QMovie. Only this machine and Qt scale-factor settings were checked; live network extraction, physical display-scale changes, broad hardware qualification and packaged EXE testing are not claimed. The existing two opt-in skips remain unchanged.
+
+Audit: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Task-B_Shutdown_2026-11-02_201500`, including report, exact diff, native captures, asset, tools, tests, hashes and consolidated ZIP. No staging, commit, push, merge, tag, release or EXE build was performed. Await independent inspection and owner approval before integration or proceeding to Stage 2. Accepted Stage 1C remains locked.
+
+---
+
+## Task B final production blue CRT — 2026-11-02
+
+**IMPLEMENTED IN DEVELOPMENT SOURCE / LOCALLY VERIFIED.** The owner authorized replacing the first shutdown presentation with the blue CRT, subject to final corrections and independent TPM review. The final source is integrated; owner visual approval and independent audit have passed. **Not committed, packaged or released.**
+
+The working optional renderer was moved into `gui/shutdown_crt.py`; `gui/shutdown_screen.py` supplies exactly one `random.choice(EXIT_MESSAGES)` per instance. All 22 strings and their order remain unchanged. Production never imports `tools/preview_shutdown_crt.py`; that tool now previews the same GUI component. The CRT stays 220 × 140 logical pixels, with two centered procedural block-glyph lines, SYSTEM / SHUTDOWN. Bright-blue faces, dark-blue depth, narrow bevels and restrained illumination provide the owner-requested retro typography without a heading-font dependency. One small, centered terminal quip remains at the bottom. The obsolete decorative status lines and separate floating capsule are removed.
+
+The accepted raster/background/perimeter/grain/vignette are preserved. The moving scan highlight uses a three-times-broader soft Gaussian profile with unchanged peak amplitude, downward path and 50 ms cadence. The historically named `assets/shutdown_system_optional.gif` is now the intended production CRT surface: 480 × 306, 60 frames, 3000 ms infinite loop, without baked text. `assets/shutdown.gif` remains byte-identical as an inactive legacy asset. `YOINK.spec` includes the CRT surface and retains the legacy asset; only its collection recipe was tested, with no executable build.
+
+`gui/main_window.py` is byte-identical: frameless/translucent/always-on-top presentation, integer centering, existing dimming, 1200 ms idle timing, repeated-close guard, worker completion gating and overlay cleanup are unchanged. Parent-owned QMovie stops on close and is deleted with the screen. No new runtime dependency. Accepted Stage 1C artwork, geometry, native dragging, notifications, Scratchpad, Picker and extraction are unchanged.
+
+Final validation: **180 offline tests run, 178 passed, 2 expected skips**, zero failures/errors. **13 focused shutdown tests pass offscreen and on native Windows Qt at both 100% and 150% scale factors.** Contracts cover all 22 quips fitting, one random selection, production asset, two-line title bounds/visible faces, no obsolete status text/capsule, broadened restrained scan, playback/looping, disposal, idle timing and concurrent active preload/extraction cleanup. The two expected skips remain opt-in live-share extraction and frozen-build verification.
+
+Native production evidence uses the real MainWindow closeEvent, with a deterministic local preload extraction hold for capture and normal completion on release. Captures at DPR 1.0/1.5 show the corrected title, normal random quips, a longest quip and three scan positions. Long-message evidence seeds only the external harness, choosing from the actual collection through the normal random call; production is unseeded. Actual-size crops are 220 × 140 / 330 × 210 physical pixels. Wider OS/hardware/monitor, physical display-scale changes, live-network extraction and packaged-EXE qualification are not claimed.
+
+Audit: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Task-B_Final-Production-CRT_2026-11-02_212136`, including production screenshots, reference comparison, scan strip/preview, exact incoming/final files and diffs, tests, hashes, execution summary and ZIP. No stage, commit, push, merge, tag, release or EXE build. Stop for independent TPM inspection and final owner visual confirmation; Stage 2 follows approved Task B.
 
 ---
 
@@ -823,20 +857,20 @@ Prior audited delivery: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Stage-1
 
 ## Phase
 
-**v1 VERIFIED — RELEASED / MAINTENANCE; v2 Stage 1C IMPLEMENTED / OWNER APPROVED; BASELINE CHECKPOINT**
+**v1 VERIFIED — RELEASED / MAINTENANCE; v2 Stage 1C OWNER APPROVED; TASK B PRODUCTION CRT IN SOURCE / LOCALLY VERIFIED; FINAL REVIEW PENDING**
 
 v1.0.0 is released and stable.
 
 Repository relocation and development-environment recovery status: **VERIFIED COMPLETE**.
 
-Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the approved wording and RETRY. Investigations into Project-shared and Codex snapshot URLs are **DEFERRED / NOT IMPLEMENTED**; [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) is closed as a known limitation, not a fix. No v1.1.0 release occurred. Stage 1A, Option 3 and Stage 1B are locally checkpointed; Stage 1C is implemented and owner-approved. The previously skipped successor TPM handoff remains incomplete; it is not retroactively marked done. Task B shutdown-screen redesign is next under a separate instruction/audit cycle, then Stage 2 Project Library. The giant-thread investigation remains closed without evidence of an active scalability defect.
+Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the approved wording and RETRY. Investigations into Project-shared and Codex snapshot URLs are **DEFERRED / NOT IMPLEMENTED**; [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) is closed as a known limitation, not a fix. No v1.1.0 release occurred. Stage 1A, Option 3 and Stage 1B are locally checkpointed; Stage 1C is implemented and owner-approved. The previously skipped successor TPM handoff remains incomplete; it is not retroactively marked done. Task B blue CRT is integrated into development source and locally verified under the owner's explicit production decision; independent TPM review and final visual confirmation are pending, then Stage 2 Project Library. The giant-thread investigation remains closed without evidence of an active scalability defect.
 
 ---
 
 # 10. Immediate Next Steps
 
-1. Finalize and independently review the accepted Stage 1C baseline checkpoint and ordinary feature-branch GitHub synchronization. The resulting local/remote SHAs and exact validation evidence belong in the external audit report.
-2. **Immediate next UI task: Task B — shutdown-screen redesign**, under separate instruction and audit. Existing shutdown behavior remains accepted pending that work. **Stage 2 Project Library follows Task B**; preserve all approved future pillars.
+1. Preserve the accepted Stage 1C baseline and verified Git history. Task B does not reopen that audit or authorize Git synchronization.
+2. **Task B production CRT is integrated in development source and locally verified; owner visual approval and independent audit have passed.** Stop before any Git checkpoint, packaging or release. **Stage 2 Project Library follows approved Task B**; preserve all approved future pillars.
 3. **Task 4 — successor TPM handoff remains skipped/incomplete.** Preserve the TPM Corrective Directive: independent technical judgment, source-level audit, calibrated model choice, Git approval boundaries and external audit artifacts.
 4. Preserve the protected original checkout and its 28 untracked diagnostics. Cell division and Project/Codex share compatibility remain deferred. No merge into main, rebase, force-push, tag, executable build or release is authorized here.
 
@@ -951,7 +985,7 @@ Do not add monetization unless user explicitly revisits it.
 
 ## Current Direction
 
-YOINK has two distinct tracks: **maintain verified v1.0.0** and **develop the approved v2.0.0 roadmap, with Stage 1C implemented and owner-approved, Task B next and Stage 2 Project Library after it** under [ROADMAP_V2.md](ROADMAP_V2.md).
+YOINK has two distinct tracks: **maintain verified v1.0.0** and **develop the approved v2.0.0 roadmap, with Stage 1C owner-approved, Task B production CRT integrated in source pending final review, and Stage 2 Project Library after approved Task B** under [ROADMAP_V2.md](ROADMAP_V2.md).
 
 ### Stage 1 — Stable v1.0.0
 
@@ -1309,20 +1343,28 @@ Phases A–A4 established standard-share extraction under unchanged production c
 
 ---
 
+
+
+## Task B owner acceptance and checkpoint finalization — 2026-11-03 Philippine local time
+
+**IMPLEMENTATION COMPLETE / INDEPENDENT AUDIT PASSED / OWNER APPROVED.** The owner confirmed final visual approval and a successful manual Windows close-and-shutdown test on 2026-11-03. Blue CRT is the production shutdown design; the legacy shutdown.gif remains preserved and inactive. Independent audit reported 178 passed / 2 expected skips, 13 focused native checks at each Qt scale and 122/122 manifest hashes verified. The accepted source is unchanged in this run.
+
+Task B local Git checkpoint and normal GitHub feature-branch synchronization are being finalized in this authorized run; exact resulting SHA and synchronization evidence are recorded in the external checkpoint audit, not embedded in this commit. Stage 1C remains complete and checkpointed; cell division stays deferred. **Stage 2 Project Library is next, but is not started in this run.** V2 packaged-EXE testing remains pending; v1.0.0 remains the only published release. No merge, tag, EXE build or release is authorized.
+
 # RESUME HERE
 
 ## Accepted Stage 1C baseline — 2026-11-02
 
-**Stage 1A, Option 3 and Stage 1B are locally checkpointed. Stage 1C connected workspace, interactions and Scratchpad append-notification animation are implemented, audited and owner-approved.** This checkpoint is authorized to create one local commit and publish the existing `feature/v2-stage1a-scratchpad` branch to `origin`; publication evidence and resulting SHAs are recorded externally, not assumed here.
+**Stage 1A, Option 3 and Stage 1B are locally checkpointed. Stage 1C connected workspace, interactions and Scratchpad append-notification animation are implemented, audited and owner-approved.** The Stage 1C checkpoint authorization was historical. Current Task B authorization permits validation, one local checkpoint and normal feature-branch push; no merge, tag, build or release. Prior publication evidence and SHAs remain recorded externally, not assumed here.
 
 **LOCKED:** original Option 3 production artwork and accepted organic silhouettes, cobalt/icy-blue colors, grain, spacing, panel opacity, navigation, animations, Parts Picker, Preview, Scratchpad, full-source extraction and accepted selector-hover/native-drag repair. Do not revert accepted `gui/background.py` changes.
 
 **DEFERRED:** cell division, by owner decision on 2026-11-02 after three unsuccessful isolated visual approaches. No prototype renderer was integrated; do not describe the experiments as successful or completed production work.
 
-**NEXT:** Task B shutdown-screen redesign, only under separate instruction and audit. Preserve working shutdown pending that task. Stage 2 Project Library follows Task B; later v2 scope remains governed by ROADMAP_V2.md.
+**NEXT:** Finalize the owner-authorized Task B checkpoint and GitHub feature-branch sync in this run. Stage 2 Project Library follows; do not start it here. Final owner approval, independent audit and manual Windows shutdown test passed on 2026-11-03. Packaged v2 testing remains pending.
 
 **Release/validation:** v2 is development software; v1.0.0 remains the only verified published release. Packaged-EXE validation, opt-in live-share testing and wider Windows/hardware qualification remain pending; automated source/widget checks do not replace physical owner QA. Scratchpad manual paragraph-break copying limitation remains documented in §8.
 
 **Historical obligations:** successor TPM Task 4 remains incomplete. Preserve the TPM Corrective Directive and external audit workflow. Project/Codex share investigations remain closed/deferred; Issue #2 closure was a known limitation, not a fix.
 
-**Protected original checkout:** `C:\Users\User\Desktop\Projects\YOINK` and its 28 untracked diagnostic files remain untouched. Use the separate feature worktree. Stop after checkpoint and GitHub synchronization; no merge, tag, executable build, release or new feature work.
+**Protected original checkout:** `C:\Users\User\Desktop\Projects\YOINK` and its 28 untracked diagnostic files remain untouched. Use the separate feature worktree. For the 2026-11-03 Task B authorization, stop after validation, one local checkpoint and normal feature-branch synchronization; no merge, tag, executable build, release or Stage 2 work.
