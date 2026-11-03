@@ -9,18 +9,11 @@
 
 ## Current status — 2026-11-03
 
-## Task B owner acceptance and checkpoint finalization — 2026-11-03 Philippine local time
-
-**IMPLEMENTATION COMPLETE / INDEPENDENT AUDIT PASSED / OWNER APPROVED.** The owner confirmed final visual approval and a successful manual Windows close-and-shutdown test on 2026-11-03. Blue CRT is the production shutdown design; the legacy shutdown.gif remains preserved and inactive. Independent audit reported 178 passed / 2 expected skips, 13 focused native checks at each Qt scale and 122/122 manifest hashes verified. The accepted source is unchanged in this run.
-
-Task B local Git checkpoint and normal GitHub feature-branch synchronization are being finalized in this authorized run; exact resulting SHA and synchronization evidence are recorded in the external checkpoint audit, not embedded in this commit. Stage 1C remains complete and checkpointed; cell division stays deferred. **Stage 2 Project Library is next, but is not started in this run.** V2 packaged-EXE testing remains pending; v1.0.0 remains the only published release. No merge, tag, EXE build or release is authorized.
-
-
-- Stage 1A direct-to-Scratchpad (`e0a153c`), approved Option 3 styling (`f64bf97`) and Stage 1B selection core (`bca121d`) are locally checkpointed.
-- Stage 1C connected workspace, Parts Picker, Preview, Scratchpad, source selection and accepted interactions are implemented and owner-approved. Append-notification entrance, overshoot, settling and dismissal are implemented, audited and accepted; preserve selector-hover/native-drag repair.
-- Original `assets/static_grain_option3.png` remains byte-identical and is the final approved production background, with accepted organic silhouettes, cobalt/icy-blue colors and grain. Cell division is **DEFERRED by owner decision on 2026-11-02** after three unsuccessful isolated visual approaches; none was integrated or accepted as production work.
-- **Task B — production blue CRT is INTEGRATED IN DEVELOPMENT SOURCE / LOCALLY VERIFIED; owner visual approval and independent implementation audit have passed; Git checkpoint/sync are being finalized.** The owner chose the blue CRT over the previously accepted separate-GIF/quip layout. A reusable GUI renderer supplies centered two-line thick beveled block lettering and exactly one original random quip inside the 220 × 140 CRT. Decorative status lines are removed; the accepted scan/raster is retained with a broader soft scan band. The historically named shutdown_system_optional.gif is now the production surface; shutdown.gif stays byte-identical and inactive. Caller/overlay/timing/workers and Stage 1C remain unchanged. Full offline suite: 180 run, 178 passed, 2 expected skips; 13 focused tests pass offscreen and natively at 100%/150%. Native real-MainWindow evidence and audit are recorded in Project_Record.md. Packaging collection includes the asset, but no EXE build, commit or release occurred. **Stage 2 Project Library follows approved Task B.** The five future pillars remain intact.
-- v2 remains development software; **v1.0.0 is the only verified published release**. Source/widget checks and prior owner acceptance do not establish v2 packaged-EXE, new live-share or broad hardware/DPI qualification. Live-share and frozen-build tests remain opt-in/expected skips. See Project_Record.md and the checkpoint's external audit report for evidence and exact local/remote SHAs.
+- **Released:** v1.0.0 remains the only published release; stable main unchanged.
+- **Checkpointed:** Stage 1C connected workspace and Task B blue CRT shutdown. Retained the original cobalt-grain background. Deferred cell division after the prototypes failed visual review.
+- **Verified:** Manual Windows shutdown test and independent checkpoint audit passed. Task B feature-branch commit: `7de0613309d977b3e5df0523ea05e2e882662454`.
+- **Next:** Stage 2 Lorekeeper folder/document discovery; optional provider-neutral AI and actual document generation remain planned, not implemented.
+- **Pending:** Packaged v2 EXE, new live-share and broad Windows/hardware testing.
 
 ## 1. Product direction
 
@@ -33,8 +26,8 @@ Y.O.I.N.K. v2 extends The ChatSnatcher into a **local-first conversation-to-proj
 Five committed pillars:
 
 1. **Context Workshop:** fraction presets, visual multi-range selection, exact copying and one-click Scratchpad append.
-2. **Project Library:** persistent local projects, reusable document profiles, multiple source conversations and standalone documents.
-3. **Caveman Mode:** optional, free, shared local inference with a bounded and auditable tool-using workflow.
+2. **Lorekeeper:** choose an existing project folder, discover relevant documents, inspect codebase evidence, and safely propose updates or new documentation.
+3. **Optional AI:** provider-neutral drafting contract; no AI, local Caveman/Ollama or future supported Codex, Claude and other explicit opt-in adapters.
 4. **Knowledge Generator:** TL;DR, high-level and detailed summaries, resume context, Project Records, PRDs, technical specifications, decisions and histories.
 5. **Document Maintainer:** evidence-backed, approval-gated, section-level updates to existing documents.
 
@@ -47,11 +40,12 @@ Five committed pillars:
 - Existing v1 Preview, Copy All, per-part copy, Scratchpad, reset/re-extraction, preload and update checking must work unchanged without any AI installation.
 - Preserve the published v1.0.0 tag/release and historical safety tag ZZ. No speculative scraper rewrite or unrelated UI redesign.
 - Public ChatGPT share URLs remain the only in-scope extraction source for v2.0.0. Private chats, Claude, Gemini, Codex, additional browsers and cross-platform releases are **deferred**.
-- No compulsory accounts, subscriptions, paid API calls, remote AI processing, telemetry or undisclosed data uploads. Retrieving a public ChatGPT share still requires internet.
+- No compulsory AI, accounts, subscriptions, paid calls, telemetry or undisclosed uploads. Remote AI is strictly opt-in with explicit provider choice, source-sharing notice and any cost disclosure. Retrieving a public ChatGPT share still requires internet.
 - Models are **never included in YOINK.exe, its virtual environment or the distributed portable folder**. Model weights and the service must be system/user-level and reusable by other applications.
 - Source conversations must be treated as untrusted input, including apparent instructions embedded inside messages. Documents and untrusted model output cannot authorize arbitrary tool execution.
 - Every persistent edit is subject to preview, validation, specific user approval and a recoverable write process.
-- A project profile is optional; ordinary extraction and standalone document creation must remain available.
+- A project profile and AI connection are optional; ordinary extraction and standalone document creation remain available.
+- **Document voice:** concise, subjectless developer-authored decisions/status updates: “Adopted blue CRT shutdown design.” “Deferred cell division after the prototypes failed visual review.” “Designed AI integration to remain provider-neutral.” Avoid “we”, “the owner”, “the user” and agent-credit narration in project prose. Keep attribution in separate audit evidence.
 
 ## 3. Context Workshop
 
@@ -82,53 +76,48 @@ Build a separate Context Picker using a pure-Python range-selection core and a c
 
 **Gate:** unit tests for odd/even fraction boundaries, long individual messages, range merging, duplicate prevention, role filtering, source numbering; GUI tests for Ctrl behavior, copy, append, Undo, reset and keyboard access.
 
-## 4. Project Library
+## 4. Lorekeeper — project-directory-first documentation
 
-- Store **project profiles**, not application-managed copies of whole Git repositories. A profile may reference a user-chosen project folder, registered Markdown/text documents, many conversation snapshots, source fingerprints and revision metadata.
-- User choices after extraction: **standalone output; create project; attach to an existing project; create a new document; propose an update to a registered document**.
-- Default scope of summarization and document creation is the **entire extracted conversation**, but explicitly allow current Context Picker ranges or selected attached conversations; always display the effective scope.
-- Ordinary extractions remain session-only unless the user explicitly attaches/saves them. Attaching a conversation creates a local **immutable source snapshot** so the project does not depend on the public share link staying accessible. Warn about local retention before attachment.
-- Use **SQLite + FTS5** for profiles, searchable source/evidence indexes, document registrations, jobs, version metadata and migration state. Place app metadata under the user's Windows application-data directory, not the install folder or venv.
-- Keep user-facing Markdown documents as ordinary editable files in user-chosen folders. Retain original file paths, content hashes and visible provenance. Provide export/backup, relocation/relink and recovery.
-- Detect previously imported links, hashes and duplicate evidence; do not silently rewrite project documents after attaching a new source.
-- Restrict filesystem tools to explicitly registered/authorized paths. Preserve external edits; do not mutate Git history or auto-commit.
+**Purpose:** discover and maintain documentation in an existing project folder, rather than replicate a notes library.
 
-**Gate:** create/reopen/relocate project, import two conversations, deduplicate, restore backup, migrate schema and recover safely from interruption, without disrupting standalone usage.
+### Existing documentation
+1. Select an authorized directory; scan read-only by default.
+2. Discover candidate README, architecture, design, history, decisions, logs, specifications and other relevant documents from filenames and content.
+3. Show paths, document roles and confidence; confirm or adjust targets.
+4. Reconcile the full extracted conversation (or explicitly selected ranges) with selected documents, relevant source code, tests and optional read-only Git state. Distinguish claims, decisions, verified code and unknowns.
+5. Present section-level, source-linked modifications with individual accept/reject controls; save only approved edits using hash checks, atomic writes and recovery.
 
-## 5. Caveman Mode — local AI architecture
+### No documentation found
+1. Report missing documentation; request approval to generate appropriate files.
+2. Inventory the full authorized directory, but inspect code intelligently by project structure, entry points, imports, dependencies, tests and selected relevant files. Exclude secrets, generated artifacts, binaries and dependency trees by default.
+3. Build source-referenced compact context packages for lower-capacity models without replacing original transcript/code evidence.
+4. Reconcile transcript with production baseline; ask for missing intent, goals, roadmap or rationale only when necessary.
+5. Propose suitable README, architecture, project record, ADR, history and other documents; preview and approve targets and writes individually.
 
-### 5.1 Selected stack
+### Storage and interoperability
+- Keep lightweight optional project profiles, registered document paths, opt-in immutable transcript snapshots, hashes and revision/job metadata; never manage or duplicate the full repository.
+- Use SQLite + FTS5 in Windows user app-data for evidence indexing, migration, duplicate detection, recovery and backup. Keep Markdown as normal files in their selected directories.
+- Obsidian is an **optional** editor/vault jump point; no required vault or Obsidian installation.
+- Without AI, extraction, folder scan, doc discovery and context-package export remain usable. Do not pretend deterministic templates completed AI drafting.
 
-- **Ollama** (MIT) as one shared locally running inference service for Y.O.I.N.K. and other projects.
-- **Qwen3.5** open-weight family as the initial **benchmark** set; 2B constrained, 4B balanced, 9B stronger candidate. This is **not a claim that any candidate passed Y.O.I.N.K. quality tests**. Verify exact model and derivative licenses before recommendation. Other compatible models may be supported through the adapter.
-- **LangGraph** (MIT) as the sole workflow orchestrator, with explicit bounded state transitions, checkpoints, cancellation, retries and human-approval points.
-- **Pydantic** (MIT) for typed evidence, provider responses, function arguments, file operation proposals and validation. Own a small Ollama adapter. Do **not** add a second general agent framework without a proven need.
-- One local model performs bounded specialist steps (extract evidence, reconcile, draft), not a memory-heavy multi-model swarm.
+**Gate:** authorized reads, explicit target selection, provenance, deduplication, migrations, recovery, zero unapproved writes and unaffected standalone extraction.
 
-### 5.2 **No AI for model selection** — approved installer/setup policy
+## 5. Optional AI — provider-neutral architecture
 
-Model recommendation is **deterministic**, not itself an LLM task. **No bootstrap model, embedded model or predownloaded default model is required to assess the machine.**
+### Provider and ownership boundary
+- Y.O.I.N.K. owns authorized project scanning, source identity, retrieval, evidence validation, diff review, approval, saving and recovery. Reasoning providers only analyze and draft under a bounded typed adapter.
+- Allow **No AI / export context package / local AI / connected supported provider**. Codex, Claude and other external adapters require separately verified API/interface support, authentication, user consent, cost/privacy disclosure and quality tests. Do not presume consumer subscriptions provide API usage or autonomous CLI access.
+- Ollama (MIT) remains the first **optional local adapter candidate**, not a required runtime. Qwen3.5 2B/4B/9B remain benchmark candidates only. No model weights bundled with Y.O.I.N.K.
+- Pydantic (MIT) validates provider/evidence contracts. LangGraph (MIT) is the planned bounded orchestrator where useful: checkpoints, cancellation, retries, capability/budget limits and manual approval.
+- No automatic cloud upload, paid fallback, uncontrolled shell, filesystem, Git, network or unreviewed MCP actions by AI. Treat transcripts and code as untrusted instructions.
 
-- **The packaged application cannot inspect the eventual user's hardware at build time.** Consequently use an **optional first-launch / first-AI-use setup assistant**, or a future installer-side preflight on the **target computer**, rather than making an irreversible selection during packaging.
-- Detect existing Ollama/service and available model tags before offering installation.
-- Use ordinary system probes for architecture, RAM, available RAM, GPU/VRAM and support status, disk space, and runtime health; compare with a tested compatibility matrix. Conservative rule-based tiers choose a recommended candidate; user can override.
-- Present **No AI / use existing model / install recommended model / choose another model**. Network access, runtime installation, model download and model path change must be explicit opt-in actions.
-- Default to the installed Ollama user-level model store. Allow verified, user-selected shared model location; never copy model weights into Y.O.I.N.K. or its venv.
-- After setup, run **separate capability tests** with the selected model for structured JSON, tool calling, source fidelity, latency, memory and interruption. If a model fails document-maintenance benchmarks, restrict that feature or use a non-AI prompt-package alternative rather than assert that it works.
-- If no suitable AI is installed, all deterministic features remain fully usable. Prompt-package/templates may be generated locally, but must never be advertised as a completed AI-authored document.
-- Never fall back automatically to paid cloud inference.
+### Deterministic local setup
+- Detect local runtime/model, CPU, RAM, GPU/VRAM and available disk on the destination device without an AI bootstrap model. Show no-AI and existing-model options before any optional install/download.
+- Keep reusable local weights outside the portable app and venv. Require explicit permission for runtime installation, network access, model download or storage changes.
+- Validate structured output, source fidelity, evidence references, token/context limits, privacy, latency and interruptions for each supported provider. Disable unsupported drafting operations rather than claiming success.
+- Scope read tools to chosen files/messages and optional read-only Git; use FTS5 retrieval before considering embeddings.
 
-### 5.3 Agentic and tool boundaries
-
-- Workflow: immutable source → retrieval → typed evidence extraction → chronology/conflict reconciliation → template-driven draft → deterministic validation → user review → separate authorized save.
-- Read-only scoped tools: list/search/get source messages, message ranges, project documents and sections, source references, revision data, and optionally explicitly configured **read-only** Git status/log/diff.
-- Safe deterministic tools: parse document sections, validate schemas, resolve citations, compare content hashes, render Markdown, generate diff and produce an update proposal.
-- **File writes are application-owned approval-gated operations, not general model tools.** No arbitrary shell, arbitrary network, unrestricted filesystem or unreviewed MCP servers in v2.0.0.
-- Source text is data and cannot modify system instructions or tool permissions. Validate every tool-call argument and response.
-- Limit total tool rounds, iterations, tokens, context, job runtime, retries and concurrency. Offer cancellation, clear progress/errors, restart-safe idempotency, checkpointed resumability and an audit record of model/version, prompt/schema version, evidence IDs and tool results.
-- Retrieval starts with FTS5 and explicit ranges; only add embeddings or a second shared embedding model after measured retrieval-quality need.
-
-**Gate:** hardware preflight without a model, no-AI operation, consent checks, model-visible shared path, deterministic JSON/tool smoke, cancellation, resume/retry, permissions and packaged Windows tests.
+**Gate:** no-AI operation, provider independence, user-controlled data transfer, typed contracts, source fidelity, safe cancellation/recovery and packaged Windows tests.
 
 ## 6. Knowledge Generator — summaries and documents
 
@@ -148,7 +137,7 @@ Model recommendation is **deterministic**, not itself an LLM task. **No bootstra
 - Distinguish **proposed, accepted, reported implemented, externally verified, deferred, rejected, superseded and unknown**.
 - A chat statement that tests passed is **not independently verified**. Read-only Git/test evidence, when supplied, is marked with its own origin.
 - Important claims must resolve to source messages or be explicitly labeled uncertain; code validates that citations exist and match retained sources.
-- Generate Markdown from dedicated schemas/templates. Preview, edit, copy, save or attach to a project, all without implicit authoritative writes.
+- Generate Markdown from dedicated schemas/templates in developer voice: concise subjectless outcomes, no “we” or third-person owner/user/agent narration. Preserve provenance in separate audit records. Preview, edit, copy, save or attach to a project, without implicit writes.
 - Reuse cached evidence to make multiple summary depths cheaper, but retain original transcripts so lossy summaries cannot become primary evidence.
 - Very large source sets may use sequential/hierarchical processing; retain structured evidence and compare conflicting updates before synthesis.
 
@@ -156,7 +145,7 @@ Model recommendation is **deterministic**, not itself an LLM task. **No bootstra
 
 ## 7. Document Maintainer — conservative by design
 
-- Accept Markdown/plain text by file import or paste, or choose an existing profile document.
+- Accept Markdown/plain text by file import/paste, discover candidates in a selected project folder, or choose a registered project document.
 - Parse current sections and recognized status/history blocks, compare source-backed new information, and generate proposed **add, change, retain, flag, or supersede** operations.
 - Protect accepted decisions, verified information, prior history, manual prose and unaffected sections. An unverified newer chat statement does not override an authoritative recorded fact.
 - Show unified/side-by-side diff, evidence links and individual accept/reject controls. Rejecting an edit must not change saved content.
@@ -172,7 +161,7 @@ Model recommendation is **deterministic**, not itself an LLM task. **No bootstra
 
 | Need | GitHub reference | Status |
 | --- | --- | --- |
-| Local model runtime | ollama/ollama (MIT) | Chosen |
+| Optional local runtime | ollama/ollama (MIT) | Initial adapter candidate, not required |
 | Orchestration | langchain-ai/langgraph (MIT) | Chosen |
 | Typed contracts | pydantic/pydantic (MIT) | Chosen |
 | Long-document summary | Wintersta7e/Doc-Summarizer (MIT) | First isolated code-evaluation candidate |
@@ -196,8 +185,8 @@ Each phase is a bounded reviewable change with its own tests, checks and stable 
 | --- | --- | --- |
 | **0 — Documentation and baseline** | Publish roadmap; synchronize README/Project Record; preserve v1 history | Consistent planned statuses; only docs changed; links verified |
 | **1 — Context Workshop** | Scratchpad arrow + Undo, selection core, timeline Ctrl-drag, fraction presets, selection copy/append | Deterministic range tests and GUI clipboard/reset checks |
-| **2 — Project Library** | Profiles, snapshots, document registry, SQLite FTS5, export/recovery | Migration/duplicate/data-loss tests; standalone path unaffected |
-| **3 — Caveman Mode foundation** | Model-free hardware preflight, optional Ollama/model setup, typed adapter/tool registry, bounded LangGraph runner | No-model preflight, consent, offline/no-AI, model quality/tool tests |
+| **2 — Lorekeeper foundation** | Scoped directory scan, doc discovery, lightweight profiles, SQLite FTS5, recovery | Authorization, migration/duplicate/data-loss tests; standalone path unaffected |
+| **3 — Optional AI foundation** | Provider-neutral adapters, no-AI context export, optional local Ollama benchmark and separately gated external providers | No-AI, consent, adapter isolation, schema and quality tests |
 | **4 — Evidence engine** | Stable source IDs, retrieval, chronology/status reconciliation, provenance validator | Golden contradictory/large cases; citation resolution |
 | **5 — Summary and handoff** | TL;DR, high-level, detailed and resume context | Completeness, source fidelity, repeatability, cancelled/resumed jobs |
 | **6 — Document creation** | Project Record, PRD, TRD, SRS/SDD, decision/history templates | Schema and unknown-claim tests; edit/save, standalone/project modes |
@@ -209,7 +198,7 @@ Stage 1A — the slanted-arrow direct-to-Scratchpad action — is completed, tes
 ## 10. Definition of done for v2.0.0
 
 - The **packaged Windows app**, not merely a developer script, provides all five pillars.
-- v1 extraction, splitting, copy, Scratchpad, reset, errors, packaging and updater still work when **no Ollama/model exists**.
+- v1 extraction, splitting, copy, Scratchpad, reset, errors, packaging and updater still work with **no AI provider**.
 - Fraction selection and disconnected Ctrl-drag ranges are precise, deduplicated, previewable, correctly numbered and keyboard accessible.
 - Direct Scratchpad append takes one click, preserves clipboard and session notes, and has Undo.
 - A project can retain at least two imported conversations and create/update a linked document with source traceability.
@@ -222,14 +211,14 @@ Stage 1A — the slanted-arrow direct-to-Scratchpad action — is completed, tes
 
 ## 11. Explicit deferrals
 
-Outside v2.0.0: non-ChatGPT extraction platforms; private ChatGPT URL scraping; cloud/paid inference; bundled models; arbitrary shell and autonomous general coding agents; unreviewed MCP tools; automatic writes/commits to Git; collaborative/cloud project sync; web/mobile apps; full fidelity DOCX/PDF authoring; always-on monitoring; and speculative changes to the closed giant-thread investigation. Historical optional "big chonker" error wording stays deferred.
+Outside v2.0.0: non-ChatGPT extraction platforms; private ChatGPT URL scraping; automatic/undisclosed cloud or paid inference; unverified direct Codex/Claude integrations; bundled models; arbitrary shell and autonomous general coding agents; unreviewed MCP tools; automatic writes/commits to Git; collaborative/cloud project sync; web/mobile apps; full fidelity DOCX/PDF authoring; always-on monitoring; and speculative changes to the closed giant-thread investigation. Historical optional "big chonker" error wording stays deferred.
 
 ## 12. Maintainer documentation and process
 
 - README must describe shipped v1 behavior truthfully and link here under **Planned for v2.0.0**; it must not market unbuilt features as released.
-- **Project_Record.md remains authoritative current project history**. Its current-state sections reflect **v1 stable + v2 Stage 1A/Option 3/Stage 1B locally checkpointed; Stage 1C owner-approved; Task B production CRT integrated in source and locally verified, owner-approved and independently audited; checkpoint/sync being finalized, then Stage 2**. Historical decisions and v1 verification must not be rewritten.
-- Record new decisions and milestones as PLANNED/IMPLEMENTED/VERIFIED precisely, with a current RESUME HERE.
+- **Project_Record.md remains authoritative current project history**. Checkpointed Stage 1A, Option 3, Stage 1B, Stage 1C and Task B; Stage 2 Lorekeeper planned. Preserve historical facts and v1 verification.
+- Record new decisions and milestones as PLANNED/IMPLEMENTED/VERIFIED precisely, with a current RESUME HERE. Use subjectless developer-style decisions and impersonal Git commit subjects; reserve person/tool attribution for audit evidence.
 - Collaborate using the established Y.O.I.N.K. workflow: ChatGPT technical planning/review; Codex for scoped repository execution where helpful; operator GUI/packaged verification; focused tests, diff audit, and Git commit after verification.
 - Preserve working copies through Git rather than permanent backup source files, and keep source changes narrowly scoped.
 
-**Current checkpoint:** The owner accepted the Option 3 static cobalt grain background integrated into source with native static rendering, 84% opaque panels, accepted artwork and unchanged organic window silhouette. The background is included in the PyInstaller configuration; packaged executable verification remains pending. Stage 1B subsequently checkpointed; Stage 1C is implemented and owner-approved. The owner-authorized Task B production CRT is now integrated in development source and locally verified; owner visual confirmation, manual Windows testing and independent audit passed on 2026-11-03; finalize checkpoint/sync before Stage 2. Cell division remains deferred.
+**Current checkpoint:** Retained Option 3 background and connected Stage 1C workspace. Adopted and checkpointed Task B blue CRT. Deferred cell division. Planned Lorekeeper as the next stage, with optional provider-neutral AI. Packaged v2 testing remains pending.

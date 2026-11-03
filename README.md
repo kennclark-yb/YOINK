@@ -361,23 +361,19 @@ behavior.
 
 ------------------------------------------------------------------------
 
-## Planned for v2.0.0 — Context Workshop and Caveman Mode
+## Planned for v2.0.0 — Context Workshop and Lorekeeper
 
-**v1.0.0 remains the released, stable version. Everything described below is approved for future development, not shipped or verified in the current executable.**
+**v1.0.0 remains the only released version.** Stage 1A/1B/1C and the blue CRT shutdown are checkpointed on the v2 development branch, not yet distributed as v2.
 
-Version 2 is planned as a local-first conversation-to-project-context toolkit, built on the existing ChatGPT share extraction rather than replacing it. Its five pillars:
+- **Context Workshop:** select exact, source-preserving conversation ranges; copy and append to Scratchpad.
+- **Lorekeeper:** choose a project directory, identify architecture/README/history/decision files, confirm targets, compare the extracted transcript with actual code, then review and approve proposed edits. When no suitable docs exist, offer source-grounded document creation instead of an empty managed library.
+- **Optional AI:** choose no AI, export context for another tool, use compatible local inference (initial Ollama/Caveman candidate), or connect a future verified Codex/Claude/other adapter. No mandatory AI subscription, remote upload or bundled model.
+- **Knowledge Generator:** create source-backed summaries and developer-voiced README, architecture, decision, history and handoff documents.
+- **Document Maintainer:** preview section-level diffs with evidence and approve every write; preserve existing decisions and source history.
 
-- **Context Workshop:** copy exact fractional, individual, and disconnected message ranges through a visual timeline; Ctrl+drag adds ranges. A new slanted-arrow control will append a result part directly to the session Scratchpad without opening it or changing the clipboard.
-- **Project Library:** optional local project profiles containing documents, multiple saved conversation sources, and standalone or project-linked outputs.
-- **Caveman Mode:** optional free local AI using a shared Ollama model installation, with a controlled tool-using processing pipeline. **No AI is needed to recommend a model**: optional first-use setup checks the destination computer's actual CPU, RAM, GPU/VRAM and available disk space with ordinary code, recommends a suitable model, and downloads only after consent. No weights ship inside YOINK or its virtual environment.
-- **Knowledge Generator:** TL;DR, high-level and detailed summaries, resume context, Project Records, PRDs, TRDs, decision logs and handoffs, with preserved source references.
-- **Document Maintainer:** propose reviewable, evidence-backed edits to existing documents, retain past decisions and history, require user approval before saving.
+Without AI, extraction, folder scan, document discovery and portable context export remain available. Obsidian is an optional way to open existing Markdown files, not a dependency. External providers require separate supported integrations and explicit privacy/cost consent.
 
-**YOINK must keep working without any local AI model.** Public ChatGPT share extraction will still require internet access. Model weights, inference service and source/document storage stay outside the portable application folder.
-
-See the [approved v2 roadmap](ROADMAP_V2.md) for scope, delivery stages, reuse/license policy, safeguards, acceptance criteria and explicit deferrals. No release date is promised; each development stage must pass tests and review before v2.0.0 ships.
-
-------------------------------------------------------------------------
+See [ROADMAP_V2.md](ROADMAP_V2.md) for planned stages and acceptance gates; no v2 release date is promised.
 
 ## Contributing
 

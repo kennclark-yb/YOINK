@@ -9,7 +9,7 @@
 >
 > Last reconstructed from verified project history: 2026-10-03
 >
-> Current-state reconciliation: 2026-11-02. Stage 1A, approved Option 3 styling and Stage 1B are locally checkpointed. Stage 1C connected workspace and interactions, including append notification, are implemented and owner-approved for this baseline checkpoint. Original artwork is final; cell division is deferred. Task B blue CRT shutdown is integrated into development source and locally verified following the owner's production-design decision; owner visual approval and independent audit have passed; checkpoint/sync are being finalized. Stage 2 Project Library follows approval. v2 is development software; v1.0.0 remains the only verified published release. Project/Codex share research remains closed/deferred.
+> Current-state reconciliation: 2026-11-03. Checkpointed Stage 1A, Option 3 styling, Stage 1B, Stage 1C and Task B production blue CRT. Retained original background; deferred cell division. Planned Stage 2 Lorekeeper with optional provider-neutral AI. v2 remains development software; v1.0.0 is the only published release.
 
 ---
 
@@ -65,6 +65,13 @@ Use these statuses deliberately:
 - **SUPERSEDED** — historical state replaced by newer authoritative state.
 
 Do not treat IMPLEMENTED as VERIFIED.
+
+## Project documentation voice
+
+- Write README, project records, architecture, decisions, histories, changelogs and generated docs as **developer-authored project text**, not commentary on a conversation.
+- Use concise, subjectless outcomes: **“Adopted blue CRT shutdown design.” “Deferred cell division after the prototypes failed visual review.” “Designed AI integration to remain provider-neutral.”**
+- Avoid “we”, “the owner”, “the user”, “Codex recommended” and other actor/agent narration in finished project prose. Neutral technical descriptions are appropriate.
+- Preserve source identity, approvals, test attribution and historical audit facts in separate evidence records whenever needed. Do not rewrite existing Git history to change a commit message; use clear, impersonal messages going forward.
 
 ## Collaboration Model
 
@@ -243,7 +250,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 **Current release:** v1.0.0
 
-**Current project state:** **v1.0.0 VERIFIED RELEASED / STABLE; v2 Stage 1A, Option 3 and Stage 1B LOCALLY CHECKPOINTED; Stage 1C IMPLEMENTED / OWNER APPROVED; DEVELOPMENT SOFTWARE**
+**Current project state:** **v1.0.0 VERIFIED RELEASED / STABLE; v2 Stage 1A, Option 3, Stage 1B, Stage 1C AND TASK B CHECKPOINTED; STAGE 2 LOREKEEPER PLANNED; DEVELOPMENT SOFTWARE**
 
 **Repository:**
 
@@ -303,7 +310,7 @@ Separate **ChatGPT Project-shared** and **Codex snapshot** formats were investig
 
 **LOCKED**
 
-Preserve the stable YOINK v1.0.0 baseline while executing the explicitly approved, separately scoped v2.0.0 roadmap in [ROADMAP_V2.md](ROADMAP_V2.md). Stage 1C is implemented and owner-approved; Task B blue CRT shutdown is integrated into development source and locally verified, pending independent TPM review and final visual confirmation. Stage 2 Project Library follows approved Task B. Future pillars retain their approved scope.
+Preserve stable v1.0.0 while advancing the separately scoped v2 roadmap in [ROADMAP_V2.md](ROADMAP_V2.md). Checkpointed Stage 1C and Task B blue CRT shutdown; next Stage 2 Lorekeeper discovery and provider-neutral AI foundation remain planned.
 
 ## Product Scope
 
@@ -869,12 +876,10 @@ Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including m
 
 # 10. Immediate Next Steps
 
-1. Preserve the accepted Stage 1C baseline and verified Git history. Task B does not reopen that audit or authorize Git synchronization.
-2. **Task B production CRT is integrated in development source and locally verified; owner visual approval and independent audit have passed.** Stop before any Git checkpoint, packaging or release. **Stage 2 Project Library follows approved Task B**; preserve all approved future pillars.
-3. **Task 4 — successor TPM handoff remains skipped/incomplete.** Preserve the TPM Corrective Directive: independent technical judgment, source-level audit, calibrated model choice, Git approval boundaries and external audit artifacts.
-4. Preserve the protected original checkout and its 28 untracked diagnostics. Cell division and Project/Codex share compatibility remain deferred. No merge into main, rebase, force-push, tag, executable build or release is authorized here.
-
----
+1. Begin Stage 2 Lorekeeper read-only project-folder inventory and document discovery; do not start uncontrolled AI writing.
+2. Preserve accepted Stage 1C artwork/workspace, Scratchpad append, and Task B CRT shutdown at published feature-branch checkpoint `7de0613309d977b3e5df0523ea05e2e882662454`.
+3. Keep AI optional and provider-neutral; any Codex, Claude or local integration requires separate capability, security and consent validation.
+4. Maintain zero unapproved writes, protected original checkout, deferred cell-division and share-format investigations. Keep successor TPM Task 4 incomplete until separately resolved.
 
 # 11. Known Issues
 
@@ -1345,26 +1350,30 @@ Phases A–A4 established standard-share extraction under unchanged production c
 
 
 
-## Task B owner acceptance and checkpoint finalization — 2026-11-03 Philippine local time
+## Task B accepted checkpoint — 2026-11-03 Philippine local time
 
-**IMPLEMENTATION COMPLETE / INDEPENDENT AUDIT PASSED / OWNER APPROVED.** The owner confirmed final visual approval and a successful manual Windows close-and-shutdown test on 2026-11-03. Blue CRT is the production shutdown design; the legacy shutdown.gif remains preserved and inactive. Independent audit reported 178 passed / 2 expected skips, 13 focused native checks at each Qt scale and 122/122 manifest hashes verified. The accepted source is unchanged in this run.
+**IMPLEMENTED / VERIFIED IN DEVELOPMENT / CHECKPOINTED.** Adopted production blue CRT shutdown with two-line SYSTEM / SHUTDOWN lettering, animated scan and one randomized quip. Preserved inactive legacy `assets/shutdown.gif`. Manual Windows close test and independent audit passed. Committed and synchronized checkpoint `7de0613309d977b3e5df0523ea05e2e882662454`. Reported regression: 178 passed, 2 expected skips; 13 native tests per Qt scale. Packaged v2 EXE remains untested.
 
-Task B local Git checkpoint and normal GitHub feature-branch synchronization are being finalized in this authorized run; exact resulting SHA and synchronization evidence are recorded in the external checkpoint audit, not embedded in this commit. Stage 1C remains complete and checkpointed; cell division stays deferred. **Stage 2 Project Library is next, but is not started in this run.** V2 packaged-EXE testing remains pending; v1.0.0 remains the only published release. No merge, tag, EXE build or release is authorized.
+## Stage 2 design direction — 2026-11-03
+
+**PLANNED / NOT IMPLEMENTED.** Reframed Project Library into **Lorekeeper**, a project-directory-first documentation workflow: discover target documents, confirm selection, reconcile actual code and transcript evidence, preview section-level changes and save only specifically approved edits. When documents are missing, inspect relevant codebase structure and offer to generate necessary docs. Obsidian is an optional editor, not a dependency.
+
+**Designed AI integration to remain provider-neutral.** No-AI scanning/export remains available. Local Caveman/Ollama is optional; future Codex, Claude and other providers require separate supported adapter, explicit connection, privacy/cost notice and tests. AI must not control file writes.
+
+**Document voice:** concise, subjectless developer-authored outcomes. Keep historical audit attribution in evidence files.
 
 # RESUME HERE
 
-## Accepted Stage 1C baseline — 2026-11-02
+**Baseline:** v1.0.0 released; v2 Stage 1A, Option 3, Stage 1B, Stage 1C and Task B checkpointed. Latest published feature-branch commit: `7de0613309d977b3e5df0523ea05e2e882662454`.
 
-**Stage 1A, Option 3 and Stage 1B are locally checkpointed. Stage 1C connected workspace, interactions and Scratchpad append-notification animation are implemented, audited and owner-approved.** The Stage 1C checkpoint authorization was historical. Current Task B authorization permits validation, one local checkpoint and normal feature-branch push; no merge, tag, build or release. Prior publication evidence and SHAs remain recorded externally, not assumed here.
+**Locked:** Original cobalt-grain artwork, organic connected panels, 84% opacity, spacing, native drag/hover fix, source-preserving extraction, Scratchpad notifications, Parts Picker/Preview and blue CRT shutdown.
 
-**LOCKED:** original Option 3 production artwork and accepted organic silhouettes, cobalt/icy-blue colors, grain, spacing, panel opacity, navigation, animations, Parts Picker, Preview, Scratchpad, full-source extraction and accepted selector-hover/native-drag repair. Do not revert accepted `gui/background.py` changes.
+**Deferred:** Cell division after failed prototypes; Project-shared and Codex snapshot extraction compatibility.
 
-**DEFERRED:** cell division, by owner decision on 2026-11-02 after three unsuccessful isolated visual approaches. No prototype renderer was integrated; do not describe the experiments as successful or completed production work.
+**Next:** Stage 2 Lorekeeper project-directory scan and document discovery; optional provider-neutral AI/document drafting remains planned and unimplemented.
 
-**NEXT:** Finalize the owner-authorized Task B checkpoint and GitHub feature-branch sync in this run. Stage 2 Project Library follows; do not start it here. Final owner approval, independent audit and manual Windows shutdown test passed on 2026-11-03. Packaged v2 testing remains pending.
+**Release/verification:** v2 remains development software; no packaged EXE test or v2 release. v1.0.0 remains published. Retain documented Scratchpad paragraph-break limitation and source-validation gaps.
 
-**Release/validation:** v2 is development software; v1.0.0 remains the only verified published release. Packaged-EXE validation, opt-in live-share testing and wider Windows/hardware qualification remain pending; automated source/widget checks do not replace physical owner QA. Scratchpad manual paragraph-break copying limitation remains documented in §8.
+**Preservation:** Keep separate feature worktree, protected original checkout and its 28 diagnostics untouched. No unapproved Git operations, uploads or writes. Successor TPM Task 4 remains incomplete.
 
-**Historical obligations:** successor TPM Task 4 remains incomplete. Preserve the TPM Corrective Directive and external audit workflow. Project/Codex share investigations remain closed/deferred; Issue #2 closure was a known limitation, not a fix.
-
-**Protected original checkout:** `C:\Users\User\Desktop\Projects\YOINK` and its 28 untracked diagnostic files remain untouched. Use the separate feature worktree. For the 2026-11-03 Task B authorization, stop after validation, one local checkpoint and normal feature-branch synchronization; no merge, tag, executable build, release or Stage 2 work.
+**Writing convention:** “Adopted blue CRT shutdown design.” “Deferred cell division after the prototypes failed visual review.” “Designed AI integration to remain provider-neutral.” No “we”, “the owner”, “the user” or model-credit narration in project-facing documents.
