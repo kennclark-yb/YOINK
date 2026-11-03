@@ -9,11 +9,10 @@
 
 ## Current status — 2026-11-03
 
-- **Released:** v1.0.0 remains the only published release; stable main unchanged.
+- **Released:** v1.1.0 includes the Context Workshop and DOCFATHER teaser.
 - **Checkpointed:** Stage 1C connected workspace and Task B blue CRT shutdown. Retained the original cobalt-grain background. Deferred cell division after the prototypes failed visual review.
 - **Verified:** Manual Windows shutdown test and independent checkpoint audit passed. Task B feature-branch commit: `7de0613309d977b3e5df0523ea05e2e882662454`.
-- **Candidate:** v1.1.0 includes the Context Workshop and DOCFATHER teaser; it remains unpublished.
-- **Development:** Stage 2A read-only Case Intake exists uncommitted in the development worktree and is excluded from the public candidate.
+- **Development:** Stage 2A read-only Case Intake exists uncommitted in the development worktree and is excluded from v1.1.0.
 - **Planned:** Evidence reconciliation, the provider-neutral AI harness, approval-gated writes and integrated DOCFATHER workspace remain future work.
 - **Pending:** Packaged v2 EXE, new live-share and broad Windows/hardware testing.
 
@@ -80,7 +79,7 @@ Build a separate Context Picker using a pure-Python range-selection core and a c
 
 ## 4. THE DOCFATHER — project-directory-first documentation
 
-Documentation Oversight & Context Forensics, Architecture Tracking, History, Evidence & Reconciliation. “I'm gonna make you a diff you can approve.” The v1.1.0 candidate displays only `THE DOCFATHER IS STILL OUT.`; the project-aware workflow below is future v2 scope.
+Documentation Oversight & Context Forensics, Architecture Tracking, History, Evidence & Reconciliation. “I'm gonna make you a diff you can approve.” v1.1.0 displays only `THE DOCFATHER IS STILL OUT.`; the project-aware workflow below is future v2 scope.
 
 **Purpose:** discover and maintain documentation in an existing project folder, rather than replicate a notes library.
 
@@ -197,7 +196,7 @@ Each phase is a bounded reviewable change with its own tests, checks and stable 
 | **7 — Document maintenance** | Evidence-aware update plan, diff review and safe approved apply | No unapproved writes, external-change conflicts, rollback, history preservation |
 | **8 — v2.0.0 qualification** | Source/packaged QA, privacy, licensing, release notes, recovery | All accepted scenarios pass on supported Windows hardware |
 
-Checkpointed Stage 1A direct-to-Scratchpad, Stage 1B range-selection core, Stage 1C connected workspace, and Task B blue CRT shutdown. Stage 2A read-only discovery is implemented in uncommitted development code and excluded from the v1.1.0 candidate; provider integrations and document generation/maintenance remain planned.
+Checkpointed Stage 1A direct-to-Scratchpad, Stage 1B range-selection core, Stage 1C connected workspace, and Task B blue CRT shutdown. Stage 2A read-only discovery is implemented in uncommitted development code and excluded from v1.1.0; provider integrations and document generation/maintenance remain planned.
 
 ## 10. Definition of done for v2.0.0
 
@@ -225,4 +224,4 @@ Outside v2.0.0: non-ChatGPT extraction platforms; private ChatGPT URL scraping; 
 - Collaborate using the established Y.O.I.N.K. workflow: ChatGPT technical planning/review; Codex for scoped repository execution where helpful; operator GUI/packaged verification; focused tests, diff audit, and Git commit after verification.
 - Preserve working copies through Git rather than permanent backup source files, and keep source changes narrowly scoped.
 
-**Current checkpoint:** Retained Option 3 background and connected Stage 1C workspace. Adopted and checkpointed Task B blue CRT. Deferred cell division. Implemented Stage 2A in development; retained THE DOCFATHER as a teaser in the v1.1.0 candidate. Optional provider-neutral AI remains planned. Packaged v2 testing remains pending.
+**Current checkpoint:** Retained Option 3 background and connected Stage 1C workspace. Adopted and checkpointed Task B blue CRT. Deferred cell division. Implemented Stage 2A in development; released THE DOCFATHER as a teaser in v1.1.0. Optional provider-neutral AI remains planned. Packaged v2 testing remains pending.

@@ -1,6 +1,6 @@
 # YOINK — local Windows build
 
-The 1.1.0 candidate is unreleased. The portable folder is the distribution unit.
+The portable folder is the distribution unit for v1.1.0.
 
 Your Oversized Interactions, Nicely Kept.
 

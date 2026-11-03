@@ -9,7 +9,7 @@
 >
 > Last reconstructed from verified project history: 2026-10-03
 >
-> Current-state reconciliation: 2026-11-03. Checkpointed Stage 1A, Option 3 styling, Stage 1B, Stage 1C and Task B production blue CRT. Retained original background; deferred cell division. Stage 2A Case Intake is implemented in uncommitted development code and excluded from the unpublished v1.1.0 teaser candidate. Provider-neutral AI remains planned; v1.0.0 is the only published release.
+> Current-state reconciliation: 2026-11-03. Checkpointed Stage 1A, Option 3 styling, Stage 1B, Stage 1C and Task B production blue CRT. Retained original background; deferred cell division. Stage 2A Case Intake is implemented in uncommitted development code and excluded from the v1.1.0 teaser release. Provider-neutral AI remains planned.
 
 ---
 
@@ -249,9 +249,9 @@ Keep `RESUME HERE` current.
 
 Extract public ChatGPT shared conversations into practical reusable Markdown/text so very large conversations can be preserved, split, copied, or carried into another AI session without manually copying the entire thread.
 
-**Current release:** v1.0.0
+**Current release:** v1.1.0
 
-**Current project state:** v1.0.0 published; v1.1.0 candidate built and manually accepted, unpublished; Stage 2A Case Intake implemented in uncommitted development code and excluded from the candidate.
+**Current project state:** v1.1.0 published with the Context Workshop and DOCFATHER teaser; Stage 2A Case Intake is implemented in uncommitted development code and excluded from the release.
 
 **Repository:**
 
@@ -259,7 +259,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 **Public release:**
 
-`https://github.com/kennclark-yb/YOINK/releases/tag/v1.0.0`
+`https://github.com/kennclark-yb/YOINK/releases/tag/v1.1.0`
 
 **Primary branch:** `main`
 
@@ -291,7 +291,7 @@ The project is considered complete and stable unless deliberately reopened for:
 - small justified UX improvement,
 - maintenance release.
 
-Prepared and manually accepted the unpublished v1.1.0 candidate. The DOCFATHER teaser is included; Stage 2A Case Intake remains uncommitted development work outside the candidate. [ROADMAP_V2.md](ROADMAP_V2.md) governs future scope and acceptance gates.
+Released v1.1.0 with the DOCFATHER teaser; Stage 2A Case Intake remains uncommitted development work outside the release. [ROADMAP_V2.md](ROADMAP_V2.md) governs future scope and acceptance gates.
 
 ## Current Maintenance Position
 
@@ -311,7 +311,7 @@ Separate **ChatGPT Project-shared** and **Codex snapshot** formats were investig
 
 **LOCKED**
 
-Preserve published v1.0.0 and finalize the unpublished v1.1.0 candidate for separate checkpoint and publication review. Preserve Stage 2A development work; future v2 evidence reconciliation and provider-neutral AI remain planned.
+Preserve published v1.0.0 and maintain the v1.1.0 release. Preserve Stage 2A development work; future v2 evidence reconciliation and provider-neutral AI remain planned.
 
 ## Product Scope
 
@@ -863,13 +863,12 @@ Audit: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Task-B_Final-Production-
 
 # 9. Active Phase
 
-The v1.1.0 candidate is built and owner-accepted but unpublished. Stage 2A read-only Case Intake exists as uncommitted development code and is excluded from the public candidate. Published v1.0.0 remains stable.
+v1.1.0 includes the Context Workshop and DOCFATHER teaser. Stage 2A read-only Case Intake exists as uncommitted development code and is excluded from the release.
 
 # 10. Immediate Next Steps
 
-1. Review the release-source diff and documentation before a separately authorized Git checkpoint.
-2. Independently verify clean-machine portability and resolve or assess the four unresolved Stage 1C timing assertions.
-3. Preserve Stage 2A, accepted workspace and CRT behavior, original checkout and diagnostics. Publication requires separate authorization.
+1. Independently verify clean-machine portability and assess the four unresolved Stage 1C timing assertions.
+2. Preserve Stage 2A, the accepted workspace and CRT behavior, and protected diagnostics.
 
 # 11. Known Issues
 
@@ -980,7 +979,7 @@ Do not add monetization unless user explicitly revisits it.
 
 ## Current Direction
 
-Maintained published v1.0.0, an unpublished v1.1.0 candidate and separate v2 development. Stage 2A is implemented in uncommitted development code under [ROADMAP_V2.md](ROADMAP_V2.md).
+Maintained published v1.0.0, the v1.1.0 release and separate v2 development. Stage 2A is implemented in uncommitted development code under [ROADMAP_V2.md](ROADMAP_V2.md).
 
 ### Stage 1 — Stable v1.0.0
 
@@ -1026,7 +1025,7 @@ If a verified production fix warrants publication, create a new maintenance rele
 
 Do not rewrite `v1.0.0`.
 
-The v1.1.0 candidate is built and owner-accepted but unpublished. It does not include the deferred new-share-format compatibility work. The v2.0.0 program remains separate and must pass its qualification gates.
+v1.1.0 is released. It does not include the deferred new-share-format compatibility work. The v2.0.0 program remains separate and must pass its qualification gates.
 
 ---
 
@@ -1354,10 +1353,10 @@ Phases A–A4 established standard-share extraction under unchanged production c
 
 # RESUME HERE
 
-**Baseline:** v1.0.0 published; verified feature HEAD `fe620ea9349fdb1846a23e3f8b5a433cc1734ba1`. The v1.1.0 source archive includes reviewed uncommitted changes and is not a Git checkpoint.
+**Baseline:** v1.1.0 release source follows feature checkpoint `fe620ea9349fdb1846a23e3f8b5a433cc1734ba1` and release checkpoint `785c67c2ce9dab2592397dbf57cf06b10f369191`.
 
-**Candidate:** Context Workshop and THE DOCFATHER teaser are implemented; the owner accepted the packaged EXE. Publication remains pending. Clean-machine portability is independently unverified. Four Stage 1C normal-motion assertions remain unresolved.
+**Release:** v1.1.0 includes Context Workshop and THE DOCFATHER teaser. Clean-machine portability is independently unverified. Four Stage 1C normal-motion assertions remain unresolved.
 
-**Development:** Stage 2A read-only Case Intake is implemented and uncommitted in the feature worktree, excluded from the candidate. Evidence reconciliation, provider-neutral AI harness, approval-gated writes and integrated workspace remain planned.
+**Development:** Stage 2A read-only Case Intake is implemented and uncommitted in the feature worktree, excluded from v1.1.0. Evidence reconciliation, provider-neutral AI harness, approval-gated writes and integrated workspace remain planned.
 
-**Next:** Review the source and documentation diff, then obtain separate authorization for any Git checkpoint or publication. Preserve the original checkout and 28 diagnostics.
+**Next:** Preserve the original checkout, diagnostics and Stage 2A work; qualify future v2 development separately.

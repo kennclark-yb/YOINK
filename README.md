@@ -327,13 +327,13 @@ behavior.
 
 ------------------------------------------------------------------------
 
-## Context Workshop in the v1.1.0 candidate
+## Context Workshop in v1.1.0
 
-The unreleased v1.1.0 candidate includes the connected Context Workshop, Preview, Parts Picker, Scratchpad append and Undo, and aligned Copy All controls. THE DOCFATHER is a teaser only and displays `THE DOCFATHER IS STILL OUT.`
+Y.O.I.N.K. v1.1.0 includes the connected Context Workshop, Preview, Parts Picker, Scratchpad append and Undo, and aligned Copy All controls. THE DOCFATHER is a teaser only and displays `THE DOCFATHER IS STILL OUT.`
 
 ## Planned for v2.0.0 — THE DOCFATHER
 
-**v1.0.0 remains the only published version.** The v1.1.0 candidate is not yet released; the functional v2 assistant remains under development.
+The functional v2 assistant remains under development and is not included in v1.1.0.
 
 - **THE DOCFATHER (planned):** choose a project directory, identify architecture/README/history/decision files, confirm targets, compare the extracted transcript with actual code, then review and approve proposed edits. When no suitable docs exist, offer source-grounded document creation instead of an empty managed library.
 - **Optional AI:** choose no AI, export context for another tool, use compatible local inference (initial Ollama/Caveman candidate), or connect a future verified Codex/Claude/other adapter. No mandatory AI subscription, remote upload or bundled model.
