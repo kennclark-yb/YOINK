@@ -68,10 +68,11 @@ Do not treat IMPLEMENTED as VERIFIED.
 
 ## Project documentation voice
 
-- Write README, project records, architecture, decisions, histories, changelogs and generated docs as **developer-authored project text**, not commentary on a conversation.
+- Write README, project records, architecture, decisions, histories, changelogs, release notes, pull requests, commit subjects/bodies, and audit summaries as **developer-authored project text**, not commentary on a conversation.
 - Use concise, subjectless outcomes: **“Adopted blue CRT shutdown design.” “Deferred cell division after the prototypes failed visual review.” “Designed AI integration to remain provider-neutral.”**
 - Avoid “we”, “the owner”, “the user”, “Codex recommended” and other actor/agent narration in finished project prose. Neutral technical descriptions are appropriate.
-- Preserve source identity, approvals, test attribution and historical audit facts in separate evidence records whenever needed. Do not rewrite existing Git history to change a commit message; use clear, impersonal messages going forward.
+- Summarize audits with **Status / Changes / Checks / Evidence / Limitations**, not actor narration. Record executor, tool/model, environment, SHA, and evidence references as separate metadata only when relevant to reproducibility; keep reported versus independently verified claims distinct.
+- Preserve source identity, authorization facts, test provenance and historical audit records. Never rewrite published Git history, previous release notes or original audit ZIPs solely to change voice; use clear, impersonal future messages.
 
 ## Collaboration Model
 
@@ -270,7 +271,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 YOINK is a released product, not a prototype or greenfield project.
 
-The released v1 baseline remains maintenance-only, but the user explicitly authorized a separate v2 development program on 2026-10-25. The normative v2 scope is [ROADMAP_V2.md](ROADMAP_V2.md). Stage 1A, Option 3 styling and Stage 1B have local checkpoints. Stage 1C connected workspace and accepted interactions are implemented and owner-approved. No v2 packaged executable or public release has been verified; Task B precedes Stage 2 Project Library, and later pillars remain planned.
+Maintained stable v1.0.0 separately from the v2 development program initiated on 2026-10-25. Checkpointed Stage 1A, Option 3 styling, Stage 1B, Stage 1C and Task B blue CRT shutdown. Planned Stage 2 Lorekeeper under [ROADMAP_V2.md](ROADMAP_V2.md). No v2 packaged executable or public release verified.
 
 ---
 
@@ -290,7 +291,7 @@ The project is considered complete and stable unless deliberately reopened for:
 - small justified UX improvement,
 - maintenance release.
 
-Broad development of the **v1 release** remains closed. **v2 development is explicitly authorized**; Stage 1A was owner accepted on 2026-10-31; Stage 1A, Option 3 and Stage 1B are locally checkpointed. Stage 1C is implemented and owner-approved on 2026-11-02. [ROADMAP_V2.md](ROADMAP_V2.md) governs its scope and acceptance gates.
+Kept broad **v1 development** closed to maintenance. Checkpointed v2 Stage 1A, Option 3, Stage 1B, Stage 1C and Task B. Planned Lorekeeper as the next stage; [ROADMAP_V2.md](ROADMAP_V2.md) governs scope and acceptance gates.
 
 ## Current Maintenance Position
 
@@ -300,7 +301,7 @@ YOINK is already known to handle very large conversations. A separate approximat
 
 Broken/unavailable-share handling is **VERIFIED COMPLETE**.
 
-Separate **ChatGPT Project-shared** and **Codex snapshot** formats were investigated on 2026-10-25–26 (Phases A–A4). A Project conversation was structurally accessible in a user-authenticated browser, but full-history completeness and a safe production integration were **NOT VERIFIED**. The owner **DEFERRED** support and closed [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) as a known limitation; the closure is **not** a software fix. No v1.1.0 release is planned from that investigation.
+Separate **ChatGPT Project-shared** and **Codex snapshot** formats were investigated on 2026-10-25–26 (Phases A–A4). A Project conversation was structurally accessible in a user-authenticated browser, but full-history completeness and a safe production integration were **NOT VERIFIED**. Deferred support and closed [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) as a known limitation; closure is **not** a software fix. No v1.1.0 release is planned from that investigation.
 
 ---
 
@@ -786,11 +787,11 @@ Cleanup itself required no source commit because tracked source did not change.
 
 ## Accepted Option 3 background — 2026-11-01
 
-The owner accepted the static cobalt grain artwork, integrated into source with native static rendering and 84% opaque inner panels. The accepted artwork and organic window silhouette are unchanged. `YOINK.spec` includes the background asset in the PyInstaller configuration. Source and focused packaging tests passed; packaged executable verification remains pending. The local Option 3 checkpoint is `f64bf97` (2026-11-01). Stage 1B subsequently checkpointed at `bca121d5eb5c1d9da22a91c985a2f6195275a70e`.
+Adopted static cobalt-grain artwork with native rendering and 84% opaque inner panels. The accepted artwork and organic window silhouette are unchanged. `YOINK.spec` includes the background asset in the PyInstaller configuration. Source and focused packaging tests passed; packaged executable verification remains pending. The local Option 3 checkpoint is `f64bf97` (2026-11-01). Stage 1B subsequently checkpointed at `bca121d5eb5c1d9da22a91c985a2f6195275a70e`.
 
 ## Stage 1A — Direct-to-Scratchpad
 
-**COMPLETED, TESTED, OWNER ACCEPTED, LOCALLY COMMITTED** — owner explicitly accepted the Stage 1A UI on 2026-10-31; local checkpoint `e0a153c935ce7460e80eaf736a1f313ffa7013c4`.
+**COMPLETED / TESTED / ACCEPTED / CHECKPOINTED** — Stage 1A UI accepted on 2026-10-31; checkpoint `e0a153c935ce7460e80eaf736a1f313ffa7013c4`.
 
 Confirmed development-source behavior:
 
@@ -798,29 +799,29 @@ Confirmed development-source behavior:
 - Multi-level app-managed Undo, rapid duplicate-click suppression with deliberate repeats permitted, preserved manual notes, and transient confirmation feedback.
 - Unicode-preserving Scratchpad copying, subject to the documented manual paragraph-break replacement limitation: manually replaced paragraph breaks, including those restored by editor Undo, may copy as LF. The application documents this limitation.
 - Smooth Results scrolling and hover interactions; compact extraction panel and taller Results panel.
-- Owner-accepted organic outer-window silhouette, 16 px inner-panel gap, and improved expansion/reset animation.
+- Accepted organic outer-window silhouette, 16 px inner-panel gap, and improved expansion/reset animation.
 - Slower extraction-loading phrase transitions; slimmer title bar with Maximize removed.
 
 Accepted audit package: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Stage-1A_Unicode-Finality_2026-10-31_190124`. The twelve implementation/test files were compared byte-for-byte with its `changed_files` snapshots before this checkpoint's documentation edit; all matched.
 
 Historical Stage 1A verification: full offline suite **75 tests run, 73 passed, 2 expected skips**; native Windows focused tests **6 passed**; `git diff --check` passed. That Stage 1A checkpoint reran its checks; see its external audit package. Current Stage 1C validation is recorded separately below.
 
-No new packaged executable or public release has been verified. Optional live-share and packaged-build verification remained outside that Stage 1A checkpoint. At that historical point Stage 1B had not begun; its later checkpoint is recorded below. The owner authorized one local Stage 1A Git checkpoint on `feature/v2-stage1a-scratchpad`, based on `d562522b05f5e12bc19fd54482760409ab4c7855`; the resulting SHA is recorded externally to avoid a self-referential commit.
+No new packaged executable or public release has been verified. Optional live-share and packaged-build verification remained outside that Stage 1A checkpoint. At that historical point Stage 1B had not begun; its later checkpoint is recorded below. Authorized local Stage 1A checkpoint on `feature/v2-stage1a-scratchpad`, based on `d562522b05f5e12bc19fd54482760409ab4c7855`; recorded resulting SHA externally to avoid a self-referential commit.
 
 
 ## Stage 1B and Stage 1C accepted baseline — 2026-11-02
 
 **Stage 1B — LOCALLY CHECKPOINTED:** deterministic pure-Python selection core at `bca121d5eb5c1d9da22a91c985a2f6195275a70e`; source-preserving fractional/disconnected ranges and role-filtered resolution.
 
-**Stage 1C — IMPLEMENTED / AUDITED / OWNER APPROVED:** connected Extract/Results/tool workspace with organic silhouettes, Parts Picker, Preview and Scratchpad navigation, state retention, source selection, copy/append/Undo, bounded geometry, hover and native dragging repair. Preserve accepted cobalt/icy-blue colors, grain, layout, spacing, 84% panel opacity and animations. Extraction remains full-source before filtering.
+**Stage 1C — IMPLEMENTED / AUDITED / ACCEPTED:** connected Extract/Results/tool workspace with organic silhouettes, Parts Picker, Preview and Scratchpad navigation, state retention, source selection, copy/append/Undo, bounded geometry, hover and native dragging repair. Preserve accepted cobalt/icy-blue colors, grain, layout, spacing, 84% panel opacity and animations. Extraction remains full-source before filtering.
 
 **Append notification — IMPLEMENTED / AUDITED / ACCEPTED:** fixed 18 px feedback slot, 220 ms entrance from +10 px through restrained -2 px overshoot to 0 px, settled updates on repeated append, existing dismissal lifecycle and 250 ms fade. Reset/shutdown cancel entrance; reduced motion stays settled. Wording, append data, duplicate feedback and Undo are preserved.
 
-**Background — LOCKED:** original `assets/static_grain_option3.png`, byte-identical, remains the final approved production artwork. Retain the accepted native-drag changes in `gui/background.py`. Three unsuccessful isolated cell-division visual approaches were diagnostic-only and never integrated into production. **Cell-division enhancement is DEFERRED by owner decision on 2026-11-02; it is not implemented, accepted or completed.** The earlier incomplete-experiment status is superseded by this deferral, not by a successful implementation.
+**Background — LOCKED:** original `assets/static_grain_option3.png`, byte-identical, remains the final approved production artwork. Retain the accepted native-drag changes in `gui/background.py`. Three unsuccessful isolated cell-division visual approaches were diagnostic-only and never integrated into production. **Deferred cell division on 2026-11-02 after three unsuccessful visual prototypes; not implemented or accepted.** The earlier incomplete-experiment status is superseded by this deferral, not by a successful implementation.
 
 Prior audited delivery: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Stage-1C_Finite-Cell-Division-Background_2026-11-02_175537`; its 76-file delivery inventory matches this checkpoint's incoming files byte-for-byte. Prior tests reported 167 run, 165 passed and two expected skips, plus five notification contracts on native Qt at 100% and 150% scale. Current checkpoint reruns and exact results are in its external validation report; no self-referential commit hash is inserted here.
 
-**Validation limits:** v2 remains development software. No v2 packaged-EXE build/test, new live-share extraction, broad hardware/DPI qualification or new physical owner drag test is claimed by this checkpoint. The opt-in live-share and frozen-build assertions are expected skips. Existing Scratchpad manual paragraph-break copying limitation remains. v1.0.0 is the only verified published release.
+**Validation limits:** v2 remains development software. No v2 packaged-EXE build/test, new live-share extraction, broad hardware/DPI qualification or new physical drag test is claimed by this checkpoint. The opt-in live-share and frozen-build assertions are expected skips. Existing Scratchpad manual paragraph-break copying limitation remains. v1.0.0 is the only verified published release.
 
 **Sequence at the accepted Stage 1C checkpoint (historical):** separately instructed **Task B — shutdown-screen redesign**, preserving existing working shutdown until that later task; **Stage 2 — Project Library** follows Task B. No shutdown redesign, executable build, tag, merge or release is part of this baseline checkpoint.
 
@@ -828,7 +829,7 @@ Prior audited delivery: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Stage-1
 
 ## Task B first shutdown presentation — 2026-11-02 (superseded)
 
-**HISTORICAL FIRST ITERATION.** The owner initially accepted the separate original-GIF/quip presentation, then expressly superseded it with the production blue CRT decision recorded below. The following describes that earlier iteration and its validation.
+**HISTORICAL FIRST ITERATION.** Initially accepted separate original-GIF/quip presentation, later superseded by the production blue CRT design recorded below. The following describes that earlier iteration and its validation.
 
 **IMPLEMENTED / LOCALLY VERIFIED — TPM INSPECTION AND OWNER VISUAL APPROVAL PENDING; NOT INTEGRATED OR RELEASED.**
 
@@ -838,15 +839,15 @@ The shutdown presentation now uses two independent floating elements: the unchan
 
 Validation: full offline suite **173 run, 171 passed, 2 expected skips**, 0 failures/errors. Six focused tests passed offscreen and on native Windows Qt at both `QT_SCALE_FACTOR=1` and `1.5`. Tests cover frame alpha/clipping, separate message container, all quips fitting, GIF identity, QMovie decode/advance/loop, idle shutdown and simultaneous active preload/extraction cleanup. Native real-main-window captures at both scales show the original GIF over the existing dimming overlay; native held-worker runs finish with no screen/overlay/worker references left. Optional GIF was separately previewed through native QMovie. Only this machine and Qt scale-factor settings were checked; live network extraction, physical display-scale changes, broad hardware qualification and packaged EXE testing are not claimed. The existing two opt-in skips remain unchanged.
 
-Audit: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Task-B_Shutdown_2026-11-02_201500`, including report, exact diff, native captures, asset, tools, tests, hashes and consolidated ZIP. No staging, commit, push, merge, tag, release or EXE build was performed. Await independent inspection and owner approval before integration or proceeding to Stage 2. Accepted Stage 1C remains locked.
+Audit: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Task-B_Shutdown_2026-11-02_201500`, including report, exact diff, native captures, asset, tools, tests, hashes and consolidated ZIP. No staging, commit, push, merge, tag, release or EXE build was performed. At that historical checkpoint, independent inspection and visual acceptance were pending. Accepted Stage 1C remained locked.
 
 ---
 
 ## Task B final production blue CRT — 2026-11-02
 
-**IMPLEMENTED IN DEVELOPMENT SOURCE / LOCALLY VERIFIED.** The owner authorized replacing the first shutdown presentation with the blue CRT, subject to final corrections and independent TPM review. The final source is integrated; owner visual approval and independent audit have passed. **Not committed, packaged or released.**
+**HISTORICAL PRE-CHECKPOINT STATUS — IMPLEMENTED / LOCALLY VERIFIED.** Replaced the first shutdown presentation with the blue CRT; completed final visual corrections and source audit. **Not yet committed at this historical stage; subsequently checkpointed in `7de0613`. No packaged v2 EXE or release.**
 
-The working optional renderer was moved into `gui/shutdown_crt.py`; `gui/shutdown_screen.py` supplies exactly one `random.choice(EXIT_MESSAGES)` per instance. All 22 strings and their order remain unchanged. Production never imports `tools/preview_shutdown_crt.py`; that tool now previews the same GUI component. The CRT stays 220 × 140 logical pixels, with two centered procedural block-glyph lines, SYSTEM / SHUTDOWN. Bright-blue faces, dark-blue depth, narrow bevels and restrained illumination provide the owner-requested retro typography without a heading-font dependency. One small, centered terminal quip remains at the bottom. The obsolete decorative status lines and separate floating capsule are removed.
+The working optional renderer was moved into `gui/shutdown_crt.py`; `gui/shutdown_screen.py` supplies exactly one `random.choice(EXIT_MESSAGES)` per instance. All 22 strings and their order remain unchanged. Production never imports `tools/preview_shutdown_crt.py`; that tool now previews the same GUI component. The CRT stays 220 × 140 logical pixels, with two centered procedural block-glyph lines, SYSTEM / SHUTDOWN. Bright-blue faces, dark-blue depth, narrow bevels and restrained illumination provide the accepted retro typography without a heading-font dependency. One small, centered terminal quip remains at the bottom. The obsolete decorative status lines and separate floating capsule are removed.
 
 The accepted raster/background/perimeter/grain/vignette are preserved. The moving scan highlight uses a three-times-broader soft Gaussian profile with unchanged peak amplitude, downward path and 50 ms cadence. The historically named `assets/shutdown_system_optional.gif` is now the intended production CRT surface: 480 × 306, 60 frames, 3000 ms infinite loop, without baked text. `assets/shutdown.gif` remains byte-identical as an inactive legacy asset. `YOINK.spec` includes the CRT surface and retains the legacy asset; only its collection recipe was tested, with no executable build.
 
@@ -856,7 +857,7 @@ Final validation: **180 offline tests run, 178 passed, 2 expected skips**, zero 
 
 Native production evidence uses the real MainWindow closeEvent, with a deterministic local preload extraction hold for capture and normal completion on release. Captures at DPR 1.0/1.5 show the corrected title, normal random quips, a longest quip and three scan positions. Long-message evidence seeds only the external harness, choosing from the actual collection through the normal random call; production is unseeded. Actual-size crops are 220 × 140 / 330 × 210 physical pixels. Wider OS/hardware/monitor, physical display-scale changes, live-network extraction and packaged-EXE qualification are not claimed.
 
-Audit: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Task-B_Final-Production-CRT_2026-11-02_212136`, including production screenshots, reference comparison, scan strip/preview, exact incoming/final files and diffs, tests, hashes, execution summary and ZIP. No stage, commit, push, merge, tag, release or EXE build. Stop for independent TPM inspection and final owner visual confirmation; Stage 2 follows approved Task B.
+Audit: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Task-B_Final-Production-CRT_2026-11-02_212136`, including production screenshots, reference comparison, scan strip/preview, exact incoming/final files and diffs, tests, hashes, execution summary and ZIP. No stage, commit, push, merge, tag, release or EXE build. At this historical stage, final visual review and checkpoint remained pending; later completed under Task B. Stage 2 follows.
 
 ---
 
@@ -864,13 +865,13 @@ Audit: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Task-B_Final-Production-
 
 ## Phase
 
-**v1 VERIFIED — RELEASED / MAINTENANCE; v2 Stage 1C OWNER APPROVED; TASK B PRODUCTION CRT IN SOURCE / LOCALLY VERIFIED; FINAL REVIEW PENDING**
+**v1 VERIFIED RELEASED / MAINTENANCE; v2 STAGE 1C AND TASK B CHECKPOINTED; STAGE 2 LOREKEEPER PLANNED**
 
 v1.0.0 is released and stable.
 
 Repository relocation and development-environment recovery status: **VERIFIED COMPLETE**.
 
-Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the approved wording and RETRY. Investigations into Project-shared and Codex snapshot URLs are **DEFERRED / NOT IMPLEMENTED**; [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) is closed as a known limitation, not a fix. No v1.1.0 release occurred. Stage 1A, Option 3 and Stage 1B are locally checkpointed; Stage 1C is implemented and owner-approved. The previously skipped successor TPM handoff remains incomplete; it is not retroactively marked done. Task B blue CRT is integrated into development source and locally verified under the owner's explicit production decision; independent TPM review and final visual confirmation are pending, then Stage 2 Project Library. The giant-thread investigation remains closed without evidence of an active scalability defect.
+Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the approved wording and RETRY. Investigations into Project-shared and Codex snapshot URLs are **DEFERRED / NOT IMPLEMENTED**; [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) is closed as a known limitation, not a fix. No v1.1.0 release occurred. Checkpointed Stage 1A, Option 3, Stage 1B, Stage 1C and Task B blue CRT shutdown. Stage 2 Lorekeeper remains planned. Preserved the incomplete successor TPM handoff status and closed giant-thread investigation; no confirmed active scalability defect.
 
 ---
 
@@ -919,16 +920,16 @@ No confirmed active giant-thread scalability issue exists. The unavailable share
 
 **DEFERRED / ISSUE CLOSED — NOT IMPLEMENTED — NOT A VERIFIED COMPLETE EXTRACTION**
 
-[Issue #2 — Known limitation: ChatGPT Project-shared conversation extraction](https://github.com/kennclark-yb/YOINK/issues/2) was closed by the owner on 2026-10-26 after four bounded investigations (A, A2, A3, A4). Its closure does **not** signify that support was implemented or the problem fixed.
+[Issue #2 — Known limitation: ChatGPT Project-shared conversation extraction](https://github.com/kennclark-yb/YOINK/issues/2) was closed on 2026-10-26 after four bounded investigations (A, A2, A3, A4). Its closure does **not** signify that support was implemented or the problem fixed.
 
 - **Unsupported URL shape:** `https://chatgpt.com/g/<project-slug>/shared/c/<conversation-id>?owner_user_id=<user-id>`. Current GUI validation accepts standard `/share/...` URLs only.
 - **A (initial probe):** two anonymous Playwright requests were HTTP 403; a confirmation identified a Cloudflare challenge. No conversation data was inspected. This finding alone did not establish a Project membership or login requirement.
 - **A2 (controlled comparison):** unchanged production code extracted a standard public share with **277 messages (98 user / 179 assistant) and 704,368 characters**. Under the same browser environment, the Project link returned **307 → 403** with a Cloudflare challenge, no usable application data. Synthetic loader tests: 7 passed. The standard-share positive control excludes a universal Playwright extraction failure.
-- **Owner's signed-out test:** opening that Project URL in an Incognito window required ChatGPT sign-in.
-- **A4 (authorized-browser probe):** after the owner signed in manually, a dedicated headed browser opened the target Project conversation. A read-only inspector found **65 nodes** (5 user, 39 assistant, 20 tool and one empty root), **64 unique message IDs** matching mapping keys, and an internally consistent current ancestry across repeated observations. **37 string parts in 33 messages totaled 65,870 UTF-16 code units.** Existing v1 text-only extraction rules would retain **13 messages (5 user, 8 assistant), totaling 30,433 UTF-16 units**. The page used an **in-page query cache**, not the standard-share React Router loader.
+- **Signed-out browser test:** opening that Project URL in an Incognito window required ChatGPT sign-in.
+- **A4 (authorized-browser probe):** after interactive sign-in, a dedicated headed browser opened the target Project conversation. A read-only inspector found **65 nodes** (5 user, 39 assistant, 20 tool and one empty root), **64 unique message IDs** matching mapping keys, and an internally consistent current ancestry across repeated observations. **37 string parts in 33 messages totaled 65,870 UTF-16 code units.** Existing v1 text-only extraction rules would retain **13 messages (5 user, 8 assistant), totaling 30,433 UTF-16 units**. The page used an **in-page query cache**, not the standard-share React Router loader.
 - **Unverified:** full historical/server-side completeness, long-thread pagination/virtualization, supported/stable page-data interface, exact omission policy for code/recaps/tool/thought structures, failure handling after authorization expires, and reliable packaged integration. The A4 node graph's internal consistency is **not** proof that every historical message was loaded.
 
-**Decision:** the owner deferred Project-link compatibility. No GUI/extractor/credential-handling changes were approved or made, no v1.1.0 binary/tag/release was created, and no broader authentication integration is authorized. Revisit only with a privacy-preserving, user-authorized and maintainable import mechanism **plus verified source completeness and an explicit included/omitted-content contract**. Do not ship a regex-only acceptance change or claim the 13 text messages are a complete original transcript.
+**Decision:** deferred Project-link compatibility. No GUI/extractor/credential-handling changes were approved or made, no v1.1.0 binary/tag/release was created, and no broader authentication integration is authorized. Revisit only with a privacy-preserving, user-authorized and maintainable import mechanism **plus verified source completeness and an explicit included/omitted-content contract**. Do not ship a regex-only acceptance change or claim the 13 text messages are a complete original transcript.
 
 ## Codex shared-snapshot URLs — known limitation
 
@@ -990,7 +991,7 @@ Do not add monetization unless user explicitly revisits it.
 
 ## Current Direction
 
-YOINK has two distinct tracks: **maintain verified v1.0.0** and **develop the approved v2.0.0 roadmap, with Stage 1C owner-approved, Task B production CRT integrated in source pending final review, and Stage 2 Project Library after approved Task B** under [ROADMAP_V2.md](ROADMAP_V2.md).
+Maintained distinct tracks: **stable v1.0.0 maintenance** and **v2 development**. Checkpointed Stage 1C and Task B blue CRT; planned Stage 2 Lorekeeper under [ROADMAP_V2.md](ROADMAP_V2.md).
 
 ### Stage 1 — Stable v1.0.0
 
@@ -1036,13 +1037,13 @@ If a verified production fix warrants publication, create a new maintenance rele
 
 Do not rewrite `v1.0.0`.
 
-No maintenance release is currently scheduled. In particular, the hypothetical `v1.1.0` new-share-format release was **not built or published**; the owner deferred the underlying compatibility feature. The new v2.0.0 development program is planned separately and must pass all roadmap qualification gates.
+No maintenance release is currently scheduled. In particular, the hypothetical `v1.1.0` new-share-format release was **not built or published**; deferred the underlying compatibility feature. The new v2.0.0 development program is planned separately and must pass all roadmap qualification gates.
 
 ---
 
 ## V2 decision record — 2026-10-25
 
-**HISTORICAL 2026-10-25 DECISION — APPROVED / PLANNED; implementation had not started at that time.** Current progress is recorded in §8 and RESUME HERE. The user authorized v2.0.0 development, with normative scope, exit gates, licensing policy and deferrals in [ROADMAP_V2.md](ROADMAP_V2.md). All v1 implementation and verification claims remain unchanged.
+**HISTORICAL 2026-10-25 DECISION — APPROVED / PLANNED; implementation had not started at that time.** Current progress is recorded in §8 and RESUME HERE. Authorized v2.0.0 development with scope, exit gates, licensing and deferrals recorded in [ROADMAP_V2.md](ROADMAP_V2.md). All v1 implementation and verification claims remain unchanged.
 
 - **Five pillars:** Context Workshop, Project Library, Caveman Mode, Knowledge Generator, and Document Maintainer.
 - **Context Workshop:** independent selection model; message-safe fractional and disconnected ranges; Ctrl-drag adds, subsequent ordinary drag replaces; direct `arrow-up-right` before the existing part-copy icon appends to ephemeral Scratchpad with Undo and no window/clipboard disruption.
@@ -1328,7 +1329,7 @@ No production patch was made.
 
 **VERIFIED COMPLETE**
 
-The old `ExtractAIResponse` source directory was empty after relocation and was subsequently manually deleted by the user.
+Removed the empty `ExtractAIResponse` source directory manually after relocation.
 
 ---
 
@@ -1344,7 +1345,7 @@ YOINK v1.0.0 remains released and stable, with evidence-driven maintenance only.
 
 **INVESTIGATED / DEFERRED / NO IMPLEMENTATION**
 
-Phases A–A4 established standard-share extraction under unchanged production code; anonymous browser protection responses for Project/Codex links; and visible authenticated access to structured Project conversation data through an in-page query cache. They did not establish full source completeness or a safe production adapter. The owner closed [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) after deferring work. No version changes, source edits, commits, pushes, tags or release resulted from the Codex investigations. See §11 for detailed evidence and unresolved constraints.
+Phases A–A4 established standard-share extraction under unchanged production code; anonymous browser protection responses for Project/Codex links; and visible authenticated access to structured Project conversation data through an in-page query cache. They did not establish full source completeness or a safe production adapter. Closed [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) after deferring support. No version changes, source edits, commits, pushes, tags or release resulted from the Codex investigations. See §11 for detailed evidence and unresolved constraints.
 
 ---
 

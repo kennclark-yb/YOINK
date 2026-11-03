@@ -310,7 +310,7 @@ ChatGPT conversation URLs, Claude, Gemini, or other AI platforms.
 and expose conversation data differently from standard public shares. An
 authorized-browser investigation found structured Project conversation data,
 but did not establish complete-history extraction or a reliable production
-import path. The owner deferred support; closing
+import path. Deferred Project-shared URL support; closing
 [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) did not fix this
 limitation. Codex snapshots have also not been validated for complete extraction.
 No `v1.1.0` release was produced from these investigations.

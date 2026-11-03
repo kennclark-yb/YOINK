@@ -1,6 +1,6 @@
 # Y.O.I.N.K. — Version 2 Roadmap
 
-> **Status: APPROVED SCOPE / v2 DEVELOPMENT — Stage 1C OWNER-APPROVED BASELINE; NOT A RELEASE**
+> **Status: APPROVED SCOPE / v2 DEVELOPMENT — STAGE 1C + TASK B CHECKPOINTED; NOT A RELEASE**
 >
 > Decision date: 2026-10-25  
 > Repository: https://github.com/kennclark-yb/YOINK  
@@ -193,7 +193,7 @@ Each phase is a bounded reviewable change with its own tests, checks and stable 
 | **7 — Document maintenance** | Evidence-aware update plan, diff review and safe approved apply | No unapproved writes, external-change conflicts, rollback, history preservation |
 | **8 — v2.0.0 qualification** | Source/packaged QA, privacy, licensing, release notes, recovery | All accepted scenarios pass on supported Windows hardware |
 
-Stage 1A — the slanted-arrow direct-to-Scratchpad action — is completed, tested, owner accepted, and locally committed. Stage 1B pure-Python selection core is locally checkpointed; Stage 1C timeline and connected workspace are implemented and owner-approved. Task B shutdown-screen redesign precedes Stage 2 Project Library in the current working sequence.
+Checkpointed Stage 1A direct-to-Scratchpad, Stage 1B range-selection core, Stage 1C connected workspace, and Task B blue CRT shutdown. Stage 2 Lorekeeper project discovery is next; provider integrations and document generation/maintenance remain planned, not shipped.
 
 ## 10. Definition of done for v2.0.0
 
@@ -217,7 +217,7 @@ Outside v2.0.0: non-ChatGPT extraction platforms; private ChatGPT URL scraping; 
 
 - README must describe shipped v1 behavior truthfully and link here under **Planned for v2.0.0**; it must not market unbuilt features as released.
 - **Project_Record.md remains authoritative current project history**. Checkpointed Stage 1A, Option 3, Stage 1B, Stage 1C and Task B; Stage 2 Lorekeeper planned. Preserve historical facts and v1 verification.
-- Record new decisions and milestones as PLANNED/IMPLEMENTED/VERIFIED precisely, with a current RESUME HERE. Use subjectless developer-style decisions and impersonal Git commit subjects; reserve person/tool attribution for audit evidence.
+- Record new decisions and milestones as PLANNED/IMPLEMENTED/VERIFIED precisely, with a current RESUME HERE. Apply the same concise developer-authored tone to documentation, commit subjects/bodies, pull requests, changelogs, release notes, and audit summaries. Keep executor/tool identity in reproducibility metadata when needed, not ordinary prose. Preserve historical release/commit/audit evidence.
 - Collaborate using the established Y.O.I.N.K. workflow: ChatGPT technical planning/review; Codex for scoped repository execution where helpful; operator GUI/packaged verification; focused tests, diff audit, and Git commit after verification.
 - Preserve working copies through Git rather than permanent backup source files, and keep source changes narrowly scoped.
 

@@ -16,7 +16,7 @@ to accidentally murder.
 -   Add or update tests when the change introduces behavior that should
     be protected from regression.
 -   Avoid unrelated refactors, formatting sweeps, dependency churn, or
-    "while I was here" rewrites.
+    opportunistic drive-by rewrites.
 -   Do not include private ChatGPT conversations, credentials, tokens,
     personal data, generated build folders, or other sensitive/test
     material.
@@ -47,12 +47,12 @@ not every interaction is meaningfully testable through automation.
 
 ## Pull requests
 
-A good pull request tells us:
+A useful pull request description records:
 
 1.  What problem does this solve?
 2.  What did you change?
 3.  How did you test it?
-4.  Is there anything reviewers should pay special attention to?
+4.  Which limitations, risks, or unverified cases remain?
 
 Screenshots are useful for visible GUI changes.
 
@@ -70,6 +70,38 @@ Prefer boring, readable code over clever code.
 
 Do not introduce a new dependency when a small existing solution will
 do.
+
+## Documentation, Git, and audit writing
+
+Use **concise, impersonal, developer-authored wording** in project records,
+architectural decisions, README updates, commit subjects and bodies, pull
+requests, changelogs, release notes, and **audit summaries**.
+
+-   Lead with the outcome or action. Examples: `Adopted blue CRT shutdown design`;
+    `Deferred cell division after unsuccessful visual prototypes`;
+    `Designed provider-neutral AI integration`.
+-   Avoid “we”, “I”, “the user”, “the owner”, and unnecessary references to
+    Codex, ChatGPT, reviewers, agents, or approval conversations. Explain
+    the implementation, decision, evidence, and next action instead.
+-   Keep commit messages short and descriptive, using verbs such as
+    `Add`, `Fix`, `Retain`, `Refactor`, `Document`, or `Verify`.
+    Do not rewrite existing published commits merely to change their wording.
+-   Use the same tone for pull request titles and descriptions. Record scope,
+    tests, remaining limitations, and evidence without narrating who did what.
+-   Write release notes and changelogs as user-relevant changes with
+    precise implementation/verification status. Never present planned work
+    as shipped functionality.
+-   Summarize audits as **Status / Changes / Checks / Evidence / Limitations**.
+    Example: `Validation: 178 passed, 2 expected skips; packaged EXE not tested.`
+-   When execution identity materially affects reproducibility, retain it as
+    technical metadata in the full audit log (`Executor`, `Environment`,
+    `Tool/version`, `Commit SHA`, `Evidence path`), not as the narrative voice.
+    Preserve source provenance, honest uncertainty, and reported-versus-
+    independently-verified distinctions.
+
+Historical published releases, Git commit history, and original audit
+artifacts are evidence: **do not alter them solely to normalize wording**.
+Apply this convention to new writing and correct stale current-status text.
 
 ## Feature ideas
 
