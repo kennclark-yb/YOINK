@@ -33,7 +33,7 @@ class ShutdownPresentationTests(unittest.TestCase):
         self.assertEqual(s.size().toTuple(), (220, 140))
         self.assertTrue(s.testAttribute(Qt.WidgetAttribute.WA_TranslucentBackground))
         self.assertTrue(s.windowFlags() & Qt.WindowType.FramelessWindowHint)
-        self.assertTrue(s.windowFlags() & Qt.WindowType.WindowStaysOnTopHint)
+        self.assertFalse(s.windowFlags() & Qt.WindowType.WindowStaysOnTopHint)
         self.assertEqual(Path(s._movie.fileName()).name, 'shutdown_system_optional.gif')
         self.assertEqual(s.TITLE_WORDS, ('SYSTEM', 'SHUTDOWN'))
         self.assertFalse(s.findChildren(QWidget), 'Exactly one composition; no separate message capsule')
@@ -118,6 +118,19 @@ class ShutdownLifecycleTests(unittest.TestCase):
         self.assertFalse(isValid(screen))
         self.assertFalse(isValid(overlay))
         self.assertFalse(self.w._preload_threads or self.w._extraction_threads)
+
+    def test_shutdown_is_owned_and_not_globally_topmost(self):
+        w = self.w
+        self.assertIsNone(w._shutdown_screen)
+        w.close()
+        screen = w._shutdown_screen
+        self.assertIs(screen.parentWidget(), w)
+        self.assertTrue(screen.isWindow())
+        self.assertEqual(screen.windowFlags() & Qt.WindowType.WindowType_Mask, Qt.WindowType.Window)
+        self.assertFalse(screen.windowFlags() & Qt.WindowType.WindowStaysOnTopHint)
+        self.assertTrue(screen.isVisible())
+        self.assertTrue(w._shutdown_overlay.isVisible())
+        self.assertIs(screen.windowHandle().transientParent(), w.windowHandle())
 
     def test_idle_timer_centering_and_no_orphans(self):
         w = self.w

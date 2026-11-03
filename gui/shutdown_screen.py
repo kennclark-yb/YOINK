@@ -30,9 +30,8 @@ EXIT_MESSAGES = [
 
 
 class ShutdownScreen(CrtShutdownSurface):
-    def __init__(self):
-        super().__init__(random.choice(EXIT_MESSAGES))
+    def __init__(self, parent=None):
+        super().__init__(random.choice(EXIT_MESSAGES), parent)
         self.setWindowFlags(
-            Qt.WindowType.FramelessWindowHint
-            | Qt.WindowType.WindowStaysOnTopHint
+            Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint
         )

@@ -18,6 +18,7 @@ from PySide6.QtWidgets import QPushButton
 from .loading_messages import LOADING_MESSAGES
 
 from .styles import ACCENT
+from .bracket_button import draw_brackets
 
 
 class ProgressButton(QPushButton):
@@ -606,8 +607,7 @@ class ProgressButton(QPushButton):
             else QColor("#111216")
         )
 
-        painter.drawText(
-            rect,
-            Qt.AlignmentFlag.AlignCenter,
-            self.text(),
-        )
+        if self.property("alignedBrackets"):
+            draw_brackets(painter, rect, self.text())
+        else:
+            painter.drawText(rect, Qt.AlignmentFlag.AlignCenter, self.text())

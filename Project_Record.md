@@ -9,7 +9,7 @@
 >
 > Last reconstructed from verified project history: 2026-10-03
 >
-> Current-state reconciliation: 2026-11-03. Checkpointed Stage 1A, Option 3 styling, Stage 1B, Stage 1C and Task B production blue CRT. Retained original background; deferred cell division. Planned Stage 2 Lorekeeper with optional provider-neutral AI. v2 remains development software; v1.0.0 is the only published release.
+> Current-state reconciliation: 2026-11-03. Checkpointed Stage 1A, Option 3 styling, Stage 1B, Stage 1C and Task B production blue CRT. Retained original background; deferred cell division. Stage 2A Case Intake is implemented in uncommitted development code and excluded from the unpublished v1.1.0 teaser candidate. Provider-neutral AI remains planned; v1.0.0 is the only published release.
 
 ---
 
@@ -251,7 +251,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 **Current release:** v1.0.0
 
-**Current project state:** **v1.0.0 VERIFIED RELEASED / STABLE; v2 Stage 1A, Option 3, Stage 1B, Stage 1C AND TASK B CHECKPOINTED; STAGE 2 LOREKEEPER PLANNED; DEVELOPMENT SOFTWARE**
+**Current project state:** v1.0.0 published; v1.1.0 candidate built and manually accepted, unpublished; Stage 2A Case Intake implemented in uncommitted development code and excluded from the candidate.
 
 **Repository:**
 
@@ -271,7 +271,7 @@ Extract public ChatGPT shared conversations into practical reusable Markdown/tex
 
 YOINK is a released product, not a prototype or greenfield project.
 
-Maintained stable v1.0.0 separately from the v2 development program initiated on 2026-10-25. Checkpointed Stage 1A, Option 3 styling, Stage 1B, Stage 1C and Task B blue CRT shutdown. Planned Stage 2 Lorekeeper under [ROADMAP_V2.md](ROADMAP_V2.md). No v2 packaged executable or public release verified.
+Maintained stable v1.0.0 separately from the v2 development program initiated on 2026-10-25. Checkpointed Stage 1A, Option 3 styling, Stage 1B, Stage 1C and Task B blue CRT shutdown. Implemented Stage 2A Case Intake in uncommitted development code; [ROADMAP_V2.md](ROADMAP_V2.md) retains the future scope. No v2 packaged executable or public release verified.
 
 ---
 
@@ -291,7 +291,7 @@ The project is considered complete and stable unless deliberately reopened for:
 - small justified UX improvement,
 - maintenance release.
 
-Kept broad **v1 development** closed to maintenance. Checkpointed v2 Stage 1A, Option 3, Stage 1B, Stage 1C and Task B. Planned Lorekeeper as the next stage; [ROADMAP_V2.md](ROADMAP_V2.md) governs scope and acceptance gates.
+Prepared and manually accepted the unpublished v1.1.0 candidate. The DOCFATHER teaser is included; Stage 2A Case Intake remains uncommitted development work outside the candidate. [ROADMAP_V2.md](ROADMAP_V2.md) governs future scope and acceptance gates.
 
 ## Current Maintenance Position
 
@@ -301,7 +301,7 @@ YOINK is already known to handle very large conversations. A separate approximat
 
 Broken/unavailable-share handling is **VERIFIED COMPLETE**.
 
-Separate **ChatGPT Project-shared** and **Codex snapshot** formats were investigated on 2026-10-25–26 (Phases A–A4). A Project conversation was structurally accessible in a user-authenticated browser, but full-history completeness and a safe production integration were **NOT VERIFIED**. Deferred support and closed [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) as a known limitation; closure is **not** a software fix. No v1.1.0 release is planned from that investigation.
+Separate **ChatGPT Project-shared** and **Codex snapshot** formats were investigated on 2026-10-25–26 (Phases A–A4). A Project conversation was structurally accessible in a user-authenticated browser, but full-history completeness and a safe production integration were **NOT VERIFIED**. Deferred support and closed [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) as a known limitation; closure is **not** a software fix. Those investigations do not add share-format support to v1.1.0.
 
 ---
 
@@ -311,7 +311,7 @@ Separate **ChatGPT Project-shared** and **Codex snapshot** formats were investig
 
 **LOCKED**
 
-Preserve stable v1.0.0 while advancing the separately scoped v2 roadmap in [ROADMAP_V2.md](ROADMAP_V2.md). Checkpointed Stage 1C and Task B blue CRT shutdown; next Stage 2 Lorekeeper discovery and provider-neutral AI foundation remain planned.
+Preserve published v1.0.0 and finalize the unpublished v1.1.0 candidate for separate checkpoint and publication review. Preserve Stage 2A development work; future v2 evidence reconciliation and provider-neutral AI remain planned.
 
 ## Product Scope
 
@@ -863,24 +863,13 @@ Audit: `C:\Users\User\Desktop\artifacts-yoink\new\YOINK_Task-B_Final-Production-
 
 # 9. Active Phase
 
-## Phase
-
-**v1 VERIFIED RELEASED / MAINTENANCE; v2 STAGE 1C AND TASK B CHECKPOINTED; STAGE 2 LOREKEEPER PLANNED**
-
-v1.0.0 is released and stable.
-
-Repository relocation and development-environment recovery status: **VERIFIED COMPLETE**.
-
-Upstream broken/unavailable-share handling is **VERIFIED COMPLETE**, including manual development-GUI verification of the approved wording and RETRY. Investigations into Project-shared and Codex snapshot URLs are **DEFERRED / NOT IMPLEMENTED**; [Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) is closed as a known limitation, not a fix. No v1.1.0 release occurred. Checkpointed Stage 1A, Option 3, Stage 1B, Stage 1C and Task B blue CRT shutdown. Stage 2 Lorekeeper remains planned. Preserved the incomplete successor TPM handoff status and closed giant-thread investigation; no confirmed active scalability defect.
-
----
+The v1.1.0 candidate is built and owner-accepted but unpublished. Stage 2A read-only Case Intake exists as uncommitted development code and is excluded from the public candidate. Published v1.0.0 remains stable.
 
 # 10. Immediate Next Steps
 
-1. Begin Stage 2 Lorekeeper read-only project-folder inventory and document discovery; do not start uncontrolled AI writing.
-2. Preserve accepted Stage 1C artwork/workspace, Scratchpad append, and Task B CRT shutdown at published feature-branch checkpoint `7de0613309d977b3e5df0523ea05e2e882662454`.
-3. Keep AI optional and provider-neutral; any Codex, Claude or local integration requires separate capability, security and consent validation.
-4. Maintain zero unapproved writes, protected original checkout, deferred cell-division and share-format investigations. Keep successor TPM Task 4 incomplete until separately resolved.
+1. Review the release-source diff and documentation before a separately authorized Git checkpoint.
+2. Independently verify clean-machine portability and resolve or assess the four unresolved Stage 1C timing assertions.
+3. Preserve Stage 2A, accepted workspace and CRT behavior, original checkout and diagnostics. Publication requires separate authorization.
 
 # 11. Known Issues
 
@@ -991,7 +980,7 @@ Do not add monetization unless user explicitly revisits it.
 
 ## Current Direction
 
-Maintained distinct tracks: **stable v1.0.0 maintenance** and **v2 development**. Checkpointed Stage 1C and Task B blue CRT; planned Stage 2 Lorekeeper under [ROADMAP_V2.md](ROADMAP_V2.md).
+Maintained published v1.0.0, an unpublished v1.1.0 candidate and separate v2 development. Stage 2A is implemented in uncommitted development code under [ROADMAP_V2.md](ROADMAP_V2.md).
 
 ### Stage 1 — Stable v1.0.0
 
@@ -1037,7 +1026,7 @@ If a verified production fix warrants publication, create a new maintenance rele
 
 Do not rewrite `v1.0.0`.
 
-No maintenance release is currently scheduled. In particular, the hypothetical `v1.1.0` new-share-format release was **not built or published**; deferred the underlying compatibility feature. The new v2.0.0 development program is planned separately and must pass all roadmap qualification gates.
+The v1.1.0 candidate is built and owner-accepted but unpublished. It does not include the deferred new-share-format compatibility work. The v2.0.0 program remains separate and must pass its qualification gates.
 
 ---
 
@@ -1365,16 +1354,10 @@ Phases A–A4 established standard-share extraction under unchanged production c
 
 # RESUME HERE
 
-**Baseline:** v1.0.0 released; v2 Stage 1A, Option 3, Stage 1B, Stage 1C and Task B checkpointed. Latest published feature-branch commit: `7de0613309d977b3e5df0523ea05e2e882662454`.
+**Baseline:** v1.0.0 published; verified feature HEAD `fe620ea9349fdb1846a23e3f8b5a433cc1734ba1`. The v1.1.0 source archive includes reviewed uncommitted changes and is not a Git checkpoint.
 
-**Locked:** Original cobalt-grain artwork, organic connected panels, 84% opacity, spacing, native drag/hover fix, source-preserving extraction, Scratchpad notifications, Parts Picker/Preview and blue CRT shutdown.
+**Candidate:** Context Workshop and THE DOCFATHER teaser are implemented; the owner accepted the packaged EXE. Publication remains pending. Clean-machine portability is independently unverified. Four Stage 1C normal-motion assertions remain unresolved.
 
-**Deferred:** Cell division after failed prototypes; Project-shared and Codex snapshot extraction compatibility.
+**Development:** Stage 2A read-only Case Intake is implemented and uncommitted in the feature worktree, excluded from the candidate. Evidence reconciliation, provider-neutral AI harness, approval-gated writes and integrated workspace remain planned.
 
-**Next:** Stage 2 Lorekeeper project-directory scan and document discovery; optional provider-neutral AI/document drafting remains planned and unimplemented.
-
-**Release/verification:** v2 remains development software; no packaged EXE test or v2 release. v1.0.0 remains published. Retain documented Scratchpad paragraph-break limitation and source-validation gaps.
-
-**Preservation:** Keep separate feature worktree, protected original checkout and its 28 diagnostics untouched. No unapproved Git operations, uploads or writes. Successor TPM Task 4 remains incomplete.
-
-**Writing convention:** “Adopted blue CRT shutdown design.” “Deferred cell division after the prototypes failed visual review.” “Designed AI integration to remain provider-neutral.” No “we”, “the owner”, “the user” or model-credit narration in project-facing documents.
+**Next:** Review the source and documentation diff, then obtain separate authorization for any Git checkpoint or publication. Preserve the original checkout and 28 diagnostics.

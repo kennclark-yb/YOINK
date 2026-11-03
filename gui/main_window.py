@@ -52,6 +52,8 @@ from .background import Background
 from .extraction_worker import ExtractionWorker
 from .preload_worker import PreloadWorker
 from .progress_button import ProgressButton
+from .bracket_button import BracketButton
+from .docfather_button import DocfatherButton
 from .split_selector import SplitSelector
 from .styles import APP_STYLE
 from .title_bar import TitleBar
@@ -705,7 +707,7 @@ class MainWindow(QMainWindow):
         self.results_messages.setAccessibleDescription('Full source message count')
         self.results_total_characters.setAccessibleDescription('Full source character count')
 
-        self.preview_button = QPushButton("[ PREVIEW ]")
+        self.preview_button = BracketButton("[ PREVIEW ]")
         self.preview_button.setFixedHeight(32)
         self.preview_button.setMinimumWidth(86)
         self.preview_button.setCursor(
@@ -749,7 +751,7 @@ class MainWindow(QMainWindow):
         )
         preview_actions = QVBoxLayout()
         preview_actions.addWidget(self.preview_button)
-        self.context_picker_button = QPushButton("[ PARTS PICKER ]")
+        self.context_picker_button = BracketButton("[ PARTS PICKER ]")
         self.context_picker_button.setFixedHeight(32)
         self.context_picker_button.setStyleSheet(self.preview_button.styleSheet())
         self.context_picker_button.setAccessibleName("Open Parts Picker")
@@ -757,14 +759,14 @@ class MainWindow(QMainWindow):
         self.context_picker_button.setEnabled(False)
         self.context_picker_button.clicked.connect(lambda: self._toggle_workspace_tool("picker"))
         preview_actions.addWidget(self.context_picker_button)
-        self.scratchpad_button = QPushButton("[ SCRATCHPAD ]")
+        self.scratchpad_button = BracketButton("[ SCRATCHPAD ]")
         self.scratchpad_button.setFixedHeight(32)
         self.scratchpad_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.scratchpad_button.setStyleSheet(self.preview_button.styleSheet())
         self.scratchpad_button.setToolTip("Open this session's scratchpad")
         self.scratchpad_button.clicked.connect(lambda: self._toggle_workspace_tool("scratchpad"))
         preview_actions.addWidget(self.scratchpad_button)
-        self.scratchpad_undo_button = QPushButton("[ UNDO APPEND ]")
+        self.scratchpad_undo_button = BracketButton("[ UNDO APPEND ]")
         self.scratchpad_undo_button.setFixedHeight(32)
         self.scratchpad_undo_button.setStyleSheet(self.preview_button.styleSheet())
         self.scratchpad_undo_button.setToolTip("Undo the latest Scratchpad append")
@@ -778,7 +780,17 @@ class MainWindow(QMainWindow):
         preview_actions.addStretch()
         summary_row.addLayout(preview_actions)
 
-        self.copy_all_button = ProgressButton("COPY ALL")
+        self.copy_all_button = ProgressButton("[ COPY ALL ]")
+        self.copy_all_button.setProperty("alignedBrackets", True)
+        self.preview_button.ensurePolished()
+        self.copy_all_button.setFont(self.preview_button.font())
+        self.copy_all_button.setFixedHeight(32)
+        self.copy_all_button.set_results_press_style(True)
+        self.copy_all_button.setAccessibleName("Copy all parts to clipboard")
+        self.copy_all_button.setToolTip("Copy all parts to clipboard")
+        self.copy_all_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        preview_actions.insertWidget(3, self.copy_all_button)
+        self.docfather_button = DocfatherButton()
         self._copy_all_timer = QTimer(self.copy_all_button)
         self._copy_all_timer.setSingleShot(True)
         self._copy_all_timer.setInterval(1000)
@@ -918,10 +930,10 @@ class MainWindow(QMainWindow):
             self._reset_results_session
         )
 
-        # Copy controls stay below the scrollable results area.
+        # Primary actions stay below the scrollable results area.
         results_layout.addSpacing(4)
 
-        results_layout.addWidget(self.copy_all_button)
+        results_layout.addWidget(self.docfather_button)
 
         results_layout.addSpacing(4)
 
@@ -1314,7 +1326,7 @@ class MainWindow(QMainWindow):
         self._copy_all_timer.start()
 
     def _reset_copy_all_button(self):
-        self.copy_all_button.setText("COPY ALL")
+        self.copy_all_button.setText("[ COPY ALL ]")
 
     def _build_result_cards(self):
         # Clear any existing result cards.
@@ -2204,7 +2216,7 @@ class MainWindow(QMainWindow):
         self._shutdown_overlay.show()
         self._shutdown_overlay.raise_()
 
-        self._shutdown_screen = ShutdownScreen()
+        self._shutdown_screen = ShutdownScreen(self)
 
         window_center = self.frameGeometry().center()
 

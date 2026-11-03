@@ -244,7 +244,7 @@ class InteractionTests(unittest.TestCase):
         self.assertEqual(part.text(), "✔")
         self.assertEqual(APP.clipboard().text(), w._parts[0])
         advance(750)
-        self.assertEqual(w.copy_all_button.text(), "COPY ALL")
+        self.assertEqual(w.copy_all_button.text(), "[ COPY ALL ]")
         self.assertEqual(part.text(), "⧉")
 
     def test_copy_then_reset_does_not_call_deleted_button(self):

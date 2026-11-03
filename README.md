@@ -1,38 +1,4 @@
-<p align="center">
-  <img src="assets/icon/yoink-master.png" alt="YOINK artwork" width="220">
-</p>
-
-<h1 align="center">YOINK — The ChatSnatcher</h1>
-<p align="center"><strong>Your Oversized Interactions, Nicely Kept.</strong></p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Windows-portable-4D7CFE" alt="Windows portable">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-92949D" alt="MIT license"></a>
-  <img src="https://img.shields.io/badge/version-1.0.0-4D7CFE" alt="Version 1.0.0">
-</p>
-
-<p align="center">
-  <a href="https://github.com/kennclark-yb/YOINK/releases">Download for Windows</a> ·
-  <a href="#how-to-use-it">How to use it</a> ·
-  <a href="BUILDING.md">Build from source</a> ·
-  <a href="CONTRIBUTING.md">Contribute</a>
-</p>
-
-YOINK yoinks messages from shared ChatGPT conversations and turns them
-into clean, split, copyable text.
-
-Because apparently manually Ctrl+C'ing your way through a conversation
-the size of a Victorian novel is not a workflow.
-
-<p align="center">
-  <img src="assets/screenshots/results.png" alt="YOINK Results with split parts, Preview, and Scratchpad" width="800">
-</p>
-
-*The real app, shown with a made-up conversation. No private chats were yoinked for these screenshots.*
-
-------------------------------------------------------------------------
-
-## Want a free unlimited context window for ChatGPT?
+# Want a free unlimited context window for ChatGPT?
 
 **TOO BAD. YOU'RE POOR.\***
 
@@ -361,17 +327,20 @@ behavior.
 
 ------------------------------------------------------------------------
 
-## Planned for v2.0.0 — Context Workshop and Lorekeeper
+## Context Workshop in the v1.1.0 candidate
 
-**v1.0.0 remains the only released version.** Stage 1A/1B/1C and the blue CRT shutdown are checkpointed on the v2 development branch, not yet distributed as v2.
+The unreleased v1.1.0 candidate includes the connected Context Workshop, Preview, Parts Picker, Scratchpad append and Undo, and aligned Copy All controls. THE DOCFATHER is a teaser only and displays `THE DOCFATHER IS STILL OUT.`
 
-- **Context Workshop:** select exact, source-preserving conversation ranges; copy and append to Scratchpad.
-- **Lorekeeper:** choose a project directory, identify architecture/README/history/decision files, confirm targets, compare the extracted transcript with actual code, then review and approve proposed edits. When no suitable docs exist, offer source-grounded document creation instead of an empty managed library.
+## Planned for v2.0.0 — THE DOCFATHER
+
+**v1.0.0 remains the only published version.** The v1.1.0 candidate is not yet released; the functional v2 assistant remains under development.
+
+- **THE DOCFATHER (planned):** choose a project directory, identify architecture/README/history/decision files, confirm targets, compare the extracted transcript with actual code, then review and approve proposed edits. When no suitable docs exist, offer source-grounded document creation instead of an empty managed library.
 - **Optional AI:** choose no AI, export context for another tool, use compatible local inference (initial Ollama/Caveman candidate), or connect a future verified Codex/Claude/other adapter. No mandatory AI subscription, remote upload or bundled model.
 - **Knowledge Generator:** create source-backed summaries and developer-voiced README, architecture, decision, history and handoff documents.
 - **Document Maintainer:** preview section-level diffs with evidence and approve every write; preserve existing decisions and source history.
 
-Without AI, extraction, folder scan, document discovery and portable context export remain available. Obsidian is an optional way to open existing Markdown files, not a dependency. External providers require separate supported integrations and explicit privacy/cost consent.
+In v1.1.0, extraction remains available without AI. Future no-AI workflows are planned to include folder scanning, document discovery and portable context export. Obsidian is an optional way to open existing Markdown files, not a dependency. External providers require separate supported integrations and explicit privacy/cost consent.
 
 See [ROADMAP_V2.md](ROADMAP_V2.md) for planned stages and acceptance gates; no v2 release date is promised.
 

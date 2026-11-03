@@ -1,5 +1,7 @@
 # YOINK — local Windows build
 
+The 1.1.0 candidate is unreleased. The portable folder is the distribution unit.
+
 Your Oversized Interactions, Nicely Kept.
 
 This is an internal build/handoff guide, not a public release README.
@@ -40,9 +42,9 @@ Close any running packaged YOINK before rebuilding it.
 Open **`dist\YOINK\YOINK.exe`** normally. Distribute the entire `dist\YOINK` folder,
 including `_internal`, preferably zipped. Do not distribute the QA folder.
 Keep executable and `_internal` together. No shortcut/installer is generated.
-Windows executable version metadata is `1.0.0.0`; this does not publish a release.
+Windows executable version metadata is `1.1.0.0`; this does not publish a release.
 The running app/update checker version is `VERSION` in `gui/updates.py` (currently
-`1.0.0`). Keep it aligned with `packaging/version_info.txt` when changing versions;
+`1.1.0`). Keep it aligned with `packaging/version_info.txt` when changing versions;
 GitHub release tags should use semantic versions such as `v1.0.0`.
 The executable is unsigned; clean-machine distribution testing and signing are
 separate release decisions. Do not bypass Windows security prompts.
