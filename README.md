@@ -1,383 +1,93 @@
+<p align="center">
+  <img src="assets/readme/yoink-3d-logo.png" alt="YOINK blue and gold logo" width="220">
+</p>
+
 # Want a free unlimited context window for ChatGPT?
-
-**TOO BAD. YOU'RE POOR.\***
-
-That's why I made YOINK.
-
-\* **YOINK does not actually give ChatGPT an unlimited context window.**
-If I could do that, this README would be significantly shorter.
-
-What it *can* do is make your context **portable**.
-
-Long-running ChatGPT threads eventually become awkward places to live.
-They get enormous. Finding things becomes archaeology. Depending on your
-plan and workflow, you may also run into context limits, upload limits,
-or simply reach the point where continuing one gigantic conversation is
-less useful than starting fresh.
-
-But starting fresh has its own problem:
-
-> "Cool. Now how do I bring the important stuff with me?"
-
-**YOINK it.**
-
-Extract the conversation, split it into manageable pieces, carry forward
-what matters, and start the next chat with useful context instead of
-performing a séance for your previous thread.
-
-**The chat is disposable. The project context isn't.**
-
-------------------------------------------------------------------------
-
-## The workflow that created this thing
-
-YOINK originally came from a simple project workflow:
-
-``` text
-Brainstorm
-    ↓
-Establish a Project Record
-    ↓
-Work in ChatGPT
-    ↓
-Thread becomes an absolute unit
-    ↓
-YOINK the conversation
-    ↓
-Update the Project Record
-    ↓
-Start a fresh chat
-    ↓
-Project Record + relevant source files + recent context
-    ↓
-KEEP GOING
-```
-
-Instead of treating one ChatGPT thread like a sacred artifact that must
-survive until the heat death of the universe, keep the **project state**
-portable.
-
-For development work, that might mean carrying forward a current
-project/status Markdown file, relevant source files, recent conversation
-context, decisions already made, and immediate next steps.
-
-Rinse. Repeat. Continue building.
-
-------------------------------------------------------------------------
-
-## Who is this for?
-
-### The Free-Tier Peasant
-
-Want a free unlimited context window?
 
 **TOO BAD. YOU'RE POOR.**
 
-Welcome. So am I.
+So am I. That's why I made YOINK.
 
-YOINK came from wanting a workflow that lets you squeeze as much useful
-work as possible out of ChatGPT without treating one increasingly
-gigantic thread like the last helicopter out of Saigon.
+**YOINK does not actually give ChatGPT an unlimited context window.** If I could do that, this README would be significantly shorter. It makes your context **portable**: extract a shared conversation, split it into useful pieces, and carry what matters into the next chat. Update your project record, bring the relevant files, and keep going without excavating a 400-message thread.
 
-Brainstorm. Establish a project record. Work for a while. When the
-thread gets huge or the useful context starts getting shaky, YOINK what
-matters, update the record, start a fresh chat, attach the record and
-relevant files, and keep going.
+**The chat is disposable. The project context isn't.**
 
-Starting a new chat doesn't have to mean starting the project over.
+**[Download YOINK v1.1.0 — Creature Comforts for Windows x64](https://github.com/kennclark-yb/YOINK/releases/tag/v1.1.0)**
 
-### The Paying Citizen
-
-Not rich enough for Codex or a magical workspace with credits falling
-from the ceiling?
-
-**Boo hoo. Congratulations on your longer context window and file
-uploads.**
-
-Eventually, sufficiently enormous threads can still become cumbersome,
-laggy, inconsistent, or just deeply unpleasant to navigate.
-
-The same workflow works wonders: YOINK the useful context, carry the
-project state forward, and start fresh without performing a 400-message
-archaeological expedition.
-
-### The Ultra Pro Max Workspace Aristocrat
-
-You have Codex? Giant context? Workspaces? Greater credits?
-
-**Well good on you.**
-
-What are you doing here?
-
-YOINK can still be useful for archiving, handoffs, extracting selected
-context, or moving conversations between tools.
-
-If it somehow still saves you time, buy me a coffee someday.
-
-------------------------------------------------------------------------
-
-## What YOINK yoinks
-
-Give YOINK a supported shared ChatGPT URL and choose what you want:
-
--   **A.I.** --- extract assistant messages only.
--   **User** --- extract your messages only.
--   **Both** --- take the whole conversation.
-
-YOINK produces **Markdown-formatted text** with clean message headings,
-numbering, role labels, and separators.
-
-Then split it by:
-
--   **Character Limit** --- useful when you're working around
-    input/context sizes.
--   **Number of Parts** --- tell YOINK how many chunks you want and let
-    it balance them. This is the default; enter the number you want.
--   **Messages per Part** --- set the maximum number of intact messages in
-    each chunk. Ten messages at three per part gives you 3, 3, 3, and 1.
-
-You can preview the entire extracted thread, copy individual parts, or
-**Copy All**.
-
-No 400-message archaeological expedition required.
-
-------------------------------------------------------------------------
-
-## Features
-
--   Extract **A.I., User, or Both** sides of a shared ChatGPT
-    conversation.
--   Split output by **Character Limit**, **Number of Parts**, or **Messages per Part**.
--   Preserve message order and keep individual messages intact while
-    splitting.
--   Preview the entire extracted conversation before copying.
--   Filter Preview with **All / A.I. / User**, independently of your output mode.
--   Copy individual parts with one click.
--   Copy all generated parts at once.
--   Collect selected context in a separate **Scratchpad** window and copy it
-    together. Notes last for the current extraction session only.
--   Markdown-formatted output suitable for pasting into chats, notes,
-    project records, or other tools.
--   Clear progress and retry states.
--   Reset and immediately YOINK another thread.
--   Portable Windows build.
--   Bundled browser runtime --- no separate Chromium installation
-    required.
--   No Python installation required when using the packaged release.
--   Quiet startup update checks, with **Ctrl+U** for a manual check.
-    You choose when to visit the release page; nothing downloads or installs itself.
-
-And yes, the loading messages are stupid on purpose.
-
-------------------------------------------------------------------------
-
-## Download
-
-Go to **[Releases](https://github.com/kennclark-yb/YOINK/releases)** and
-download the latest Windows ZIP.
-
-YOINK v1 is distributed as a portable Windows folder.
-
-1.  Download the release ZIP.
-2.  Extract the **entire** folder somewhere permanent.
-3.  Run `YOINK.exe`.
-4.  Optional but recommended: right-click `YOINK.exe` → **Show more
-    options** → **Send to** → **Desktop (create shortcut)**.
-5.  Feed the little bastard a shared ChatGPT link.
-
-**Do not pull `YOINK.exe` out by itself.** It needs the files shipped
-alongside it. If you want YOINK on your Desktop, create a shortcut
-instead of moving the executable out of its folder.
-
-No installer is required.
-
-### Windows may complain
-
-YOINK v1 is currently **unsigned**, so Windows may display a
-security/reputation warning for an unfamiliar executable.
-
-The source code and build configuration are available in this repository
-if you'd rather inspect or build it yourself.
-
-------------------------------------------------------------------------
-
-## How to use it
-
-1.  In ChatGPT, create/copy a **shared conversation link**.
-2.  Paste that link into YOINK.
-3.  Choose **A.I.**, **User**, or **Both**.
-4.  Choose how the output should be split.
-5.  Hit **Extract**.
-6.  Preview it, copy individual parts, or **Copy All**.
-7.  YOINK achieved.
-
-### 1. Feed it a link
-
-Open YOINK, paste your shared link, and pick the messages and split size you want.
-**Number of Parts** starts selected with an empty value. Enter a positive whole
-number, or choose another mode. **Messages per Part** also needs a positive whole
-number; **Character Limit** uses 9000 if left empty. Missing or invalid input gets
-an inline explanation and a small nudge on the field that needs attention.
+## Meet The ChatSnatcher
 
 <p align="center">
-  <img src="assets/screenshots/startup.png" alt="YOINK startup window" width="360">
-  <img src="assets/screenshots/configured.png" alt="Example link configured to extract Both roles" width="360">
+  <img src="assets/readme/results-v1.1.0.png" alt="YOINK v1.1.0 Results showing the extraction settings, conversation statistics, generated parts and workspace controls" width="788">
 </p>
 
-### 2. Inspect the haul
+**Y.O.I.N.K.** stands for **Your Oversized Interactions, Nicely Kept.** Give the ChatSnatcher a public ChatGPT shared conversation link and it turns the messages into Markdown-formatted text you can inspect, split, and copy.
 
-Results shows the message counts and your split parts. **Preview** opens
-**Preview Entire Thread**, so you can read the full conversation before copying.
-It always opens on **All**, including both roles even if your output contains
-only A.I. or User messages. The sliding **All / A.I. / User** selector changes
-only the Preview display, keeping the original message numbers. Accent headers
-sit left for A.I. and right for User; message bodies stay normally aligned.
-Use the copy icon beside a part, or **Copy All** to take the lot.
+## What YOINK Does
 
-<p align="center">
-  <img src="assets/screenshots/preview.png" alt="Preview Entire Thread with a sample project handoff" width="760">
-</p>
+- **Extract:** Choose A.I., User, or Both. Output keeps message order, headings, role labels, and separators.
+- **Split:** Choose Character Limit, Number of Parts, or Messages per Part. Messages stay intact.
+- **Select ranges:** Use Parts Picker to select message ranges, preview or copy the selection, or add it to Scratchpad.
+- **Preview:** Read the entire conversation and filter the view by All, A.I., or User. The filter doesn't change your output mode.
+- **Collect:** Use the connected Scratchpad for notes and appended selections. Undo the latest append while it remains available, then copy the contents.
 
-### 3. Keep the useful bits
+Scratchpad is for the current extraction session only. It isn't saved to disk; copy anything you need before extracting another thread or closing YOINK. Manual edits can make append Undo unavailable.
 
-Open **Scratchpad** beside Preview. Type or paste selected context into its
-separate window, then hit **Copy Scratchpad**.
+## Download & Install
 
-Closing and reopening the Scratchpad keeps your notes during the same extraction
-session. **Extract Another Thread** clears them. Closing YOINK clears them too.
-Nothing in the scratchpad is saved to disk. Copy anything you want to keep first.
+Get the Windows x64 ZIP from the **[v1.1.0 — Creature Comforts release](https://github.com/kennclark-yb/YOINK/releases/tag/v1.1.0)**.
 
-<p align="center">
-  <img src="assets/screenshots/scratchpad.png" alt="Session Scratchpad with selected project context and Copy Scratchpad button" width="640">
-</p>
+1. Extract the entire ZIP folder somewhere permanent.
+2. Keep `YOINK.exe` and the `_internal` folder together. Run `YOINK.exe` from that folder.
+3. For desktop access, create a shortcut to the executable rather than moving it.
 
-### Staying current
+No installer, Python installation, or separate Chromium installation is required. The build is unsigned, so Windows may show a security or reputation warning. Source and build instructions are available if you'd rather inspect or build it yourself.
 
-YOINK quietly checks the official GitHub repository's latest release at startup.
-A newer version gets a small **View Release / Later** prompt. Otherwise, silence.
-Press **Ctrl+U** to check yourself: YOINK tells you whether you're up to date,
-there's a newer release, or the check couldn't complete.
+## See It in Action
 
-Updates are yours to download and unpack. No automatic downloads or installations.
+Start with a public share, then inspect and collect the context worth carrying forward.
 
-------------------------------------------------------------------------
+1. Create a **standard public shared conversation link** in ChatGPT and paste it into YOINK.
+2. Choose the message roles and a split mode. Number of Parts and Messages per Part require a positive whole number; an empty Character Limit defaults to 9000. Click **Extract**.
 
-## Current limitations
+<p align="center"><img src="assets/readme/configured-v1.1.0.png" alt="Public share configured for Both roles and six output parts" width="400"></p>
+3. Inspect the results. Open **Preview** to read the whole thread, copy individual parts, or use **Copy All**.
 
-YOINK v1 currently supports **standard public ChatGPT shared conversation URLs**
-(`https://chatgpt.com/share/...`) only.
+<p align="center"><img src="assets/readme/preview-v1.1.0.png" alt="Entire-thread Preview with All, A.I. and User display filters" width="600"></p>
+4. Open **Parts Picker** to select ranges. Preview or copy the selection, or append it to **Scratchpad** alongside your own notes. Use **Undo Append** when available.
 
-It does **not** support **ChatGPT Project-shared conversation links**
-(`chatgpt.com/g/.../shared/c/...`) or **Codex shared snapshots**
-(`chatgpt.com/s/cx_...`). It also does not support ordinary private
-ChatGPT conversation URLs, Claude, Gemini, or other AI platforms.
+<p align="center"><img src="assets/readme/parts-picker-v1.1.0.png" alt="Parts Picker with the opening two messages selected and Add to Scratchpad available" width="500"></p>
 
-**Known limitation (deferred):** Project-shared links may require signing in
-and expose conversation data differently from standard public shares. An
-authorized-browser investigation found structured Project conversation data,
-but did not establish complete-history extraction or a reliable production
-import path. Deferred Project-shared URL support; closing
-[Issue #2](https://github.com/kennclark-yb/YOINK/issues/2) did not fix this
-limitation. Codex snapshots have also not been validated for complete extraction.
-No `v1.1.0` release was produced from these investigations.
+<p align="center"><img src="assets/readme/connected-workspace-v1.1.0.png" alt="Connected extraction, Results and Scratchpad workspace with selected context appended and Undo Append visible" width="1000"></p>
 
-Internet access is required for extraction.
+*Preview, Parts Picker and Scratchpad share the connected workspace beside Results.*
 
-YOINK depends on the structure and availability of ChatGPT's shared
-conversation pages. If OpenAI substantially changes how those pages
-work, extraction may require an update.
+<details>
+<summary>Scratchpad and DOCFATHER up close</summary>
 
-The packaged Windows build is currently large because it includes its
-own browser runtime. Size optimization is on the table for a future
-build; v1 prioritizes a self-contained, known-good package.
+<p align="center"><img src="assets/readme/scratchpad-v1.1.0.png" alt="Session-only Scratchpad containing the appended opening selection" width="600"></p>
 
-The fat bastard brought luggage.
+<p align="center"><img src="assets/readme/docfather-v1.1.0.png" alt="Results with the clicked teaser reading THE DOCFATHER IS STILL OUT" width="372"></p>
 
-------------------------------------------------------------------------
+</details>
 
-## Building from source
+YOINK checks for updates quietly at startup; press **Ctrl+U** for a manual check. Updates are downloaded and unpacked by you, not installed automatically.
 
-YOINK currently targets Windows.
+## Limitations & What's Next
 
-Requirements and build dependencies are pinned in `requirements.txt` and
-`requirements-build.txt`.
+YOINK v1 supports standard public ChatGPT shared conversation URLs (`https://chatgpt.com/share/...`). It does **not** support Project-shared links, Codex snapshots, private conversation URLs, Claude, or Gemini. Extraction requires internet access and depends on the availability and structure of ChatGPT's shared pages; changes there may require an update.
 
-For the packaged Windows build:
+The portable build is large because it includes its browser runtime. The fat bastard brought luggage.
 
-``` powershell
+**THE DOCFATHER** in v1.1.0 is a teaser, not a working assistant. The functional document workflow and optional AI integrations are separate plans for v2. Non-ChatGPT extraction platforms are deferred beyond v2.0.0. See [ROADMAP_V2.md](ROADMAP_V2.md). No release date or blood oath.
+
+## Under the Hood
+
+YOINK targets Windows. Dependencies are pinned in `requirements.txt` and `requirements-build.txt`. To build the Windows package:
+
+```powershell
 .\build_windows.ps1
 ```
 
-See [`BUILDING.md`](BUILDING.md) for the full build and packaging
-instructions.
+See [BUILDING.md](BUILDING.md) for requirements and packaging details. Automated tests live in [tests/](tests/); run the relevant tests when changing extraction, formatting, the GUI, or packaging. Contributions are welcome: read [CONTRIBUTING.md](CONTRIBUTING.md), keep changes focused, and don't break the ChatSnatcher.
 
-------------------------------------------------------------------------
-
-## Testing
-
-YOINK includes automated tests under [`tests/`](tests/).
-
-If you're changing extraction, formatting, GUI behavior, or packaging,
-run the relevant tests before opening a pull request.
-
-The v1 Windows release was also manually smoke-tested against real
-shared ChatGPT conversations, including extraction, Preview, per-part
-copying, Copy All, reset/re-extraction, window interaction, and shutdown
-behavior.
-
-------------------------------------------------------------------------
-
-## Context Workshop in v1.1.0
-
-Y.O.I.N.K. v1.1.0 includes the connected Context Workshop, Preview, Parts Picker, Scratchpad append and Undo, and aligned Copy All controls. THE DOCFATHER is a teaser only and displays `THE DOCFATHER IS STILL OUT.`
-
-## Planned for v2.0.0 — THE DOCFATHER
-
-The functional v2 assistant remains under development and is not included in v1.1.0.
-
-- **THE DOCFATHER (planned):** choose a project directory, identify architecture/README/history/decision files, confirm targets, compare the extracted transcript with actual code, then review and approve proposed edits. When no suitable docs exist, offer source-grounded document creation instead of an empty managed library.
-- **Optional AI:** choose no AI, export context for another tool, use compatible local inference (initial Ollama/Caveman candidate), or connect a future verified Codex/Claude/other adapter. No mandatory AI subscription, remote upload or bundled model.
-- **Knowledge Generator:** create source-backed summaries and developer-voiced README, architecture, decision, history and handoff documents.
-- **Document Maintainer:** preview section-level diffs with evidence and approve every write; preserve existing decisions and source history.
-
-In v1.1.0, extraction remains available without AI. Future no-AI workflows are planned to include folder scanning, document discovery and portable context export. Obsidian is an optional way to open existing Markdown files, not a dependency. External providers require separate supported integrations and explicit privacy/cost consent.
-
-See [ROADMAP_V2.md](ROADMAP_V2.md) for planned stages and acceptance gates; no v2 release date is promised.
-
-## Contributing
-
-Bug reports, ideas, fixes, and improvements are welcome.
-
-If you're changing code, please read
-[`CONTRIBUTING.md`](CONTRIBUTING.md) first.
-
-The short version:
-
-> Keep changes focused.\
-> Test your work.\
-> Don't break the ChatSnatcher.
-
-------------------------------------------------------------------------
-
-## License
-
-YOINK is released under the **MIT License**.
-
-Copyright (c) 2026 autowolf
-
-See [`LICENSE`](LICENSE).
-
-------------------------------------------------------------------------
-
-## Why "YOINK"?
-
-Because "Structured Conversation Context Extraction and Portability
-Utility" sounded like software you would be forced to use at work.
-
-**YOINK** stands for:
-
-**Your Oversized Interactions, Nicely Kept.**
-
-And YOINK yoinks.
-
-That's the product specification.
+YOINK is released under the [MIT License](LICENSE). Copyright © 2026 autowolf.
