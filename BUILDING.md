@@ -1,6 +1,6 @@
 # YOINK — local Windows build
 
-The portable folder is the distribution unit for v1.1.0.
+The portable folder is the distribution unit for the v1.1.1 candidate.
 
 Your Oversized Interactions, Nicely Kept.
 
@@ -42,9 +42,9 @@ Close any running packaged YOINK before rebuilding it.
 Open **`dist\YOINK\YOINK.exe`** normally. Distribute the entire `dist\YOINK` folder,
 including `_internal`, preferably zipped. Do not distribute the QA folder.
 Keep executable and `_internal` together. No shortcut/installer is generated.
-Windows executable version metadata is `1.1.0.0`; this does not publish a release.
+Windows executable version metadata is `1.1.1.0`; this does not publish a release.
 The running app/update checker version is `VERSION` in `gui/updates.py` (currently
-`1.1.0`). Keep it aligned with `packaging/version_info.txt` when changing versions;
+`1.1.1`). Keep it aligned with `packaging/version_info.txt` when changing versions;
 GitHub release tags should use semantic versions such as `v1.0.0`.
 The executable is unsigned; clean-machine distribution testing and signing are
 separate release decisions. Do not bypass Windows security prompts.
@@ -75,11 +75,7 @@ and changes only the global font family. QTextBrowser uses that same font databa
 Preview prefers Inter, Segoe UI, then sans-serif. Code blocks retain their existing
 monospace styling. No font is installed into Windows.
 
-The locked PNG is preserved. To regenerate its derived nine-frame ICO only:
-
-```powershell
-.venv\Scripts\python.exe packaging\make_icon.py
-```
+`assets/icon/yoink.ico` is the authoritative approved flat-grained release icon. Restore it without modification from `YOINK_Logo_Flat_Optimized.ico` in the approved `YOINK_Logo_Polishing_2026-11-04_1918.zip` package. Its SHA-256 is `ad54ebc7651dc136e876715eb861caa91afc1b94cabac608caed40e015fd8c07`. The legacy icon script exits without writing; the old master PNG does not reproduce the approved icon.
 
 The ICO supplies Qt's inherited window icon, Windows application/taskbar identity,
 the executable resource, and the 18-pixel icon before the custom title-bar text.

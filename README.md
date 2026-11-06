@@ -12,13 +12,15 @@ So am I. That's why I made YOINK.
 
 **The chat is disposable. The project context isn't.**
 
-**[Download YOINK v1.1.0 — Creature Comforts for Windows x64](https://github.com/kennclark-yb/YOINK/releases/tag/v1.1.0)**
+**[Download YOINK v1.1.1 — New Face, Same Habit for Windows x64](https://github.com/kennclark-yb/YOINK/releases/tag/v1.1.1)**
 
 ## Meet The ChatSnatcher
 
 <p align="center">
-  <img src="assets/readme/results-v1.1.0.png" alt="YOINK v1.1.0 Results showing the extraction settings, conversation statistics, generated parts and workspace controls" width="788">
+  <img src="assets/readme/results-v1.1.1.png" alt="YOINK v1.1.1 Results showing the extraction settings, conversation statistics, generated parts and workspace controls" width="788">
 </p>
+
+<p align="center"><img src="assets/readme/results-detail-v1.1.1.png" alt="Results detail with conversation statistics, Preview, Parts Picker, Scratchpad, Copy All, and two output parts" width="500"></p>
 
 **Y.O.I.N.K.** stands for **Your Oversized Interactions, Nicely Kept.** Give the ChatSnatcher a public ChatGPT shared conversation link and it turns the messages into Markdown-formatted text you can inspect, split, and copy.
 
@@ -34,7 +36,7 @@ Scratchpad is for the current extraction session only. It isn't saved to disk; c
 
 ## Download & Install
 
-Get the Windows x64 ZIP from the **[v1.1.0 — Creature Comforts release](https://github.com/kennclark-yb/YOINK/releases/tag/v1.1.0)**.
+Get the Windows x64 ZIP from the **[v1.1.1 — New Face, Same Habit release](https://github.com/kennclark-yb/YOINK/releases/tag/v1.1.1)**.
 
 1. Extract the entire ZIP folder somewhere permanent.
 2. Keep `YOINK.exe` and the `_internal` folder together. Run `YOINK.exe` from that folder.
@@ -49,22 +51,24 @@ Start with a public share, then inspect and collect the context worth carrying f
 1. Create a **standard public shared conversation link** in ChatGPT and paste it into YOINK.
 2. Choose the message roles and a split mode. Number of Parts and Messages per Part require a positive whole number; an empty Character Limit defaults to 9000. Click **Extract**.
 
-<p align="center"><img src="assets/readme/configured-v1.1.0.png" alt="Public share configured for Both roles and six output parts" width="400"></p>
+<p align="center"><img src="assets/readme/configured-v1.1.1.png" alt="Configuration with Split Output dropdown showing Character Limit, Number of Parts and Messages per Part" width="400"></p>
+
 3. Inspect the results. Open **Preview** to read the whole thread, copy individual parts, or use **Copy All**.
 
-<p align="center"><img src="assets/readme/preview-v1.1.0.png" alt="Entire-thread Preview with All, A.I. and User display filters" width="600"></p>
+<p align="center"><img src="assets/readme/preview-v1.1.1.png" alt="Entire-thread Preview with All, A.I. and User display filters" width="600"></p>
+
 4. Open **Parts Picker** to select ranges. Preview or copy the selection, or append it to **Scratchpad** alongside your own notes. Use **Undo Append** when available.
 
-<p align="center"><img src="assets/readme/parts-picker-v1.1.0.png" alt="Parts Picker with the opening two messages selected and Add to Scratchpad available" width="500"></p>
+<p align="center"><img src="assets/readme/parts-picker-v1.1.1.png" alt="Parts Picker with the opening two messages selected and Add to Scratchpad available" width="500"></p>
 
-<p align="center"><img src="assets/readme/connected-workspace-v1.1.0.png" alt="Connected extraction, Results and Scratchpad workspace with selected context appended and Undo Append visible" width="1000"></p>
+<p align="center"><img src="assets/readme/connected-workspace-v1.1.1.png" alt="Connected extraction, Results and Scratchpad workspace with selected context appended and Undo Append visible" width="1000"></p>
 
 *Preview, Parts Picker and Scratchpad share the connected workspace beside Results.*
 
 <details>
 <summary>Scratchpad and DOCFATHER up close</summary>
 
-<p align="center"><img src="assets/readme/scratchpad-v1.1.0.png" alt="Session-only Scratchpad containing the appended opening selection" width="600"></p>
+<p align="center"><img src="assets/readme/scratchpad-v1.1.1.png" alt="Session-only Scratchpad containing an appended part" width="600"></p>
 
 <p align="center"><img src="assets/readme/docfather-v1.1.0.png" alt="Results with the clicked teaser reading THE DOCFATHER IS STILL OUT" width="372"></p>
 

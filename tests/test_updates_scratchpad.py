@@ -25,9 +25,9 @@ class VersionTests(unittest.TestCase):
                 version_key(invalid)
 
     def test_release_selection_and_official_destination(self):
-        for tag in ('v0.9.0', 'v1.0.0', 'v1.1.0', 'v1.1.0+build'):
+        for tag in ('v0.9.0', 'v1.0.0', 'v1.1.0', 'v1.1.1', 'v1.1.1+build'):
             self.assertIsNone(newer_release({'tag_name': tag}))
-        self.assertEqual(newer_release({'tag_name': 'v1.1.1'}), ('v1.1.1', RELEASES + '/tag/v1.1.1'))
+        self.assertEqual(newer_release({'tag_name': 'v1.1.2'}), ('v1.1.2', RELEASES + '/tag/v1.1.2'))
         self.assertIsNone(newer_release({'tag_name': 'v2.0.0-rc.1', 'prerelease': True}))
         self.assertEqual(newer_release({'tag_name': 'v1.10.0', 'html_url': 'https://example.com'}),
                          ('v1.10.0', RELEASES + '/tag/v1.10.0'))

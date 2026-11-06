@@ -6,7 +6,7 @@ from urllib.parse import quote
 from PySide6.QtCore import QObject, QTimer, QUrl, Signal
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 RELEASES = "https://github.com/kennclark-yb/YOINK/releases"
 LATEST_API = "https://api.github.com/repos/kennclark-yb/YOINK/releases/latest"
 
